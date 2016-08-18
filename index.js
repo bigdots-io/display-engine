@@ -15,7 +15,7 @@ class Display {
     var displayRef = firebase.database().ref(`displays/${this.key}/`);
     displayRef.on('value', (snapshot) => {
       console.log("Change")
-      
+
       var displayData = snapshot.val(),
           mode = displayData.mode,
           modeData = displayData.modes[mode],
@@ -53,6 +53,8 @@ class Display {
           });
       }
     });
+
+    this.displayMode.start();
   }
 }
 
