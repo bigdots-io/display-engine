@@ -10,7 +10,7 @@ class ProgrammableDisplay {
 
   start() {
     var matrixRef = firebase.database().ref(`matrices/${this.matrixKey}`);
-    
+
     matrixRef.once('value').then((snapshot) => {
       var data = snapshot.val();
 
@@ -22,7 +22,7 @@ class ProgrammableDisplay {
       }
     });
 
-    this.childChangedRef = this.matrixRef.on('child_changed', (snapshot) => {
+    this.childChangedRef = matrixRef.on('child_changed', (snapshot) => {
       var hex = snapshot.val().hex,
           [y, x] = snapshot.key.split(':');
 
