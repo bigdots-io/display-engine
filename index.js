@@ -13,7 +13,7 @@ class Display {
 
   load(callbacks) {
     var displayRef = firebase.database().ref(`displays/${this.key}/`);
-    displayRef.once('value', function(snapshot) {
+    displayRef.once('value', (snapshot) => {
       var displayData = snapshot.val(),
           mode = displayData.mode,
           modeData = displayData.modes[mode],
