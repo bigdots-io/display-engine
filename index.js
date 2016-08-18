@@ -13,7 +13,9 @@ class Display {
 
   load(callbacks) {
     var displayRef = firebase.database().ref(`displays/${this.key}/`);
-    displayRef.once('value', (snapshot) => {
+    displayRef.on('value', (snapshot) => {
+      console.log("Change")
+      
       var displayData = snapshot.val(),
           mode = displayData.mode,
           modeData = displayData.modes[mode],
@@ -21,6 +23,10 @@ class Display {
             width: displayData.width,
             height: displayData.height
           };
+
+      if(this.displayMode) {
+        this.displayMode.stop();
+      }
 
       switch(displayData.mode) {
         case 'programmable':
