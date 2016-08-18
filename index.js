@@ -5,7 +5,7 @@ var UnsupportedDisplay = require('./displays/unsupported-display');
 var TwinkleDisplay = require('./displays/twinkle-display');
 var firebase = require("firebase");
 
-class Display
+class Display {
   constructor(key) {
     this.key = key;
   }
