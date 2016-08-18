@@ -30,7 +30,7 @@ class ProgrammableDisplay {
   }
 
   stop() {
-    this.matrixRef.off(this.childChangedCallback);
+    this.matrixRef.off('child_changed', this.childChangedCallback);
   }
 }
 
