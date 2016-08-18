@@ -8,6 +8,7 @@ var firebase = require("firebase");
 class Display {
   constructor(key) {
     this.key = key;
+
   }
 
   load(callbacks) {
@@ -23,8 +24,7 @@ class Display {
 
       switch(displayData.mode) {
         case 'programmable':
-          console.log('programmable');
-          new ProgrammableDisplay(modeData, dimensions, {
+          this.displayMode = new ProgrammableDisplay(modeData, dimensions, {
             onPixelChange: (y, x, hex) => {
               callbacks.onPixelChange(y, x, hex);
             }
@@ -32,8 +32,7 @@ class Display {
           break;
 
         case 'twinkle':
-          console.log('twinkle');
-          new TwinkleDisplay(modeData, dimensions, {
+          this.displayMode = new TwinkleDisplay(modeData, dimensions, {
             onPixelChange: (y, x, hex) => {
               callbacks.onPixelChange(y, x, hex);
             }
@@ -41,8 +40,7 @@ class Display {
           break;
 
         default:
-          console.log('unsupported');
-          new UnsupportedDisplay(modeData, dimensions, {
+          this.displayMode = new UnsupportedDisplay(modeData, dimensions, {
             onPixelChange: (y, x, hex) => {
               callbacks.onPixelChange(y, x, hex);
             }

@@ -31,7 +31,7 @@ function generateColorShade(seedColor) {
   colors.push(colorLuminance(seedColor, -0.5))
   colors.push(colorLuminance(seedColor, -0.7))
 
-  var index = Math.floor(Math.random() * (7 - 0 + 1)) + 0;
+  var index = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
   return colors[index];
 }
 
