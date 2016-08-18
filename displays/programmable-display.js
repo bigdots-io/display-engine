@@ -6,12 +6,11 @@ class ProgrammableDisplay {
   constructor(modeData, dimensions, callbacks) {
     this.matrixKey = modeData.matrix;
     this.callbacks = callbacks;
+    this.matrixRef = firebase.database().ref(`matrices/${this.matrixKey}`);
   }
 
   start() {
-    var matrixRef = firebase.database().ref(`matrices/${this.matrixKey}`);
-
-    matrixRef.once('value').then((snapshot) => {
+    this.matrixRef.once('value').then((snapshot) => {
       var data = snapshot.val();
 
       for(let key in snapshot.val()) {
@@ -22,7 +21,7 @@ class ProgrammableDisplay {
       }
     });
 
-    this.childChangedRef = matrixRef.on('child_changed', (snapshot) => {
+    this.childChangedCallback = this.matrixRef.on('child_changed', (snapshot) => {
       var hex = snapshot.val().hex,
           [y, x] = snapshot.key.split(':');
 
@@ -31,7 +30,7 @@ class ProgrammableDisplay {
   }
 
   stop() {
-    this.childChangedRef.off();
+    this.matrixRef.off(this.childChangedCallback);
   }
 }
 

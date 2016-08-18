@@ -1,10 +1,18 @@
 "use strict";
 
 class UnsupportedDisplay {
-  constructor(displayData, callbacks) {
-    data.forEach(function(item) {
-      callbacks.onPixelChange(item[0], item[1], '#FFFFFF');
+  constructor(modeData, dimensions, callbacks) {
+    this.callbacks = callbacks;
+  }
+
+  start() {
+    data.forEach((item) => {
+      this.callbacks.onPixelChange(item[0], item[1], '#FFFFFF');
     });
+  }
+
+  stop() {
+    // Nothing..
   }
 }
 
