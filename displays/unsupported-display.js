@@ -1,3 +1,5 @@
+"use strict";
+
 class UnsupportedDisplay {
   constructor(displayData, callbacks) {
     data.forEach(function(item) {

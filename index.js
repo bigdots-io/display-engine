@@ -1,3 +1,5 @@
+"use strict";
+
 var ProgrammableDisplay = require('./displays/programmable-display');
 var UnsupportedDisplay = require('./displays/unsupported-display');
 var TwinkleDisplay = require('./displays/twinkle-display');

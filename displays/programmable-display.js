@@ -1,3 +1,5 @@
+"use strict";
+
 var firebase = require("firebase");
 
 class ProgrammableDisplay {
