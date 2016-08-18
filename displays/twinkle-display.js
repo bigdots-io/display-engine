@@ -24,12 +24,12 @@ function generateColorShade(seedColor) {
   var colors = [];
 
   colors.push(colorLuminance(seedColor, 0))
-  colors.push(colorLuminance(seedColor, -0.1))
   colors.push(colorLuminance(seedColor, -0.2))
-  colors.push(colorLuminance(seedColor, -0.3))
   colors.push(colorLuminance(seedColor, -0.4))
-  colors.push(colorLuminance(seedColor, -0.5))
+  colors.push(colorLuminance(seedColor, -0.6))
   colors.push(colorLuminance(seedColor, -0.7))
+  colors.push(colorLuminance(seedColor, -0.8))
+  colors.push(colorLuminance(seedColor, -0.9))
 
   var index = Math.floor(Math.random() * (6 - 0 + 1)) + 0;
   return colors[index];
