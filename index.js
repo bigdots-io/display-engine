@@ -35,7 +35,7 @@ class Display {
           console.log('twinkle');
           new TwinkleDisplay(modeData, dimensions, {
             onPixelChange: (y, x, hex) => {
-              callbacks.refreshPixelByCoordinates(y, x, hex);
+              callbacks.onPixelChange(y, x, hex);
             }
           });
           break;
@@ -44,7 +44,7 @@ class Display {
           console.log('unsupported');
           new UnsupportedDisplay(modeData, dimensions, {
             onPixelChange: (y, x, hex) => {
-              callbacks.refreshPixelByCoordinates(y, x, hex);
+              callbacks.onPixelChange(y, x, hex);
             }
           });
       }
