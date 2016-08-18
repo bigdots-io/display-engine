@@ -52,9 +52,9 @@ class Display {
             }
           });
       }
-    });
 
-    this.displayMode.start();
+      this.displayMode.start();
+    });
   }
 }
 
