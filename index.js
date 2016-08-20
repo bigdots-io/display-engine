@@ -29,7 +29,7 @@ class DisplayCoupler {
       var next = () => {
         var activeMacro = displayData.activeMacro,
             options = {
-              macroData: displayData.macros[activeMacro],
+              config: displayData.macros[activeMacro],
               dimensions: {
                 width: displayData.width,
                 height: displayData.height
