@@ -6,8 +6,7 @@ var macroManager = new MacroManager();
 macroManager.registerMacros();
 
 class DisplayCoupler {
-  constructor(key, db) {
-    this.key = key;
+  constructor(db) {
     this.db = db;
   }
 
@@ -15,8 +14,14 @@ class DisplayCoupler {
     return macroManager.registeredMacros();
   }
 
-  load(callbacks) {
-    var displayRef = this.db.ref(`displays/${this.key}/`);
+  startUp(callbacks) {
+    macroManager.loadMacro('starting-up', {
+      callbacks: callbacks
+    });
+  }
+
+  connect(displayKey, callbacks) {
+    var displayRef = this.db.ref(`displays/${displayKey}/`);
     displayRef.on('value', (snapshot) => {
       var displayData = snapshot.val(),
           mode = displayData.mode,
