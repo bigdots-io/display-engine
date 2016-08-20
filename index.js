@@ -23,8 +23,7 @@ class DisplayCoupler {
   }
 
   connect(displayKey, callbacks) {
-    var displayRef = this.db.ref(`displays/${displayKey}/`);
-    displayRef.on('value', (snapshot) => {
+    this.db.ref(`displays/${displayKey}/`).on('value', (snapshot) => {
       var displayData = snapshot.val();
 
       var next = function() {
@@ -44,9 +43,9 @@ class DisplayCoupler {
             };
 
         macroManager.loadMacro(displayData.mode, options)
-      }
+      };
 
-      if this.startingUp {
+      if(this.startingUp) {
         callbacks.onReady(displayData, () => {
           this.startingUp = false;
           next();
