@@ -26,7 +26,7 @@ class DisplayCoupler {
     this.db.ref(`displays/${displayKey}/`).on('value', (snapshot) => {
       var displayData = snapshot.val();
 
-      var next = function() {
+      var next = () => {
         var mode = displayData.mode,
             options = {
               modeData: displayData.modes[mode],
