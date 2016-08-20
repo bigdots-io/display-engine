@@ -46,9 +46,9 @@ class DisplayCoupler {
         macroManager.loadMacro(displayData.mode, options)
       }
 
-      if startingUp {
+      if this.startingUp {
         callbacks.onReady(displayData, () => {
-          startingUp = false;
+          this.startingUp = false;
           next();
         });
       } else {
