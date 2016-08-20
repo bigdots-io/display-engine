@@ -15,7 +15,11 @@ class DisplayCoupler {
     return macroManager.registeredMacros();
   }
 
-  startUp(callbacks) {
+  startUp({dimensions, callbacks}) {
+    macroManager.loadMacro('starting-up', {
+      dimensions: dimensions,
+      callbacks: callbacks
+    });
   }
 
   connect(displayKey, callbacks) {
