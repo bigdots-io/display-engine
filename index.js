@@ -8,6 +8,7 @@ macroManager.registerMacros();
 class DisplayCoupler {
   constructor(db) {
     this.db = db;
+    this.startingUp = true;
   }
 
   static registeredMacros() {
@@ -20,9 +21,10 @@ class DisplayCoupler {
   connect(displayKey, callbacks) {
     var displayRef = this.db.ref(`displays/${displayKey}/`);
     displayRef.on('value', (snapshot) => {
-      callbacks.onReady(displayData, () => {
-        var displayData = snapshot.val(),
-            mode = displayData.mode,
+      var displayData = snapshot.val();
+
+      var next = function() {
+        var mode = displayData.mode,
             options = {
               modeData: displayData.modes[mode],
               dimensions: {
@@ -38,7 +40,16 @@ class DisplayCoupler {
             };
 
         macroManager.loadMacro(displayData.mode, options)
-      });
+      }
+
+      if startingUp {
+        callbacks.onReady(displayData, () => {
+          startingUp = false;
+          next();
+        });
+      } else {
+        next()
+      }
     });
   }
 }
