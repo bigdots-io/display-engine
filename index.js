@@ -15,31 +15,30 @@ class DisplayCoupler {
   }
 
   startUp(callbacks) {
-    macroManager.loadMacro('starting-up', {
-      callbacks: callbacks
-    });
   }
 
   connect(displayKey, callbacks) {
     var displayRef = this.db.ref(`displays/${displayKey}/`);
     displayRef.on('value', (snapshot) => {
-      var displayData = snapshot.val(),
-          mode = displayData.mode,
-          options = {
-            modeData: displayData.modes[mode],
-            dimensions: {
-              width: displayData.width,
-              height: displayData.height
-            },
-            db: this.db,
-            callbacks: {
-              onPixelChange: (y, x, hex) => {
-                callbacks.onPixelChange(y, x, hex, displayData);
+      callbacks.onReady(displayData, () => {
+        var displayData = snapshot.val(),
+            mode = displayData.mode,
+            options = {
+              modeData: displayData.modes[mode],
+              dimensions: {
+                width: displayData.width,
+                height: displayData.height
+              },
+              db: this.db,
+              callbacks: {
+                onPixelChange: (y, x, hex) => {
+                  callbacks.onPixelChange(y, x, hex, displayData);
+                }
               }
-            }
-          };
+            };
 
-      macroManager.loadMacro(displayData.mode, options)
+        macroManager.loadMacro(displayData.mode, options)
+      });
     });
   }
 }
