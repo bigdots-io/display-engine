@@ -1,8 +1,10 @@
 "use strict";
 
-class UnsupportedDisplay {
-  constructor(modeData, dimensions, callbacks) {
-    this.callbacks = callbacks;
+var Macro = require('../macro');
+
+class UnsupportedMacro extends Macro {
+  static identifier() {
+    return 'unsupported';
   }
 
   start() {
@@ -23,4 +25,4 @@ var data = [
   [4, 0]
 ];
 
-module.exports = UnsupportedDisplay;
+module.exports = UnsupportedMacro;

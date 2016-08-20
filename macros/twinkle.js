@@ -1,12 +1,10 @@
 "use strict";
 
-var firebase = require("firebase");
+var Macro = require('../macro');
 
-class TwinkleDisplay {
-  constructor(modeData, dimensions, callbacks) {
-    this.modeData = modeData;
-    this.dimensions = dimensions;
-    this.callbacks = callbacks
+class TwinkleMacro extends Macro {
+  static identifier() {
+    return 'twinkle';
   }
 
   start() {
@@ -64,4 +62,4 @@ function colorLuminance(hex, lum) {
 	return rgb;
 }
 
-module.exports = TwinkleDisplay;
+module.exports = TwinkleMacro;

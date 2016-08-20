@@ -1,15 +1,15 @@
 "use strict";
 
-var firebase = require("firebase");
+var Macro = require('../macro');
 
-class ProgrammableDisplay {
-  constructor(modeData, dimensions, callbacks) {
-    this.matrixKey = modeData.matrix;
-    this.callbacks = callbacks;
-    this.matrixRef = firebase.database().ref(`matrices/${this.matrixKey}`);
+class ProgrammableMacro extends Macro {
+  static identifier() {
+    return 'programmable';
   }
 
   start() {
+    var matrixKey = this.modeData.matrix;
+    this.matrixRef = this.db.ref(`matrices/${matrixKey}`);
     this.matrixRef.once('value').then((snapshot) => {
       var data = snapshot.val();
 
@@ -34,4 +34,4 @@ class ProgrammableDisplay {
   }
 }
 
-module.exports = ProgrammableDisplay;
+module.exports = ProgrammableMacro;
