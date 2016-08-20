@@ -34,7 +34,7 @@ class DisplayCoupler {
             db: this.db,
             callbacks: {
               onPixelChange: (y, x, hex) => {
-                callbacks.onPixelChange(y, x, hex);
+                callbacks.onPixelChange(y, x, hex, displayData);
               }
             }
           };
