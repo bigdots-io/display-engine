@@ -27,9 +27,9 @@ class DisplayCoupler {
       var displayData = snapshot.val();
 
       var next = () => {
-        var mode = displayData.mode,
+        var activeMacro = displayData.activeMacro,
             options = {
-              modeData: displayData.modes[mode],
+              macroData: displayData.macros[activeMacro],
               dimensions: {
                 width: displayData.width,
                 height: displayData.height
@@ -42,7 +42,7 @@ class DisplayCoupler {
               }
             };
 
-        macroManager.loadMacro(displayData.mode, options)
+        macroManager.loadMacro(activeMacro, options)
       };
 
       if(this.startingUp) {
