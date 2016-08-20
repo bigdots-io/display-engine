@@ -1,11 +1,9 @@
 "use strict";
-var ProgrammableMacro = require('./macros/programmable');
-var UnsupportedMacro = require('./macros/unsupported');
-var TwinkleMacro = require('./macros/twinkle');
 
-var Macros = {};
-Macros[ProgrammableMacro.identifier()] = ProgrammableMacro;
-Macros[TwinkleMacro.identifier()] = TwinkleMacro;
+var MacroManager = require('./lib/macro-manager');
+
+var macroManager = new MacroManager();
+macroManager.registerMacros();
 
 class Display {
   constructor(key, db) {
@@ -14,7 +12,7 @@ class Display {
   }
 
   static registeredMacros() {
-    return Object.keys(Macros);
+    return macroManager.registeredMacros();
   }
 
   load(callbacks) {
@@ -36,17 +34,7 @@ class Display {
             }
           };
 
-      if(this.displayMode) {
-        this.displayMode.stop();
-      }
-
-      if(Macros[displayData.mode]) {
-        this.displayMode = new Macros[displayData.mode](options);
-      } else {
-        this.displayMode = new UnsupportedMacro(options);
-      }
-
-      this.displayMode.start();
+      macroManager.loadMacro(displayData.mode, options)
     });
   }
 }
