@@ -1,7 +1,7 @@
 {
-  "name": "bigdots-display",
+  "name": "display-coupler",
   "version": "0.0.16",
-  "description": "",
+  "description": "Where display macros are contained and rendered",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -5,7 +5,7 @@ var MacroManager = require('./lib/macro-manager');
 var macroManager = new MacroManager();
 macroManager.registerMacros();
 
-class Display {
+class DisplayCoupler {
   constructor(key, db) {
     this.key = key;
     this.db = db;
@@ -39,4 +39,4 @@ class Display {
   }
 }
 
-module.exports = Display;
+module.exports = DisplayCoupler;
