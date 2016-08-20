@@ -1,6 +1,6 @@
 {
   "name": "display-coupler",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "Where display macros are contained and rendered",
   "main": "index.js",
   "scripts": {
