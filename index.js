@@ -1,9 +1,9 @@
 "use strict";
 
-var MacroManager = require('./lib/macro-manager');
+var MacroLibrary = require('macro-library');
 
-var macroManager = new MacroManager();
-macroManager.registerMacros();
+var macroLibrary = new MacroLibrary();
+macroLibrary.registerMacros();
 
 class DisplayCoupler {
   constructor(db) {
@@ -12,11 +12,11 @@ class DisplayCoupler {
   }
 
   static registeredMacros() {
-    return macroManager.registeredMacros();
+    return macroLibrary.registeredMacros();
   }
 
   startUp({dimensions, callbacks}) {
-    macroManager.loadMacro('starting-up', {
+    macroLibrary.loadMacro('starting-up', {
       dimensions: dimensions,
       callbacks: callbacks
     });
@@ -27,9 +27,9 @@ class DisplayCoupler {
       var displayData = snapshot.val();
 
       var next = () => {
-        var activeMacro = displayData.activeMacro,
+        var macro = displayData.macro,
             options = {
-              config: displayData.macros[activeMacro],
+              config: displayData.macroConfig || {},
               dimensions: {
                 width: displayData.width,
                 height: displayData.height
@@ -42,7 +42,11 @@ class DisplayCoupler {
               }
             };
 
-        macroManager.loadMacro(activeMacro, options)
+        if(macro === "programmable") {
+          options.config.matrix = displayData.matrix;
+        }
+
+        macroLibrary.loadMacro(macro, options)
       };
 
       if(this.startingUp) {
