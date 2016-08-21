@@ -16,7 +16,7 @@ class DisplayCoupler {
   }
 
   startUp({dimensions, callbacks}) {
-    macroLibrary.loadMacro('starting-up', {
+    macroLibrary.loadMacro('start-up', {
       dimensions: dimensions,
       callbacks: callbacks
     });
