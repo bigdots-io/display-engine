@@ -16,10 +16,11 @@ class DisplayCoupler {
   }
 
   startUp({dimensions, callbacks}) {
-    macroLibrary.loadMacro('start-up', {
+    this.activateMacro = macroLibrary.loadMacro('start-up', {
       dimensions: dimensions,
       callbacks: callbacks
     });
+    this.activateMacro.start();
   }
 
   connect(displayKey, callbacks) {
@@ -46,7 +47,11 @@ class DisplayCoupler {
           options.config.matrix = displayData.matrix;
         }
 
-        macroLibrary.loadMacro(macro, options)
+        if(this.activateMacro) {
+          this.activateMacro.stop();
+        }
+        this.activateMacro = macroLibrary.loadMacro(macro, options);
+        this.activateMacro.start();
       };
 
       if(this.startingUp) {
