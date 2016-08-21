@@ -1,7 +1,7 @@
 {
   "name": "display-coupler",
   "version": "0.6.0",
-  "description": "Where display macros are contained and rendered",
+  "description": "Creates a rendered display via the macro library",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
