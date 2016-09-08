@@ -23,6 +23,39 @@ class DisplayCoupler {
     this.activateMacro.start();
   }
 
+  demo(displayConfig, callbacks) {
+    var next = () => {
+      var macro = displayConfig.macro,
+          options = {
+            config: displayConfig.macroConfig || {},
+            dimensions: {
+              width: displayConfig.width,
+              height: displayConfig.height
+            },
+            callbacks: {
+              onPixelChange: (y, x, hex) => {
+                callbacks.onPixelChange(y, x, hex, displayConfig);
+              }
+            }
+          };
+
+      if(this.activateMacro) {
+        this.activateMacro.stop();
+      }
+      this.activateMacro = macroLibrary.loadMacro(macro, options);
+      this.activateMacro.start();
+    };
+
+    if(this.startingUp) {
+      callbacks.onReady(displayConfig, () => {
+        this.startingUp = false;
+        next();
+      });
+    } else {
+      next()
+    }
+  }
+
   connect(displayKey, callbacks) {
     this.db.ref(`displays/${displayKey}/`).on('value', (snapshot) => {
       var displayData = snapshot.val();
