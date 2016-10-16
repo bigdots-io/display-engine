@@ -1,16 +1,16 @@
 "use strict";
 
-var Macros = {
-  'programmable': require('macros/lib/programmable'),
-  'twinkle': require('macros/lib/twinkle'),
-  'solid-color': require('macros/lib/solid-color'),
-  'unsupported': require('macros/lib/unsupported'),
-  'marquee': require('macros/lib/marquee')
-};
-
 class DisplayCoupler {
   constructor(db) {
     this.db = db;
+
+    this.Macros = {
+      'programmable': require('macros/lib/programmable'),
+      'twinkle': require('macros/lib/twinkle'),
+      'solid-color': require('macros/lib/solid-color'),
+      'unsupported': require('macros/lib/unsupported'),
+      'marquee': require('macros/lib/marquee')
+    };
   }
 
   connect(displayKey, callbacks) {
@@ -38,7 +38,7 @@ class DisplayCoupler {
         this.activateMacro.stop();
       }
 
-      var Macro = Marcos[displayData.macro] || Macros.unsupported;
+      var Macro = this.Macros[displayData.macro] || this.Macros.unsupported;
 
       this.activateMacro = new Marco(options);
 
