@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "macros": "bigdots-io/macros.git#v0.13.1"
+    "macros": "bigdots-io/macros.git#v0.14.0"
   },
   "author": "",
   "license": "ISC"

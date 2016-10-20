@@ -6,7 +6,8 @@ var Macros = {
   'solid-color': require('macros/lib/solid-color'),
   'unsupported': require('macros/lib/unsupported'),
   'marquee': require('macros/lib/marquee'),
-  'text': require('macros/lib/text')
+  'text': require('macros/lib/text'),
+  'heart-counter': require('macros/lib/heart-counter')
 };
 
 class DisplayCoupler {
