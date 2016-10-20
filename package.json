@@ -1,6 +1,6 @@
 {
   "name": "display-coupler",
-  "version": "0.16.2",
+  "version": "0.17.0",
   "description": "Creates a rendered display via the macro library",
   "main": "index.js",
   "scripts": {
