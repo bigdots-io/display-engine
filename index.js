@@ -17,6 +17,28 @@ class DisplayCoupler {
   }
 
   connect(displayKey, callbacks) {
+    this.db.ref('.info/connected').on('value', (snapshot) {
+      if(!snapshot.val()) {
+        if(this.activateMacro) {
+          this.activateMacro.stop();
+        }
+
+        this.activateMacro = new Macros['offline']({
+          config: {},
+          dimensions: {
+            width: 128,
+            height: 16
+          },
+          db: this.db,
+          callbacks: {
+            onPixelChange: (y, x, hex) => {
+              callbacks.onPixelChange(y, x, hex, displayData);
+            }
+          }
+        });
+      });
+    });
+
     this.db.ref(`displays/${displayKey}/`).on('value', (snapshot) => {
       var displayData = snapshot.val(),
           options = {
