@@ -7,7 +7,8 @@ var Macros = {
   'unsupported': require('macros/lib/unsupported'),
   'marquee': require('macros/lib/marquee'),
   'text': require('macros/lib/text'),
-  'heart-counter': require('macros/lib/heart-counter')
+  'heart-counter': require('macros/lib/heart-counter'),
+  'offline': require('macros/lib/offline')
 };
 
 class DisplayCoupler {
