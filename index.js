@@ -36,7 +36,7 @@ class DisplayCoupler {
             }
           }
         });
-      });
+      }
     });
 
     this.db.ref(`displays/${displayKey}/`).on('value', (snapshot) => {
