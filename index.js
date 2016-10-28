@@ -17,7 +17,7 @@ class DisplayCoupler {
   }
 
   connect(displayKey, callbacks) {
-    this.db.ref('.info/connected').on('value', (snapshot) {
+    this.db.ref('.info/connected').on('value', (snapshot) => {
       if(!snapshot.val()) {
         if(this.activateMacro) {
           this.activateMacro.stop();
