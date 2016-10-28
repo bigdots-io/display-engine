@@ -32,10 +32,11 @@ class DisplayCoupler {
           db: this.db,
           callbacks: {
             onPixelChange: (y, x, hex) => {
-              callbacks.onPixelChange(y, x, hex, displayData);
+              callbacks.onPixelChange(y, x, hex);
             }
           }
         });
+        this.activateMacro.start();
       }
     });
 
