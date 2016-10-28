@@ -30,7 +30,9 @@ class DisplayCoupler {
             dimensions: this.dimensions,
             db: this.db,
             callbacks: {
-              onPixelChange: callbacks.onPixelChange
+              onPixelChange: function(y, x, hex) {
+                callbacks.onPixelChange(y, x, hex, displayData);
+              }
             }
           };
 
@@ -62,7 +64,11 @@ class DisplayCoupler {
       dimensions: this.dimensions,
       db: this.db,
       callbacks: {
-        onPixelChange: onPixelChange
+        onPixelChange: function(y, x, hex) {
+          onPixelChange(y, x, hex, {
+            brightness: 30
+          });
+        }
       }
     });
     this.activateMacro.start();
