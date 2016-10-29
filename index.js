@@ -7,7 +7,7 @@ var Macros = {
   'unsupported': require('macros/lib/unsupported'),
   'marquee': require('macros/lib/marquee'),
   'text': require('macros/lib/text'),
-  'heart-counter': require('macros/lib/heart-counter'),
+  'counter': require('macros/lib/counter'),
   'offline': require('macros/lib/offline')
 };
 
