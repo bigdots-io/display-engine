@@ -11,17 +11,43 @@ var Macros = {
   'offline': require('macros/lib/offline')
 };
 
+var status = {
+  unknown: 'unknown',
+  connected: 'connected',
+  notConnected: 'not connected'
+};
+
 class DisplayCoupler {
   constructor(db, dimensions) {
     this.db = db;
     this.dimensions = dimensions;
+    this.connectionStatus = status.unknown;
   }
 
   connect(displayKey, callbacks) {
+    // Use a connection listener as the master loop so that the active macro
+    // can be overriden by an "offline macro".
     this.db.ref('.info/connected').on('value', (snapshot) => {
       if(!snapshot.val()) {
-        this.renderAsOffline(callbacks.onPixelChange);
+        var delay = 0;
+
+        // Prevent false positives because firebase thinks it's not connected for
+        // a split second when it starts up for the first time.
+        if(this.connectionStatus == status.unknown) {
+          delay = 2000;
+        } else {
+          this.connectionStatus = status.notConnected
+        }
+
+        setTimeout(() => {
+          if(this.connectionStatus !== status.connected) {
+            this.renderAsOffline(callbacks.onPixelChange);
+            this.connectionStatus = status.notConnected;
+          }
+        }, delay);
+
       } else {
+        this.connectionStatus = status.connected;
         this.db.ref(`displays/${displayKey}/`).on('value', (snapshot) => {
           var displayData = snapshot.val();
 
