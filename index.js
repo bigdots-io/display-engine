@@ -8,7 +8,8 @@ var Macros = {
   'marquee': require('macros/lib/marquee'),
   'text': require('macros/lib/text'),
   'counter': require('macros/lib/counter'),
-  'offline': require('macros/lib/offline')
+  'offline': require('macros/lib/offline'),
+  'image': require('macros/lib/image')
 };
 
 var status = {
