@@ -9,7 +9,8 @@ var Macros = {
   'text': require('macros/lib/text'),
   'counter': require('macros/lib/counter'),
   'offline': require('macros/lib/offline'),
-  'image': require('macros/lib/image')
+  'image': require('macros/lib/image'),
+  'meteor-shower': require('macros/lib/meteor-shower'),
 };
 
 var status = {
