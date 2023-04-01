@@ -1,0 +1,127 @@
+[
+  {
+    "x": 5,
+    "y": 3,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 5,
+    "y": 4,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 5,
+    "y": 5,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 5,
+    "y": 6,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 5,
+    "y": 7,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 5,
+    "y": 8,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 6,
+    "y": 6,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 7,
+    "y": 6,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 8,
+    "y": 6,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 8,
+    "y": 3,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 8,
+    "y": 4,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 8,
+    "y": 5,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 8,
+    "y": 6,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 8,
+    "y": 7,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 8,
+    "y": 8,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 10,
+    "y": 3,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 12,
+    "y": 3,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 11,
+    "y": 3,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 11,
+    "y": 5,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 11,
+    "y": 6,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 11,
+    "y": 7,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 11,
+    "y": 4,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 10,
+    "y": 8,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 11,
+    "y": 8,
+    "hex": "#FFFFFF"
+  },
+  {
+    "x": 12,
+    "y": 8,
+    "hex": "#FFFFFF"
+  }
+]

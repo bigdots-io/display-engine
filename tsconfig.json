@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true, // HERE
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "outDir": "lib",
+    "declaration": true,
+    "strictPropertyInitialization": false,
+    "resolveJsonModule": true
+  },
+  "include": ["src/**/*"]
+}
