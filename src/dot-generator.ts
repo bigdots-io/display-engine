@@ -1,32 +1,22 @@
-import { Dimensions, MacroConfig, Pixel } from ".";
-import Textbox from "./generators/textbox";
+import { Dimensions, MacroTextConfig, MacroColorConfig, Pixel } from "./types";
+import { Message } from "./generators/textbox/message";
 
 // image(url, callbacks) {
 //   new ImageExploder(url).process(callbacks);
 // }
 
 export const generateColor = (
-  color: string,
-  {
-    height,
-    width,
-    startingColumn = 0,
-    startingRow = 0,
-  }: {
-    height: number;
-    width: number;
-    startingColumn?: number;
-    startingRow?: 0;
-  }
+  options: MacroColorConfig,
+  dimensions: Dimensions
 ): Pixel[] => {
   const pixels: Pixel[] = [];
 
-  for (var y = 0; y < height; y++) {
-    for (var x = 0; x < width; x++) {
+  for (var y = 0; y < dimensions.height; y++) {
+    for (var x = 0; x < dimensions.width; x++) {
       pixels.push({
-        y: y + startingRow,
-        x: x + startingColumn,
-        hex: color,
+        y: y + options.startingRow,
+        x: x + options.startingColumn,
+        hex: options.color,
       });
     }
   }
@@ -34,11 +24,22 @@ export const generateColor = (
 };
 
 export const generateText = (
-  options: MacroConfig,
-  dimensions: Partial<Dimensions> = {}
+  options: MacroTextConfig,
+  dimensions: Dimensions
 ): Pixel[] => {
-  return new Textbox({
-    ...options,
-    ...dimensions,
-  }).write(options.text);
+  const message = new Message(options.text, options.font, {
+    spaceBetweenLetters: options.spaceBetweenLetters,
+    spaceBetweenLines: options.spaceBetweenLines,
+    alignment: options.alignment,
+    wrap: options.wrap,
+    width: options.width || dimensions.width,
+  });
+
+  var results = message.render();
+
+  return results.dots.map((dot) => ({
+    x: dot.x + options.startingColumn,
+    y: dot.y + options.startingRow,
+    hex: options.color,
+  }));
 };

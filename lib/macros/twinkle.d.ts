@@ -1,10 +1,2 @@
-export = TwinkleMacro;
-declare class TwinkleMacro {
-    static get identifier(): string;
-    defaultConfig(): {
-        color: string;
-    };
-    start(): void;
-    interval: NodeJS.Timer | undefined;
-    stop(): void;
-}
+import { Dimensions, MacroTwinkleConfig, PixelChangeCallback } from "../types";
+export declare const startTwinkleMacro: (config: MacroTwinkleConfig, dimensions: Dimensions, onPixelChange: PixelChangeCallback) => void;

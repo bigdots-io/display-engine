@@ -1,132 +1,140 @@
-"use strict";
-
-// import ProgrammableMacro from "macros/lib/programmable";
-// import TwinkleMacro from "macros/lib/twinkle";
-// import SolidColor from "macros/lib/solid-color";
-// import Unsupported from "macros/lib/unsupported";
-// import Marquee from "macros/lib/marquee";
-// import Text from "macros/lib/text";
-// // import Counter from "./macros/lib/counter";
-// import Offline from "macros/lib/offline";
-// import Image from "macros/lib/Image";
-// import MeteorShower from "macros/lib/meteor-shower";
-
-import { Database, ref, onValue } from "firebase/database";
 import { generateColor, generateText } from "./dot-generator";
-
-const Macros: { [k: string]: any } = {
-  // programmable: ProgrammableMacro,
-  // twinkle: TwinkleMacro,
-  // "solid-color": SolidColorMacro,
-  // unsupported: Unsupported,
-  // marquee: Marquee,
-  // text: Text,
-  // // counter: Counter,
-  // offline: Offline,
-  // image: Image,
-  // "meteor-shower": MeteorShower,
-};
-
-interface DisplayData {
-  macro: MacroName;
-  macroConfig: MacroConfig;
-  name: string;
-  brightness: number;
-}
-
-export enum MacroName {
-  SolidColor = "solid-color",
-  Text = "text",
-}
-
-export interface MacroConfig {
-  color: string;
-
-  text: string;
-  font: string;
-  // color: string;
-  alignment: string;
-  spaceBetweenLetters: number;
-  wrap?: string;
-}
-
-export interface Dimensions {
-  height: number;
-  width: number;
-}
-
-export interface Pixel {
-  y: number;
-  x: number;
-  hex: string;
-}
-
-type PixelChangeCallback = (pixel: Pixel) => void;
+import { startTwinkleMacro } from "./macros/twinkle";
+import { startMeteorShower } from "./macros/meteor-shower";
+import {
+  Dimensions,
+  MacroColorConfig,
+  MacroConfig,
+  MacroMeteorShowerConfig,
+  MacroName,
+  MacroTextConfig,
+  MacroTwinkleConfig,
+  PixelChangeCallback,
+} from "./types";
 
 function loadMacro(
   macroName: MacroName,
-  macroConfig: MacroConfig,
+  macroConfig: Partial<MacroConfig>,
   {
     dimensions,
     onPixelChange,
   }: { dimensions: Dimensions; onPixelChange: PixelChangeCallback }
 ): { startMacro: () => void; stopMacro: () => void } {
   if (macroName === MacroName.SolidColor) {
+    const macroColorConfig = macroConfig as Partial<MacroColorConfig>;
     return {
       startMacro: () => {
-        generateColor(macroConfig.color, dimensions).forEach(onPixelChange);
+        generateColor(
+          {
+            color: "#fff",
+            startingColumn: 0,
+            startingRow: 0,
+            ...macroColorConfig,
+          },
+          dimensions
+        ).forEach(onPixelChange);
       },
       stopMacro: () => {},
     };
   } else if (macroName === MacroName.Text) {
+    const macroTextConfig = macroConfig as Partial<MacroTextConfig>;
     return {
       startMacro: () => {
-        generateColor("#000", dimensions).forEach(onPixelChange);
-        generateText(macroConfig, dimensions).forEach(onPixelChange);
+        generateColor(
+          { color: "#000", startingRow: 0, startingColumn: 0 },
+          dimensions
+        ).forEach(onPixelChange);
+        generateText(
+          {
+            color: "#fff",
+            text: "hello WORLD!",
+            font: "system-16",
+            alignment: "left",
+            spaceBetweenLetters: 1,
+            spaceBetweenLines: 1,
+            wrap: "yo",
+            startingColumn: 0,
+            startingRow: 0,
+            ...macroTextConfig,
+          },
+          dimensions
+        ).forEach(onPixelChange);
+      },
+      stopMacro: () => {},
+    };
+  } else if (macroName === MacroName.Twinkle) {
+    const macroTwinkleConfig = macroConfig as Partial<MacroTwinkleConfig>;
+    return {
+      startMacro: () => {
+        startTwinkleMacro(
+          {
+            color: "#FFF",
+            speed: 100,
+            ...macroTwinkleConfig,
+          },
+          dimensions,
+          onPixelChange
+        );
+      },
+      stopMacro: () => {},
+    };
+  } else if (macroName === MacroName.MeteorShower) {
+    const macroMeteorShowerConfig =
+      macroConfig as Partial<MacroMeteorShowerConfig>;
+    return {
+      startMacro: () => {
+        startMeteorShower(
+          {
+            color: "#FFF",
+            meteorCount: 40,
+            maxTailLength: 20,
+            minTailLength: 5,
+            maxDepth: 5,
+            minSpeed: 100,
+            maxSpeed: 10,
+            ...macroMeteorShowerConfig,
+          },
+          dimensions,
+          onPixelChange
+        );
       },
       stopMacro: () => {},
     };
   } else {
     return {
-      startMacro: () => {},
+      startMacro: () => {
+        generateColor(
+          { color: "#000", startingRow: 0, startingColumn: 0 },
+          dimensions
+        ).forEach(onPixelChange);
+        generateText(
+          {
+            text: "UNSUPPORTED",
+            color: "#fff",
+            font: "system-6",
+            alignment: "left",
+            spaceBetweenLetters: 1,
+            spaceBetweenLines: 1,
+            wrap: "asdF",
+            startingColumn: 0,
+            startingRow: 0,
+          },
+          dimensions
+        ).forEach(onPixelChange);
+      },
       stopMacro: () => {},
     };
   }
 }
 
-export function connectDisplay({
-  displayId,
-  db,
-  dimensions,
-  onPixelChange,
-}: {
-  displayId: string;
-  db: Database;
-  dimensions: { height: number; width: number };
-  onPixelChange: PixelChangeCallback;
-}) {
-  const displayRef = ref(db, `displays/${displayId}/`);
-
-  onValue(displayRef, (snapshot) => {
-    const { macro, macroConfig } = snapshot.val() as DisplayData;
-
-    const { startMacro } = loadMacro(macro, macroConfig, {
-      dimensions,
-      onPixelChange,
-    });
-
-    startMacro();
-  });
-}
-
-export function hardcodedDisplay({
+export function display({
   macroName,
   macroConfig,
   dimensions,
   onPixelChange,
 }: {
   macroName: MacroName;
-  macroConfig: MacroConfig;
+  macroConfig: Partial<MacroConfig>;
   dimensions: { height: number; width: number };
   onPixelChange: PixelChangeCallback;
 }) {

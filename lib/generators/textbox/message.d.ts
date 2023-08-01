@@ -1,5 +1,4 @@
-export = Message;
-declare class Message {
+export class Message {
     constructor(text: any, font: any, options: any);
     text: any;
     font: any;

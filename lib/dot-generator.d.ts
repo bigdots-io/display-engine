@@ -1,8 +1,3 @@
-import { Dimensions, MacroConfig, Pixel } from ".";
-export declare const generateColor: (color: string, { height, width, startingColumn, startingRow, }: {
-    height: number;
-    width: number;
-    startingColumn?: number | undefined;
-    startingRow?: 0 | undefined;
-}) => Pixel[];
-export declare const generateText: (options: MacroConfig, dimensions?: Partial<Dimensions>) => Pixel[];
+import { Dimensions, MacroTextConfig, MacroColorConfig, Pixel } from "./types";
+export declare const generateColor: (options: MacroColorConfig, dimensions: Dimensions) => Pixel[];
+export declare const generateText: (options: MacroTextConfig, dimensions: Dimensions) => Pixel[];

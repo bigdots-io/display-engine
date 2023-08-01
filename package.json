@@ -1,15 +1,11 @@
 {
-  "name": "display-coupler",
+  "name": "@bigdots-io/display",
   "version": "0.27.6",
-  "description": "Creates a rendered display via the macro library",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest"
-  },
-  "dependencies": {
-    "firebase": "^9.17.1"
   },
   "author": "",
   "license": "ISC",
