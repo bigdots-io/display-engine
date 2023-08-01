@@ -8,9 +8,10 @@ npm install --save @bigdots-io/display
 
 ```ts
 import { display } from "@bigdots-io/display";
+import { MacroName } from "@bigdots-io/display/lib/types";
 
 display({
-  macroName: "twinkle",
+  macroName: MacroName.Twinkle,
   onPixelChange: ({ y, x, hex }) => {
     // Update the frontend of your display
   },
