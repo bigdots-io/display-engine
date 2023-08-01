@@ -129,13 +129,13 @@ function loadMacro(
 
 export function display({
   macroName,
-  macroConfig,
-  dimensions,
+  macroConfig = {},
+  dimensions = { width: 23, height: 128 },
   onPixelChange,
 }: {
   macroName: MacroName;
-  macroConfig: Partial<MacroConfig>;
-  dimensions: { height: number; width: number };
+  macroConfig?: Partial<MacroConfig>;
+  dimensions?: { height: number; width: number };
   onPixelChange: PixelChangeCallback;
 }) {
   const { startMacro } = loadMacro(macroName, macroConfig, {

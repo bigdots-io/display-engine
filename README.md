@@ -10,10 +10,10 @@ npm install --save @bigdots-io/display
 import { display } from "@bigdots-io/display";
 
 display({
-  macroName,
-  macroConfig,
-  dimensions,
-  onPixelChange: updateDot,
+  macroName: "twinkle",
+  onPixelChange: ({ y, x, hex }) => {
+    // Update the frontend of your display
+  },
 });
 ```
 
