@@ -1,4 +1,4 @@
-# Bigdots Display Engine 
+# Bigdots Display Engine
 
 _**Interested in just rendering a display?** Checkout the [Web Client](https://github.com/bigdots-io/web-client)!_
 
@@ -10,7 +10,7 @@ npm install --save @bigdots-io/display-engine
 
 ```ts
 import { createDisplayEngine } from "@bigdots-io/display-engine";
-import { MacroName } from "@bigdots-io/display/lib/types";
+import { MacroName } from "@bigdots-io/display-engine/lib/types";
 
 createDisplayEngine({
   macroName: MacroName.Twinkle,
