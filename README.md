@@ -1,9 +1,11 @@
-# Bigdots Display
+# Bigdots Display Engine 
+
+_**Interested in just rendering a display?** Checkout the [Web Client](https://github.com/bigdots-io/web-client)!_
 
 ## Install & Usage
 
 ```
-npm install --save @bigdots-io/display
+npm install --save @bigdots-io/display-engine
 ```
 
 ```ts
