@@ -7,10 +7,10 @@ npm install --save @bigdots-io/display
 ```
 
 ```ts
-import { display } from "@bigdots-io/display";
+import { createDisplayEngine } from "@bigdots-io/display-engine";
 import { MacroName } from "@bigdots-io/display/lib/types";
 
-display({
+createDisplayEngine({
   macroName: MacroName.Twinkle,
   onPixelChange: ({ y, x, hex }) => {
     // Update the frontend of your display

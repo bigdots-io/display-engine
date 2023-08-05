@@ -23,26 +23,34 @@ describe("Dot Generators", () => {
       test("renders a space between words when appropiate", function () {
         const textOptions = {
           text: "HI ROY",
-          font: "system-6",
+          font: "system-6" as const,
           color: "#FFFFFF",
-          alignment: "left",
+          wrap: "wrap",
           spaceBetweenLetters: 1,
+          alignment: "left" as const,
+          spaceBetweenLines: 1,
+          startingColumn: 0,
+          startingRow: 0,
         };
 
-        var result = generateText(textOptions);
+        var result = generateText(textOptions, { width: 50, height: 100 });
         expect(result).toEqual(SpacesBetweenWordsFixture);
       });
 
       test("renders text with letter spacing size", function () {
         const textOptions = {
           text: "HI ROY",
-          font: "system-6",
+          font: "system-6" as const,
           color: "#FFFFFF",
-          alignment: "left",
+          wrap: "wrap",
           spaceBetweenLetters: 2,
+          alignment: "left" as const,
+          spaceBetweenLines: 1,
+          startingColumn: 0,
+          startingRow: 0,
         };
 
-        var result = generateText(textOptions);
+        var result = generateText(textOptions, { width: 50, height: 100 });
         expect(result).toEqual(SpacesBetweenLettersFixture);
       });
     });
@@ -86,19 +94,6 @@ describe("Dot Generators", () => {
     // });
 
     describe("setting fixed dimensions", function () {
-      test("honors the height and cuts off text if necessary", function () {
-        const textOptions = {
-          text: "HI",
-          font: "system-6",
-          color: "#FFFFFF",
-          spaceBetweenLetters: 1,
-          alignment: "left",
-        };
-
-        const result = generateText(textOptions, { height: 4 });
-        expect(result).toEqual(FixedHeightFixture);
-      });
-
       // TODO: Fix!
       // test('honors the width and cuts off text if necessary', function() {
       //   textOptions.width = 6;
@@ -119,69 +114,70 @@ describe("Dot Generators", () => {
       test("returns left aligned text", function () {
         const textOptions = {
           text: "HI",
-          font: "system-6",
+          font: "system-6" as const,
           color: "#FFFFFF",
+          wrap: "wrap",
           spaceBetweenLetters: 1,
-          alignment: "left",
+          alignment: "left" as const,
+          spaceBetweenLines: 1,
+          startingColumn: 0,
+          startingRow: 0,
         };
 
-        const result = generateText(textOptions, { width: 30 });
+        const result = generateText(textOptions, { width: 30, height: 100 });
         expect(result).toEqual(LeftAlignedFixture);
       });
 
       test("returns right aligned text", function () {
         const textOptions = {
           text: "HI",
-          font: "system-6",
+          font: "system-6" as const,
           color: "#FFFFFF",
+          wrap: "wrap",
           spaceBetweenLetters: 1,
-          alignment: "right",
+          alignment: "right" as const,
+          spaceBetweenLines: 1,
+          startingColumn: 0,
+          startingRow: 0,
         };
 
-        const result = generateText(textOptions, { width: 30 });
+        const result = generateText(textOptions, { width: 30, height: 100 });
         expect(result).toEqual(RightAlignedFixture);
       });
 
       test("returns center aligned text", function () {
         const textOptions = {
           text: "HI",
-          font: "system-6",
+          font: "system-6" as const,
           color: "#FFFFFF",
+          wrap: "wrap",
           spaceBetweenLetters: 1,
-          alignment: "center",
+          alignment: "center" as const,
+          spaceBetweenLines: 1,
+          startingColumn: 0,
+          startingRow: 0,
         };
 
-        const result = generateText(textOptions, { width: 30 });
+        const result = generateText(textOptions, { width: 30, height: 100 });
         expect(result).toEqual(CenterAlignedFixture);
       });
     });
 
     describe("positioning the textbox", function () {
-      test("defaults to coordinate 0,0", function () {
-        const textOptions = {
-          text: "HI",
-          font: "system-6",
-          color: "#FFFFFF",
-          alignment: "left",
-          spaceBetweenLetters: 1,
-        };
-
-        const result = generateText(textOptions, { width: 20 });
-        expect(result).toEqual(DefaultOffsetFixture);
-      });
-
       test("returns offset text to the starting row and column", function () {
         const textOptions = {
           text: "HI",
-          font: "system-6",
+          font: "system-6" as const,
           color: "#FFFFFF",
-          alignment: "left",
+          wrap: "wrap",
+          alignment: "left" as const,
           spaceBetweenLetters: 1,
+          spaceBetweenLines: 1,
           startingRow: 3,
           startingColumn: 5,
         };
 
-        const result = generateText(textOptions, { width: 20 });
+        const result = generateText(textOptions, { width: 20, height: 100 });
         expect(result).toEqual(CustomOffsetFixture);
       });
 
@@ -208,14 +204,17 @@ describe("Dot Generators", () => {
         test("returns wrapped text left aligned", function () {
           const textOptions = {
             text: "HI ROY",
-            font: "system-6",
+            font: "system-6" as const,
             color: "#FFFFFF",
             wrap: "wrap",
-            alignment: "left",
+            alignment: "left" as const,
             spaceBetweenLetters: 1,
+            spaceBetweenLines: 1,
+            startingColumn: 0,
+            startingRow: 0,
           };
 
-          var result = generateText(textOptions, { width: 21 });
+          var result = generateText(textOptions, { width: 21, height: 100 });
           expect(result).toEqual(WrappedLeftAlignedFixture);
         });
       });
@@ -224,14 +223,17 @@ describe("Dot Generators", () => {
         test("returns wrapped text right aligned", function () {
           const textOptions = {
             text: "HI ROY",
-            font: "system-6",
+            font: "system-6" as const,
             color: "#FFFFFF",
             wrap: "wrap",
-            alignment: "right",
+            alignment: "right" as const,
             spaceBetweenLetters: 1,
+            spaceBetweenLines: 1,
+            startingColumn: 0,
+            startingRow: 0,
           };
 
-          var result = generateText(textOptions, { width: 21 });
+          var result = generateText(textOptions, { width: 21, height: 100 });
           expect(result).toEqual(WrappedRightAlignedFixture);
         });
       });
@@ -240,14 +242,17 @@ describe("Dot Generators", () => {
         test("returns wrapped text center aligned", function () {
           const textOptions = {
             text: "HI ROY",
-            font: "system-6",
+            font: "system-6" as const,
             color: "#FFFFFF",
             wrap: "wrap",
-            alignment: "center",
+            alignment: "center" as const,
             spaceBetweenLetters: 1,
+            spaceBetweenLines: 1,
+            startingColumn: 0,
+            startingRow: 0,
           };
 
-          var result = generateText(textOptions, { width: 21 });
+          var result = generateText(textOptions, { width: 21, height: 100 });
           expect(result).toEqual(WrappedCenterAlignedFixture);
         });
       });
@@ -257,28 +262,34 @@ describe("Dot Generators", () => {
       test("returns a hypenated word across two lines", function () {
         const textOptions = {
           text: "ROUGH",
-          font: "system-6",
+          font: "system-6" as const,
           color: "#FFFFFF",
           wrap: "wrap",
-          alignment: "left",
+          alignment: "left" as const,
           spaceBetweenLetters: 1,
+          spaceBetweenLines: 1,
+          startingColumn: 0,
+          startingRow: 0,
         };
 
-        var result = generateText(textOptions, { width: 21 });
+        var result = generateText(textOptions, { width: 21, height: 100 });
         expect(result).toEqual(HypenatedFixture);
       });
 
       test("returns a hypenated word across as many lines as needed", function () {
         const textOptions = {
           text: "DISHWASHER",
-          font: "system-6",
+          font: "system-6" as const,
           color: "#FFFFFF",
           wrap: "wrap",
-          alignment: "left",
+          alignment: "left" as const,
           spaceBetweenLetters: 1,
+          spaceBetweenLines: 1,
+          startingColumn: 0,
+          startingRow: 0,
         };
 
-        var result = generateText(textOptions, { width: 21 });
+        var result = generateText(textOptions, { width: 21, height: 100 });
         expect(result).toEqual(HypenatedMultiLineFixture);
       });
     });

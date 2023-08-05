@@ -127,7 +127,7 @@ function loadMacro(
   }
 }
 
-export function display({
+export function createDisplayEngine({
   macroName,
   macroConfig = {},
   dimensions = { width: 23, height: 128 },
