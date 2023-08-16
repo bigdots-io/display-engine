@@ -18,6 +18,7 @@ interface Meteor {
 export const startMeteorShower = (
   config: MacroMeteorShowerConfig,
   dimensions: Dimensions,
+  macroIndex: number,
   onPixelChange: PixelChangeCallback
 ) => {
   const { width, height } = dimensions;
@@ -75,6 +76,7 @@ export const startMeteorShower = (
       x: meteor.path[0].y,
       y: meteor.path[0].x,
       hex: meteor.colors[0],
+      macroIndex,
     });
   };
 
@@ -111,7 +113,12 @@ export const startMeteorShower = (
         }
 
         meteor.path.forEach((dot, i) => {
-          onPixelChange({ y: dot.y, x: dot.x, hex: meteor.colors[i] });
+          onPixelChange({
+            y: dot.y,
+            x: dot.x,
+            hex: meteor.colors[i],
+            macroIndex,
+          });
         });
       }
     });

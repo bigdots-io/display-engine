@@ -1,147 +1,174 @@
 import { generateColor, generateText } from "./dot-generator";
-import { startTwinkleMacro } from "./macros/twinkle";
 import { startMeteorShower } from "./macros/meteor-shower";
+import { startTwinkleMacro } from "./macros/twinkle";
+// import { startMeteorShower } from "./macros/meteor-shower";
 import {
   Dimensions,
+  Macro,
   MacroColorConfig,
   MacroConfig,
   MacroMeteorShowerConfig,
   MacroName,
   MacroTextConfig,
   MacroTwinkleConfig,
+  Pixel,
   PixelChangeCallback,
+  UpdatePixel,
 } from "./types";
 
-function loadMacro(
-  macroName: MacroName,
-  macroConfig: Partial<MacroConfig>,
-  {
-    dimensions,
-    onPixelChange,
-  }: { dimensions: Dimensions; onPixelChange: PixelChangeCallback }
-): { startMacro: () => void; stopMacro: () => void } {
-  if (macroName === MacroName.SolidColor) {
-    const macroColorConfig = macroConfig as Partial<MacroColorConfig>;
-    return {
-      startMacro: () => {
-        generateColor(
-          {
-            color: "#fff",
-            startingColumn: 0,
-            startingRow: 0,
-            ...macroColorConfig,
-          },
-          dimensions
-        ).forEach(onPixelChange);
-      },
-      stopMacro: () => {},
-    };
-  } else if (macroName === MacroName.Text) {
-    const macroTextConfig = macroConfig as Partial<MacroTextConfig>;
-    return {
-      startMacro: () => {
-        generateColor(
-          { color: "#000", startingRow: 0, startingColumn: 0 },
-          dimensions
-        ).forEach(onPixelChange);
-        generateText(
-          {
-            color: "#fff",
-            text: "hello WORLD!",
-            font: "system-16",
-            alignment: "left",
-            spaceBetweenLetters: 1,
-            spaceBetweenLines: 1,
-            wrap: "yo",
-            startingColumn: 0,
-            startingRow: 0,
-            ...macroTextConfig,
-          },
-          dimensions
-        ).forEach(onPixelChange);
-      },
-      stopMacro: () => {},
-    };
-  } else if (macroName === MacroName.Twinkle) {
-    const macroTwinkleConfig = macroConfig as Partial<MacroTwinkleConfig>;
-    return {
-      startMacro: () => {
-        startTwinkleMacro(
-          {
-            color: "#FFF",
-            speed: 100,
-            ...macroTwinkleConfig,
-          },
-          dimensions,
-          onPixelChange
-        );
-      },
-      stopMacro: () => {},
-    };
-  } else if (macroName === MacroName.MeteorShower) {
-    const macroMeteorShowerConfig =
-      macroConfig as Partial<MacroMeteorShowerConfig>;
-    return {
-      startMacro: () => {
-        startMeteorShower(
-          {
-            color: "#FFF",
-            meteorCount: 40,
-            maxTailLength: 20,
-            minTailLength: 5,
-            maxDepth: 5,
-            minSpeed: 100,
-            maxSpeed: 10,
-            ...macroMeteorShowerConfig,
-          },
-          dimensions,
-          onPixelChange
-        );
-      },
-      stopMacro: () => {},
-    };
-  } else {
-    return {
-      startMacro: () => {
-        generateColor(
-          { color: "#000", startingRow: 0, startingColumn: 0 },
-          dimensions
-        ).forEach(onPixelChange);
-        generateText(
-          {
-            text: "UNSUPPORTED",
-            color: "#fff",
-            font: "system-6",
-            alignment: "left",
-            spaceBetweenLetters: 1,
-            spaceBetweenLines: 1,
-            wrap: "asdF",
-            startingColumn: 0,
-            startingRow: 0,
-          },
-          dimensions
-        ).forEach(onPixelChange);
-      },
-      stopMacro: () => {},
-    };
-  }
+export const twinkleMacro = (
+  macroConfig: Partial<MacroTwinkleConfig>
+): Macro => ({
+  macroName: MacroName.Twinkle,
+  macroConfig,
+  dynamic: true,
+});
+
+export const meteorShowerMacro = (
+  macroConfig: Partial<MacroMeteorShowerConfig>
+): Macro => ({
+  macroName: MacroName.MeteorShower,
+  macroConfig,
+  dynamic: true,
+});
+
+export const solidColorMacro = (
+  macroConfig: Partial<MacroColorConfig>
+): Macro => ({
+  macroName: MacroName.SolidColor,
+  macroConfig,
+  dynamic: false,
+});
+
+export const textMacro = (macroConfig: Partial<MacroTextConfig>): Macro => ({
+  macroName: MacroName.Text,
+  macroConfig,
+  dynamic: false,
+});
+
+function render({
+  macros,
+  dimensions,
+  updatePixel,
+}: {
+  macros: Macro[];
+  dimensions: Dimensions;
+  updatePixel: UpdatePixel;
+}) {
+  macros.forEach(({ macroName, macroConfig }, macroIndex) => {
+    if (macroName === MacroName.SolidColor) {
+      const macroColorConfig = macroConfig as Partial<MacroColorConfig>;
+      generateColor(
+        {
+          color: "#fff",
+          startingColumn: 0,
+          startingRow: 0,
+          ...macroColorConfig,
+        },
+        dimensions,
+        macroIndex,
+        updatePixel
+      );
+    }
+    if (macroName === MacroName.Text) {
+      const macroTextConfig = macroConfig as Partial<MacroTextConfig>;
+
+      generateText(
+        {
+          color: "#fff",
+          text: "hello WORLD!",
+          font: "system-16",
+          alignment: "left",
+          spaceBetweenLetters: 1,
+          spaceBetweenLines: 1,
+          wrap: "yo",
+          startingColumn: 0,
+          startingRow: 0,
+          ...macroTextConfig,
+        },
+        dimensions,
+        macroIndex,
+        updatePixel
+      );
+    }
+    if (macroName === MacroName.Twinkle) {
+      const macroTwinkleConfig = macroConfig as Partial<MacroTwinkleConfig>;
+
+      startTwinkleMacro(
+        {
+          color: "#FFF",
+          speed: 100,
+          ...macroTwinkleConfig,
+        },
+        dimensions,
+        macroIndex,
+        updatePixel
+      );
+    }
+    if (macroName === MacroName.MeteorShower) {
+      const macroMeteorShowerConfig =
+        macroConfig as Partial<MacroMeteorShowerConfig>;
+
+      startMeteorShower(
+        {
+          color: "#FFF",
+          meteorCount: 40,
+          maxTailLength: 20,
+          minTailLength: 5,
+          maxDepth: 5,
+          minSpeed: 100,
+          maxSpeed: 10,
+          ...macroMeteorShowerConfig,
+        },
+        dimensions,
+        macroIndex,
+        updatePixel
+      );
+    }
+  });
 }
 
 export function createDisplayEngine({
-  macroName,
-  macroConfig = {},
+  macros,
   dimensions = { width: 23, height: 128 },
   onPixelChange,
 }: {
-  macroName: MacroName;
-  macroConfig?: Partial<MacroConfig>;
+  macros: Macro[];
   dimensions?: { height: number; width: number };
   onPixelChange: PixelChangeCallback;
 }) {
-  const { startMacro } = loadMacro(macroName, macroConfig, {
-    dimensions,
-    onPixelChange,
-  });
+  const pixelMap: Pixel[][] = [];
 
-  startMacro();
+  for (var y = 0; y < dimensions.height; y++) {
+    const row = [];
+    for (var x = 0; x < dimensions.width; x++) {
+      row.push({ y: y, x: x, hex: "#000", macroIndex: -1 });
+    }
+    pixelMap.push(row);
+  }
+
+  render({
+    macros,
+    dimensions,
+    updatePixel: (pixelToUpdate) => {
+      const { y, x } = pixelToUpdate;
+      const currentPixel = pixelMap?.[y]?.[x];
+
+      if (!currentPixel) return;
+
+      if (
+        currentPixel.macroIndex !== -1 &&
+        pixelToUpdate.macroIndex < currentPixel.macroIndex
+      ) {
+        // console.warn("Failed to write pixel!", {
+        //   destination: pixelToUpdate,
+        //   current: currentPixel,
+        // });
+        return;
+      }
+
+      pixelMap[y][x] = pixelToUpdate;
+      onPixelChange(pixelToUpdate);
+    },
+  });
 }

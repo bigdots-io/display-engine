@@ -1,4 +1,10 @@
-import { Dimensions, MacroTextConfig, MacroColorConfig, Pixel } from "./types";
+import {
+  Dimensions,
+  MacroTextConfig,
+  MacroColorConfig,
+  Pixel,
+  UpdatePixel,
+} from "./types";
 import { Message } from "./generators/textbox/message";
 
 // image(url, callbacks) {
@@ -7,26 +13,28 @@ import { Message } from "./generators/textbox/message";
 
 export const generateColor = (
   options: MacroColorConfig,
-  dimensions: Dimensions
-): Pixel[] => {
-  const pixels: Pixel[] = [];
-
+  dimensions: Dimensions,
+  macroIndex: number,
+  updatePixel: UpdatePixel
+) => {
   for (var y = 0; y < dimensions.height; y++) {
     for (var x = 0; x < dimensions.width; x++) {
-      pixels.push({
+      updatePixel({
         y: y + options.startingRow,
         x: x + options.startingColumn,
         hex: options.color,
+        macroIndex,
       });
     }
   }
-  return pixels;
 };
 
 export const generateText = (
   options: MacroTextConfig,
-  dimensions: Dimensions
-): Pixel[] => {
+  dimensions: Dimensions,
+  macroIndex: number,
+  updatePixel: UpdatePixel
+) => {
   const message = new Message(options.text, options.font, {
     spaceBetweenLetters: options.spaceBetweenLetters,
     spaceBetweenLines: options.spaceBetweenLines,
@@ -37,9 +45,12 @@ export const generateText = (
 
   var results = message.render();
 
-  return results.dots.map((dot) => ({
-    x: dot.x + options.startingColumn,
-    y: dot.y + options.startingRow,
-    hex: options.color,
-  }));
+  results.dots.forEach((dot) =>
+    updatePixel({
+      x: dot.x + options.startingColumn,
+      y: dot.y + options.startingRow,
+      hex: options.color,
+      macroIndex,
+    })
+  );
 };

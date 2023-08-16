@@ -35,6 +35,11 @@ export interface MacroMeteorShowerConfig {
     maxSpeed: number;
 }
 export type MacroConfig = MacroColorConfig | MacroTextConfig | MacroTwinkleConfig | MacroMeteorShowerConfig;
+export interface Macro {
+    macroName: MacroName;
+    macroConfig: Partial<MacroConfig>;
+    dynamic: boolean;
+}
 export interface Dimensions {
     height: number;
     width: number;
@@ -43,5 +48,7 @@ export interface Pixel {
     y: number;
     x: number;
     hex: string;
+    macroIndex: number;
 }
+export type UpdatePixel = (pixel: Pixel) => void;
 export type PixelChangeCallback = (pixel: Pixel) => void;
