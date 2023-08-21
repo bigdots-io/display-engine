@@ -1,6 +1,6 @@
 {
   "name": "@bigdots-io/display-engine",
-  "version": "0.27.6",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
