@@ -1,8 +1,7 @@
-var Line = require("./line");
-var Word = require("./word");
-
-import System6 from "../../fonts/system-6.json";
-import System16 from "../../fonts/system-16.json";
+import System6 from "../../fonts/system-6.json" assert { type: "json" };
+import System16 from "../../fonts/system-16.json" assert { type: "json" };
+import { Word } from "./word.js";
+import { Line } from "./line.js";
 
 const fonts = {
   "system-6": System6,

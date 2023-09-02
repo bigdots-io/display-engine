@@ -1,27 +1,27 @@
-interface DisplayData {
-  macro: MacroName;
-  macroConfig: MacroConfig;
-  name: string;
-  brightness: number;
-}
+type Font = "system-6" | "system-16";
+type Brightness = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export enum MacroName {
   SolidColor = "solid-color",
   Text = "text",
   Twinkle = "twinkle",
   MeteorShower = "meteor-shower",
+  Marquee = "marquee",
 }
 
 export interface MacroColorConfig {
   color: string;
   startingColumn: number;
   startingRow: number;
+  width: number;
+  height: number;
+  brightness: Brightness;
 }
 
 export interface MacroTextConfig {
   color: string;
   text: string;
-  font: "system-6" | "system-16";
+  font: Font;
   alignment: "left" | "center" | "right";
   spaceBetweenLetters: number;
   spaceBetweenLines: number;
@@ -29,11 +29,15 @@ export interface MacroTextConfig {
   width?: number;
   startingColumn: number;
   startingRow: number;
+  brightness: Brightness;
 }
 
 export interface MacroTwinkleConfig {
   color: string;
   speed: number;
+  width: number;
+  height: number;
+  brightness: Brightness;
 }
 
 export interface MacroMeteorShowerConfig {
@@ -44,18 +48,31 @@ export interface MacroMeteorShowerConfig {
   maxDepth: number;
   minSpeed: number;
   maxSpeed: number;
+  width: number;
+  height: number;
+  brightness: Brightness;
+}
+
+export interface MacroMarqueeConfig {
+  color: string;
+  font: Font;
+  text: string;
+  speed: number;
+  width: number;
+  height: number;
+  brightness: Brightness;
 }
 
 export type MacroConfig =
   | MacroColorConfig
   | MacroTextConfig
   | MacroTwinkleConfig
-  | MacroMeteorShowerConfig;
+  | MacroMeteorShowerConfig
+  | MacroMarqueeConfig;
 
 export interface Macro {
   macroName: MacroName;
   macroConfig: Partial<MacroConfig>;
-  dynamic: boolean;
 }
 
 export interface Dimensions {
@@ -66,8 +83,9 @@ export interface Dimensions {
 export interface Pixel {
   y: number;
   x: number;
-  hex: string;
+  hex: string | null;
   macroIndex: number;
+  brightness: number;
 }
 
 export type UpdatePixel = (pixel: Pixel) => void;

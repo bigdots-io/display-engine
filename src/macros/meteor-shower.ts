@@ -1,9 +1,5 @@
-import {
-  Dimensions,
-  MacroMeteorShowerConfig,
-  PixelChangeCallback,
-} from "../types";
-import { colorLuminance } from "../colors";
+import { MacroMeteorShowerConfig, PixelChangeCallback } from "../types.js";
+import { colorLuminance } from "../colors.js";
 
 interface Meteor {
   tailLength: number;
@@ -17,11 +13,9 @@ interface Meteor {
 
 export const startMeteorShower = (
   config: MacroMeteorShowerConfig,
-  dimensions: Dimensions,
   macroIndex: number,
   onPixelChange: PixelChangeCallback
 ) => {
-  const { width, height } = dimensions;
   const {
     minTailLength,
     maxTailLength,
@@ -30,6 +24,8 @@ export const startMeteorShower = (
     maxSpeed,
     color,
     meteorCount,
+    width,
+    height,
   } = config;
 
   const meteors: Meteor[] = [];
@@ -76,6 +72,7 @@ export const startMeteorShower = (
       x: meteor.path[0].y,
       y: meteor.path[0].x,
       hex: meteor.colors[0],
+      brightness: config.brightness,
       macroIndex,
     });
   };
@@ -117,6 +114,7 @@ export const startMeteorShower = (
             y: dot.y,
             x: dot.x,
             hex: meteor.colors[i],
+            brightness: config.brightness,
             macroIndex,
           });
         });
