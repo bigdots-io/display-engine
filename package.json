@@ -1,10 +1,17 @@
 {
   "name": "@bigdots-io/display-engine",
   "version": "0.2.0",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "module": "./lib/esm/index.js",
+  "type": "module",
+  "exports": {
+    ".": "./lib/esm/index.js"
+  },
+  "types": "lib/esm/index.d.ts",
+  "files": [
+    "lib/"
+  ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --watch",
     "test": "jest"
   },
   "author": "",

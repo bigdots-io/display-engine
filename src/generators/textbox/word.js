@@ -1,6 +1,6 @@
-var Character = require('./character');
+import { Character } from "./character.js";
 
-class Word {
+export class Word {
   constructor(word, font, options) {
     this.word = word;
     this.font = font;
@@ -10,10 +10,10 @@ class Word {
   getWidth() {
     var width = 0;
     for (let i = 0; i < this.word.length; i++) {
-      width += (this.font.characters[this.word[i]].width || this.font.width)
+      width += this.font.characters[this.word[i]].width || this.font.width;
 
-      if((i + 1) < this.word.length) {
-        width += this.options.spaceBetweenLetters
+      if (i + 1 < this.word.length) {
+        width += this.options.spaceBetweenLetters;
       }
     }
 
@@ -26,21 +26,21 @@ class Word {
 
   render() {
     var cursorColumn = 0,
-        textCoordinates = [];
+      textCoordinates = [];
 
     for (let i = 0; i < this.word.length; i++) {
       var character = new Character(this.word[i], this.font),
-          characterWidth = character.getWidth();
+        characterWidth = character.getWidth();
 
-      if(character.isRenderable()) {
+      if (character.isRenderable()) {
         var coordinates = character.renderCoordinates();
 
-        if(coordinates) {
+        if (coordinates) {
           coordinates.forEach((point) => {
-            if(point.x < characterWidth) {
+            if (point.x < characterWidth) {
               var out = {
                 y: point.y,
-                x: cursorColumn + point.x
+                x: cursorColumn + point.x,
               };
 
               textCoordinates.push(out);
@@ -48,14 +48,12 @@ class Word {
           });
         }
       }
-      cursorColumn += (characterWidth + this.options.spaceBetweenLetters);
+      cursorColumn += characterWidth + this.options.spaceBetweenLetters;
     }
 
     return {
       width: this.getWidth(),
-      dots: textCoordinates
-    }
+      dots: textCoordinates,
+    };
   }
 }
-
-module.exports = Word;

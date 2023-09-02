@@ -1,14 +1,12 @@
-import { Dimensions, MacroTwinkleConfig, PixelChangeCallback } from "../types";
-import { colorLuminance } from "../colors";
+import { MacroTwinkleConfig, PixelChangeCallback } from "../types.js";
+import { colorLuminance } from "../colors.js";
 
-export const startTwinkleMacro = (
+export const startTwinkle = (
   config: MacroTwinkleConfig,
-  dimensions: Dimensions,
   macroIndex: number,
   onPixelChange: PixelChangeCallback
 ) => {
-  const { height, width } = dimensions;
-  const { color, speed } = config;
+  const { color, speed, height, width } = config;
 
   const shades = [
     colorLuminance(color, 0),
@@ -21,7 +19,13 @@ export const startTwinkleMacro = (
 
   for (var y = 0; y < height; y++) {
     for (var x = 0; x < width; x++) {
-      onPixelChange({ y, x, hex: randomColorShade(shades), macroIndex });
+      onPixelChange({
+        y,
+        x,
+        hex: randomColorShade(shades),
+        brightness: config.brightness,
+        macroIndex,
+      });
     }
   }
 
@@ -29,7 +33,13 @@ export const startTwinkleMacro = (
     for (let i = 0; i < 100; i++) {
       var y = Math.floor(Math.random() * (height - 1 - 0 + 1)) + 0;
       var x = Math.floor(Math.random() * (width - 1 - 0 + 1)) + 0;
-      onPixelChange({ y, x, hex: randomColorShade(shades), macroIndex });
+      onPixelChange({
+        y,
+        x,
+        hex: randomColorShade(shades),
+        brightness: config.brightness,
+        macroIndex,
+      });
     }
   }, speed);
 };
