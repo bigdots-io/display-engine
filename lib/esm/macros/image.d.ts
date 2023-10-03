@@ -1,12 +1,2 @@
-export = ImageMacro;
-declare class ImageMacro {
-    static get identifier(): string;
-    defaultConfig(): {
-        url: string;
-        speed: number;
-    };
-    start(): void;
-    currentFrame: number | undefined;
-    interval: NodeJS.Timer | undefined;
-    stop(): void;
-}
+import { MacroImageConfig, PixelChangeCallback } from "../types";
+export declare const startImage: (config: MacroImageConfig, macroIndex: number, onPixelChange: PixelChangeCallback) => void;

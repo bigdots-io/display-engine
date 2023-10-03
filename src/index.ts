@@ -1,5 +1,6 @@
 import { colorLuminance } from "./colors.js";
 import { startColor } from "./macros/color.js";
+import { startImage } from "./macros/image.js";
 import { startMarquee } from "./macros/marquee.js";
 import { startMeteorShower } from "./macros/meteor-shower.js";
 import { startText } from "./macros/text.js";
@@ -8,6 +9,7 @@ import {
   Dimensions,
   Macro,
   MacroColorConfig,
+  MacroImageConfig,
   MacroMarqueeConfig,
   MacroMeteorShowerConfig,
   MacroName,
@@ -44,6 +46,11 @@ export const text = (macroConfig: Partial<MacroTextConfig>): Macro => ({
 
 export const marquee = (macroConfig: Partial<MacroMarqueeConfig>): Macro => ({
   macroName: MacroName.Marquee,
+  macroConfig,
+});
+
+export const image = (macroConfig: Partial<MacroImageConfig>): Macro => ({
+  macroName: MacroName.Image,
   macroConfig,
 });
 
@@ -134,6 +141,22 @@ function render({
           speed: 50,
           width: dimensions.width,
           height: dimensions.height,
+          brightness: 10,
+          ...macroConfig,
+        },
+        macroIndex,
+        updatePixel
+      );
+    }
+    if (macroName === MacroName.Image) {
+      startImage(
+        {
+          url: "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7",
+          speed: 50,
+          width: dimensions.width,
+          height: dimensions.height,
+          startingColumn: 0,
+          startingRow: 0,
           brightness: 10,
           ...macroConfig,
         },
