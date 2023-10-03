@@ -5,7 +5,8 @@ export declare enum MacroName {
     Text = "text",
     Twinkle = "twinkle",
     MeteorShower = "meteor-shower",
-    Marquee = "marquee"
+    Marquee = "marquee",
+    Image = "image"
 }
 export interface MacroColorConfig {
     color: string;
@@ -56,7 +57,16 @@ export interface MacroMarqueeConfig {
     height: number;
     brightness: Brightness;
 }
-export type MacroConfig = MacroColorConfig | MacroTextConfig | MacroTwinkleConfig | MacroMeteorShowerConfig | MacroMarqueeConfig;
+export interface MacroImageConfig {
+    url: string;
+    speed: number;
+    width: number;
+    height: number;
+    startingColumn: number;
+    startingRow: number;
+    brightness: Brightness;
+}
+export type MacroConfig = MacroColorConfig | MacroTextConfig | MacroTwinkleConfig | MacroMeteorShowerConfig | MacroMarqueeConfig | MacroImageConfig;
 export interface Macro {
     macroName: MacroName;
     macroConfig: Partial<MacroConfig>;
