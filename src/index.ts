@@ -4,6 +4,7 @@ import { startImage } from "./macros/image.js";
 import { startMarquee } from "./macros/marquee.js";
 import { startMeteorShower } from "./macros/meteor-shower.js";
 import { startText } from "./macros/text.js";
+import { startTime } from "./macros/time.js";
 import { startTwinkle } from "./macros/twinkle.js";
 import {
   Dimensions,
@@ -14,6 +15,7 @@ import {
   MacroMeteorShowerConfig,
   MacroName,
   MacroTextConfig,
+  MacroTimeConfig,
   MacroTwinkleConfig,
   Pixel,
   PixelChangeCallback,
@@ -54,6 +56,11 @@ export const image = (macroConfig: Partial<MacroImageConfig>): Macro => ({
   macroConfig,
 });
 
+export const time = (macroConfig: Partial<MacroTimeConfig>): Macro => ({
+  macroName: MacroName.Time,
+  macroConfig,
+});
+
 function render({
   macros,
   dimensions,
@@ -88,7 +95,6 @@ function render({
           alignment: "left",
           spaceBetweenLetters: 1,
           spaceBetweenLines: 1,
-          wrap: "yo",
           startingColumn: 0,
           startingRow: 0,
           width: dimensions.width,
@@ -164,6 +170,24 @@ function render({
         updatePixel
       );
     }
+    if (macroName === MacroName.Time) {
+      startTime(
+        {
+          color: "#fff",
+          font: "system-6",
+          alignment: "left",
+          spaceBetweenLetters: 1,
+          spaceBetweenLines: 1,
+          startingColumn: 0,
+          startingRow: 0,
+          width: dimensions.width,
+          brightness: 10,
+          ...macroConfig,
+        },
+        macroIndex,
+        updatePixel
+      );
+    }
   });
 }
 
@@ -199,7 +223,12 @@ export function createDisplayEngine({
 
       const topPixelStackItem = pixelStack.findLast(({ hex }) => hex !== null);
 
-      if (!topPixelStackItem) return;
+      if (!topPixelStackItem) {
+        return onPixelChange({
+          ...pixelToUpdate,
+          hex: null,
+        } as Pixel);
+      }
 
       onPixelChange(topPixelStackItem as Pixel);
     },

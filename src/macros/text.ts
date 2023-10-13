@@ -12,7 +12,6 @@ export const startText = (
     spaceBetweenLetters: config.spaceBetweenLetters,
     spaceBetweenLines: config.spaceBetweenLines,
     alignment: config.alignment,
-    wrap: config.wrap,
     width: config.width,
   });
 
