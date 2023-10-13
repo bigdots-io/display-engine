@@ -11,19 +11,12 @@ export const startMarquee = (
     spaceBetweenLetters: 1,
     spaceBetweenLines: 0,
     alignment: "left",
-    wrap: "no-wrap",
+    // wrap: "no-wrap",
   });
 
   var results = message.render();
 
   results.dots.forEach((dot) => {
-    onPixelChange({
-      y: dot.y,
-      x: dot.x,
-      hex: dot.hex,
-      brightness: config.brightness,
-      macroIndex,
-    });
     coordinates.push({ y: dot.y, x: dot.x });
   });
 

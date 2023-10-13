@@ -1,4 +1,5 @@
-type Font = "system-6" | "system-16";
+export type Font = "system-6" | "system-16";
+export type Alignment = "left" | "center" | "right";
 type Brightness = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export declare enum MacroName {
     SolidColor = "solid-color",
@@ -6,7 +7,8 @@ export declare enum MacroName {
     Twinkle = "twinkle",
     MeteorShower = "meteor-shower",
     Marquee = "marquee",
-    Image = "image"
+    Image = "image",
+    Time = "time"
 }
 export interface MacroColorConfig {
     color: string;
@@ -20,7 +22,7 @@ export interface MacroTextConfig {
     color: string;
     text: string;
     font: Font;
-    alignment: "left" | "center" | "right";
+    alignment: Alignment;
     spaceBetweenLetters: number;
     spaceBetweenLines: number;
     wrap: string;
@@ -66,7 +68,19 @@ export interface MacroImageConfig {
     startingRow: number;
     brightness: Brightness;
 }
-export type MacroConfig = MacroColorConfig | MacroTextConfig | MacroTwinkleConfig | MacroMeteorShowerConfig | MacroMarqueeConfig | MacroImageConfig;
+export interface MacroTimeConfig {
+    color: string;
+    font: Font;
+    alignment: Alignment;
+    spaceBetweenLetters: number;
+    spaceBetweenLines: number;
+    wrap: string;
+    width?: number;
+    startingColumn: number;
+    startingRow: number;
+    brightness: Brightness;
+}
+export type MacroConfig = MacroColorConfig | MacroTextConfig | MacroTwinkleConfig | MacroMeteorShowerConfig | MacroMarqueeConfig | MacroImageConfig | MacroTimeConfig;
 export interface Macro {
     macroName: MacroName;
     macroConfig: Partial<MacroConfig>;
