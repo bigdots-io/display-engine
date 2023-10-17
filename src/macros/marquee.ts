@@ -1,11 +1,15 @@
 import { Message } from "../generators/textbox/message.js";
-import { MacroMarqueeConfig, PixelChangeCallback } from "../types.js";
+import {
+  MacroMarqueeConfig,
+  MacroStopCallback,
+  PixelChangeCallback,
+} from "../types.js";
 
-export const startMarquee = (
+export const startMarquee = async (
   config: MacroMarqueeConfig,
   macroIndex: number,
   onPixelChange: PixelChangeCallback
-) => {
+): MacroStopCallback => {
   const coordinates: { x: number; y: number }[] = [];
   const message = new Message(config.text, config.font, {
     spaceBetweenLetters: 1,
@@ -24,7 +28,7 @@ export const startMarquee = (
 
   var offset = 0;
 
-  setInterval(() => {
+  const interval = setInterval(() => {
     coordinates.forEach((coordinate) => {
       onPixelChange({
         y: coordinate.y,
@@ -52,4 +56,6 @@ export const startMarquee = (
 
     offset += 1;
   }, config.speed);
+
+  return () => clearInterval(interval);
 };

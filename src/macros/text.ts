@@ -1,13 +1,17 @@
 "use strict";
 
 import { Message } from "../generators/textbox/message.js";
-import { MacroTextConfig, PixelChangeCallback } from "../types.js";
+import {
+  MacroStopCallback,
+  MacroTextConfig,
+  PixelChangeCallback,
+} from "../types.js";
 
-export const startText = (
+export const startText = async (
   config: MacroTextConfig,
   macroIndex: number,
   onPixelChange: PixelChangeCallback
-) => {
+): MacroStopCallback => {
   const message = new Message(config.text, config.font, {
     spaceBetweenLetters: config.spaceBetweenLetters,
     spaceBetweenLines: config.spaceBetweenLines,
@@ -26,4 +30,6 @@ export const startText = (
       macroIndex,
     })
   );
+
+  return () => {};
 };

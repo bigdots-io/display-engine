@@ -8,11 +8,12 @@ export declare const text: (macroConfig: Partial<MacroTextConfig>) => Macro;
 export declare const marquee: (macroConfig: Partial<MacroMarqueeConfig>) => Macro;
 export declare const image: (macroConfig: Partial<MacroImageConfig>) => Macro;
 export declare const time: (macroConfig: Partial<MacroTimeConfig>) => Macro;
-export declare function createDisplayEngine({ macros, dimensions, onPixelChange, }: {
-    macros: Macro[];
+export declare function createDisplayEngine({ dimensions, onPixelChange, }: {
     dimensions?: {
         height: number;
         width: number;
     };
     onPixelChange: PixelChangeCallback;
-}): void;
+}): {
+    render: (macros: Macro[]) => (() => void);
+};

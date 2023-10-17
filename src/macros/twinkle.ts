@@ -1,11 +1,15 @@
-import { MacroTwinkleConfig, PixelChangeCallback } from "../types.js";
+import {
+  MacroStopCallback,
+  MacroTwinkleConfig,
+  PixelChangeCallback,
+} from "../types.js";
 import { colorLuminance } from "../colors.js";
 
-export const startTwinkle = (
+export const startTwinkle = async (
   config: MacroTwinkleConfig,
   macroIndex: number,
   onPixelChange: PixelChangeCallback
-) => {
+): MacroStopCallback => {
   const { color, speed, height, width } = config;
 
   const shades = [
@@ -29,7 +33,7 @@ export const startTwinkle = (
     }
   }
 
-  setInterval(() => {
+  const interval = setInterval(() => {
     for (let i = 0; i < 100; i++) {
       var y = Math.floor(Math.random() * (height - 1 - 0 + 1)) + 0;
       var x = Math.floor(Math.random() * (width - 1 - 0 + 1)) + 0;
@@ -42,6 +46,8 @@ export const startTwinkle = (
       });
     }
   }, speed);
+
+  return () => clearInterval(interval);
 };
 
 function randomColorShade(shades: string[]) {

@@ -1,13 +1,17 @@
 import { Message, RenderedMessage } from "../generators/textbox/message.js";
-import { MacroTimeConfig, PixelChangeCallback } from "../types.js";
+import {
+  MacroStopCallback,
+  MacroTimeConfig,
+  PixelChangeCallback,
+} from "../types.js";
 
-export const startTime = (
+export const startTime = async (
   config: MacroTimeConfig,
   macroIndex: number,
   onPixelChange: PixelChangeCallback
-) => {
+): MacroStopCallback => {
   let previousResults: RenderedMessage;
-  setInterval(() => {
+  const interval = setInterval(() => {
     const message = new Message(new Date().toLocaleString(), config.font, {
       spaceBetweenLetters: config.spaceBetweenLetters,
       spaceBetweenLines: config.spaceBetweenLines,
@@ -38,4 +42,6 @@ export const startTime = (
     );
     previousResults = results;
   }, 1000);
+
+  return () => clearInterval(interval);
 };
