@@ -1,4 +1,8 @@
-import { MacroMeteorShowerConfig, PixelChangeCallback } from "../types.js";
+import {
+  MacroMeteorShowerConfig,
+  MacroStopCallback,
+  PixelChangeCallback,
+} from "../types.js";
 import { colorLuminance } from "../colors.js";
 
 interface Meteor {
@@ -11,11 +15,11 @@ interface Meteor {
   path: { x: number; y: number }[];
 }
 
-export const startMeteorShower = (
+export const startMeteorShower = async (
   config: MacroMeteorShowerConfig,
   macroIndex: number,
   onPixelChange: PixelChangeCallback
-) => {
+): MacroStopCallback => {
   const {
     minTailLength,
     maxTailLength,
@@ -81,7 +85,7 @@ export const startMeteorShower = (
     seedMeteor();
   }
 
-  setInterval(() => {
+  const interval = setInterval(() => {
     const filteredMeteors = meteors.filter(function (meteor) {
       return meteor.complete == false;
     });
@@ -121,6 +125,8 @@ export const startMeteorShower = (
       }
     });
   }, 10);
+
+  return () => clearInterval(interval);
 };
 
 function generateColorShade(seedColor: string, length: number, depth: number) {

@@ -1,10 +1,14 @@
-import { MacroColorConfig, PixelChangeCallback } from "../types.js";
+import {
+  MacroColorConfig,
+  MacroStopCallback,
+  PixelChangeCallback,
+} from "../types.js";
 
-export const startColor = (
+export const startColor = async (
   config: MacroColorConfig,
   macroIndex: number,
   onPixelChange: PixelChangeCallback
-) => {
+): MacroStopCallback => {
   for (var y = 0; y < config.height; y++) {
     for (var x = 0; x < config.width; x++) {
       onPixelChange({
@@ -16,4 +20,6 @@ export const startColor = (
       });
     }
   }
+
+  return () => {};
 };

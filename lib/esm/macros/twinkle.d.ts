@@ -1,2 +1,2 @@
-import { MacroTwinkleConfig, PixelChangeCallback } from "../types.js";
-export declare const startTwinkle: (config: MacroTwinkleConfig, macroIndex: number, onPixelChange: PixelChangeCallback) => void;
+import { MacroStopCallback, MacroTwinkleConfig, PixelChangeCallback } from "../types.js";
+export declare const startTwinkle: (config: MacroTwinkleConfig, macroIndex: number, onPixelChange: PixelChangeCallback) => MacroStopCallback;

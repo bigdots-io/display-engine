@@ -25,7 +25,6 @@ export interface MacroTextConfig {
     alignment: Alignment;
     spaceBetweenLetters: number;
     spaceBetweenLines: number;
-    wrap: string;
     width?: number;
     startingColumn: number;
     startingRow: number;
@@ -74,7 +73,6 @@ export interface MacroTimeConfig {
     alignment: Alignment;
     spaceBetweenLetters: number;
     spaceBetweenLines: number;
-    wrap: string;
     width?: number;
     startingColumn: number;
     startingRow: number;
@@ -98,4 +96,5 @@ export interface Pixel {
 }
 export type UpdatePixel = (pixel: Pixel) => void;
 export type PixelChangeCallback = (pixel: Pixel) => void;
+export type MacroStopCallback = Promise<() => void>;
 export {};

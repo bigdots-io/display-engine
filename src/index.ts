@@ -61,7 +61,7 @@ export const time = (macroConfig: Partial<MacroTimeConfig>): Macro => ({
   macroConfig,
 });
 
-function render({
+function startMacros({
   macros,
   dimensions,
   updatePixel,
@@ -70,9 +70,9 @@ function render({
   dimensions: Dimensions;
   updatePixel: UpdatePixel;
 }) {
-  macros.forEach(({ macroName, macroConfig }, macroIndex) => {
+  const stops = macros.map(({ macroName, macroConfig }, macroIndex) => {
     if (macroName === MacroName.SolidColor) {
-      startColor(
+      return startColor(
         {
           color: "#fff",
           startingColumn: 0,
@@ -87,7 +87,7 @@ function render({
       );
     }
     if (macroName === MacroName.Text) {
-      startText(
+      return startText(
         {
           color: "#fff",
           text: "hello WORLD!",
@@ -106,7 +106,7 @@ function render({
       );
     }
     if (macroName === MacroName.Twinkle) {
-      startTwinkle(
+      return startTwinkle(
         {
           color: "#FFF",
           speed: 100,
@@ -120,7 +120,7 @@ function render({
       );
     }
     if (macroName === MacroName.MeteorShower) {
-      startMeteorShower(
+      return startMeteorShower(
         {
           color: "#FFF",
           meteorCount: 40,
@@ -139,7 +139,7 @@ function render({
       );
     }
     if (macroName === MacroName.Marquee) {
-      startMarquee(
+      return startMarquee(
         {
           color: "#fff",
           text: "Replace with marquee text!",
@@ -155,7 +155,7 @@ function render({
       );
     }
     if (macroName === MacroName.Image) {
-      startImage(
+      return startImage(
         {
           url: "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7",
           speed: 50,
@@ -171,7 +171,7 @@ function render({
       );
     }
     if (macroName === MacroName.Time) {
-      startTime(
+      return startTime(
         {
           color: "#fff",
           font: "system-6",
@@ -188,49 +188,82 @@ function render({
         updatePixel
       );
     }
+    return startText(
+      {
+        color: "#fff",
+        text: "unsupported",
+        font: "system-6",
+        alignment: "left",
+        spaceBetweenLetters: 1,
+        spaceBetweenLines: 1,
+        startingColumn: 0,
+        startingRow: 0,
+        width: dimensions.width,
+        brightness: 10,
+        ...macroConfig,
+      },
+      macroIndex,
+      updatePixel
+    );
   });
+
+  return async () => {
+    (await Promise.all(stops)).forEach((stop) => stop());
+  };
 }
 
-export function createDisplayEngine({
-  macros,
-  dimensions = { width: 23, height: 128 },
-  onPixelChange,
-}: {
-  macros: Macro[];
-  dimensions?: { height: number; width: number };
-  onPixelChange: PixelChangeCallback;
-}) {
+const buildPixelMap = ({ height, width }: Dimensions) => {
   const pixelMap: Pixel[][][] = [];
-
-  for (var y = 0; y < dimensions.height; y++) {
+  for (var y = 0; y < height; y++) {
     const row = [];
-    for (var x = 0; x < dimensions.width; x++) {
+    for (var x = 0; x < width; x++) {
       row.push([]);
     }
     pixelMap.push(row);
   }
+  return pixelMap;
+};
 
-  render({
-    macros,
-    dimensions,
-    updatePixel: (pixelToUpdate) => {
-      const { y, x } = pixelToUpdate;
-      const pixelStack = pixelMap?.[y]?.[x];
+export function createDisplayEngine({
+  dimensions = { width: 23, height: 128 },
+  onPixelChange,
+}: {
+  dimensions?: { height: number; width: number };
+  onPixelChange: PixelChangeCallback;
+}) {
+  let stopMacros: () => void = () => {};
 
-      if (!pixelStack) return;
+  return {
+    render: (macros: Macro[]): (() => void) => {
+      stopMacros();
+      const pixelMap = buildPixelMap(dimensions);
+      stopMacros = startMacros({
+        macros,
+        dimensions,
+        updatePixel: (pixelToUpdate) => {
+          const { y, x } = pixelToUpdate;
+          const pixelStack = pixelMap?.[y]?.[x];
 
-      pixelStack[pixelToUpdate.macroIndex] = pixelToUpdate;
+          if (!pixelStack) return;
 
-      const topPixelStackItem = pixelStack.findLast(({ hex }) => hex !== null);
+          pixelStack[pixelToUpdate.macroIndex] = pixelToUpdate;
 
-      if (!topPixelStackItem) {
-        return onPixelChange({
-          ...pixelToUpdate,
-          hex: null,
-        } as Pixel);
-      }
+          const topPixelStackItem = pixelStack.findLast(
+            ({ hex }) => hex !== null
+          );
 
-      onPixelChange(topPixelStackItem as Pixel);
+          if (!topPixelStackItem) {
+            return onPixelChange({
+              ...pixelToUpdate,
+              hex: null,
+            } as Pixel);
+          }
+
+          onPixelChange(topPixelStackItem as Pixel);
+        },
+      });
+
+      return stopMacros;
     },
-  });
+  };
 }
