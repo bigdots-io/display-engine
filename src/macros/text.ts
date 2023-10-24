@@ -1,5 +1,3 @@
-"use strict";
-
 import { Message } from "../generators/textbox/message.js";
 import {
   MacroStopCallback,

@@ -1,4 +1,4 @@
-import { explodeImage } from "../generators/image-exploder/image";
+import { explodeImage } from "../generators/image-exploder/image.js";
 import {
   MacroImageConfig,
   MacroStopCallback,
