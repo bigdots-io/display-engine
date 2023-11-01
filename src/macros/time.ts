@@ -2,13 +2,13 @@ import { Message, RenderedMessage } from "../generators/textbox/message.js";
 import {
   MacroStopCallback,
   MacroTimeConfig,
-  PixelChangeCallback,
+  PixelsChangeCallback,
 } from "../types.js";
 
 export const startTime = async (
   config: MacroTimeConfig,
   macroIndex: number,
-  onPixelChange: PixelChangeCallback
+  onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
   let previousResults: RenderedMessage;
   const interval = setInterval(() => {
@@ -21,25 +21,23 @@ export const startTime = async (
 
     const results = message.render();
 
-    previousResults?.dots?.forEach((dot) =>
-      onPixelChange({
-        x: dot.x + config.startingColumn,
-        y: dot.y + config.startingRow,
-        hex: null,
-        brightness: config.brightness,
-        macroIndex,
-      })
-    );
+    const resetPixels = previousResults?.dots?.map((dot) => ({
+      x: dot.x + config.startingColumn,
+      y: dot.y + config.startingRow,
+      hex: null,
+      brightness: config.brightness,
+      macroIndex,
+    }));
 
-    results.dots.forEach((dot) =>
-      onPixelChange({
-        x: dot.x + config.startingColumn,
-        y: dot.y + config.startingRow,
-        hex: config.color,
-        brightness: config.brightness,
-        macroIndex,
-      })
-    );
+    const newPixels = results.dots.map((dot) => ({
+      x: dot.x + config.startingColumn,
+      y: dot.y + config.startingRow,
+      hex: config.color,
+      brightness: config.brightness,
+      macroIndex,
+    }));
+
+    onPixelsChange([...(resetPixels || []), ...newPixels]);
     previousResults = results;
   }, 1000);
 

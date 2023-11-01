@@ -1,17 +1,19 @@
 import {
   MacroColorConfig,
   MacroStopCallback,
-  PixelChangeCallback,
+  Pixel,
+  PixelsChangeCallback,
 } from "../types.js";
 
 export const startColor = async (
   config: MacroColorConfig,
   macroIndex: number,
-  onPixelChange: PixelChangeCallback
+  onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
+  const pixels: Pixel[] = [];
   for (var y = 0; y < config.height; y++) {
     for (var x = 0; x < config.width; x++) {
-      onPixelChange({
+      pixels.push({
         x: x + config.startingColumn,
         y: y + config.startingRow,
         hex: config.color,
@@ -20,6 +22,8 @@ export const startColor = async (
       });
     }
   }
+
+  onPixelsChange(pixels);
 
   return () => {};
 };

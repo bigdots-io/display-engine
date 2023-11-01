@@ -1,7 +1,7 @@
 import {
   MacroMeteorShowerConfig,
   MacroStopCallback,
-  PixelChangeCallback,
+  PixelsChangeCallback,
 } from "../types.js";
 import { colorLuminance } from "../colors.js";
 
@@ -18,7 +18,7 @@ interface Meteor {
 export const startMeteorShower = async (
   config: MacroMeteorShowerConfig,
   macroIndex: number,
-  onPixelChange: PixelChangeCallback
+  onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
   const {
     minTailLength,
@@ -72,13 +72,15 @@ export const startMeteorShower = async (
     meteors.push(meteor);
     var index = validStartingPoints.indexOf(meteor.path[0].x);
     validStartingPoints.splice(index, 1);
-    onPixelChange({
-      x: meteor.path[0].y,
-      y: meteor.path[0].x,
-      hex: meteor.colors[0],
-      brightness: config.brightness,
-      macroIndex,
-    });
+    onPixelsChange([
+      {
+        x: meteor.path[0].y,
+        y: meteor.path[0].x,
+        hex: meteor.colors[0],
+        brightness: config.brightness,
+        macroIndex,
+      },
+    ]);
   };
 
   for (let i = 0; i < meteorCount; i++) {
@@ -114,13 +116,15 @@ export const startMeteorShower = async (
         }
 
         meteor.path.forEach((dot, i) => {
-          onPixelChange({
-            y: dot.y,
-            x: dot.x,
-            hex: meteor.colors[i],
-            brightness: config.brightness,
-            macroIndex,
-          });
+          onPixelsChange([
+            {
+              y: dot.y,
+              x: dot.x,
+              hex: meteor.colors[i],
+              brightness: config.brightness,
+              macroIndex,
+            },
+          ]);
         });
       }
     });

@@ -1,14 +1,14 @@
 import {
   MacroStopCallback,
   MacroTwinkleConfig,
-  PixelChangeCallback,
+  PixelsChangeCallback,
 } from "../types.js";
 import { colorLuminance } from "../colors.js";
 
 export const startTwinkle = async (
   config: MacroTwinkleConfig,
   macroIndex: number,
-  onPixelChange: PixelChangeCallback
+  onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
   const { color, speed, height, width } = config;
 
@@ -23,13 +23,15 @@ export const startTwinkle = async (
 
   for (var y = 0; y < height; y++) {
     for (var x = 0; x < width; x++) {
-      onPixelChange({
-        y,
-        x,
-        hex: randomColorShade(shades),
-        brightness: config.brightness,
-        macroIndex,
-      });
+      onPixelsChange([
+        {
+          y,
+          x,
+          hex: randomColorShade(shades),
+          brightness: config.brightness,
+          macroIndex,
+        },
+      ]);
     }
   }
 
@@ -37,13 +39,15 @@ export const startTwinkle = async (
     for (let i = 0; i < 100; i++) {
       var y = Math.floor(Math.random() * (height - 1 - 0 + 1)) + 0;
       var x = Math.floor(Math.random() * (width - 1 - 0 + 1)) + 0;
-      onPixelChange({
-        y,
-        x,
-        hex: randomColorShade(shades),
-        brightness: config.brightness,
-        macroIndex,
-      });
+      onPixelsChange([
+        {
+          y,
+          x,
+          hex: randomColorShade(shades),
+          brightness: config.brightness,
+          macroIndex,
+        },
+      ]);
     }
   }, speed);
 

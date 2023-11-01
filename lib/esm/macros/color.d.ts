@@ -1,2 +1,2 @@
-import { MacroColorConfig, MacroStopCallback, PixelChangeCallback } from "../types.js";
-export declare const startColor: (config: MacroColorConfig, macroIndex: number, onPixelChange: PixelChangeCallback) => MacroStopCallback;
+import { MacroColorConfig, MacroStopCallback, PixelsChangeCallback } from "../types.js";
+export declare const startColor: (config: MacroColorConfig, macroIndex: number, onPixelsChange: PixelsChangeCallback) => MacroStopCallback;

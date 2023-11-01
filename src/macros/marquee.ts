@@ -2,13 +2,13 @@ import { Message } from "../generators/textbox/message.js";
 import {
   MacroMarqueeConfig,
   MacroStopCallback,
-  PixelChangeCallback,
+  PixelsChangeCallback,
 } from "../types.js";
 
 export const startMarquee = async (
   config: MacroMarqueeConfig,
   macroIndex: number,
-  onPixelChange: PixelChangeCallback
+  onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
   const coordinates: { x: number; y: number }[] = [];
   const message = new Message(config.text, config.font, {
@@ -29,24 +29,23 @@ export const startMarquee = async (
   var offset = 0;
 
   const interval = setInterval(() => {
-    coordinates.forEach((coordinate) => {
-      onPixelChange({
-        y: coordinate.y,
-        x: coordinate.x + config.width - offset,
-        hex: null,
-        brightness: config.brightness,
-        macroIndex,
-      });
-    });
-    coordinates.forEach((coordinate) => {
-      onPixelChange({
-        y: coordinate.y,
-        x: coordinate.x + config.width - (offset + 1),
-        hex: config.color,
-        brightness: config.brightness,
-        macroIndex,
-      });
-    });
+    const resetPixels = coordinates.map((coordinate) => ({
+      y: coordinate.y,
+      x: coordinate.x + config.width - offset,
+      hex: null,
+      brightness: config.brightness,
+      macroIndex,
+    }));
+
+    const newPixels = coordinates.map((coordinate) => ({
+      y: coordinate.y,
+      x: coordinate.x + config.width - (offset + 1),
+      hex: config.color,
+      brightness: config.brightness,
+      macroIndex,
+    }));
+
+    onPixelsChange([...resetPixels, ...newPixels]);
 
     var loopPoint = config.width > messageLength ? config.width : messageLength;
 

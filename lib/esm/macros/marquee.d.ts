@@ -1,2 +1,2 @@
-import { MacroMarqueeConfig, MacroStopCallback, PixelChangeCallback } from "../types.js";
-export declare const startMarquee: (config: MacroMarqueeConfig, macroIndex: number, onPixelChange: PixelChangeCallback) => MacroStopCallback;
+import { MacroMarqueeConfig, MacroStopCallback, PixelsChangeCallback } from "../types.js";
+export declare const startMarquee: (config: MacroMarqueeConfig, macroIndex: number, onPixelsChange: PixelsChangeCallback) => MacroStopCallback;
