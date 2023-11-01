@@ -114,6 +114,6 @@ export interface Pixel {
   brightness: number;
 }
 
-export type UpdatePixel = (pixel: Pixel) => void;
-export type PixelChangeCallback = (pixel: Pixel) => void;
+export type UpdatePixels = (pixels: Pixel[]) => void;
+export type PixelsChangeCallback = (pixels: Pixel[]) => void;
 export type MacroStopCallback = Promise<() => void>;

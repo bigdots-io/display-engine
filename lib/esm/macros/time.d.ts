@@ -1,2 +1,2 @@
-import { MacroStopCallback, MacroTimeConfig, PixelChangeCallback } from "../types.js";
-export declare const startTime: (config: MacroTimeConfig, macroIndex: number, onPixelChange: PixelChangeCallback) => MacroStopCallback;
+import { MacroStopCallback, MacroTimeConfig, PixelsChangeCallback } from "../types.js";
+export declare const startTime: (config: MacroTimeConfig, macroIndex: number, onPixelsChange: PixelsChangeCallback) => MacroStopCallback;

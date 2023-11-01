@@ -1,2 +1,2 @@
-import { MacroStopCallback, MacroTextConfig, PixelChangeCallback } from "../types.js";
-export declare const startText: (config: MacroTextConfig, macroIndex: number, onPixelChange: PixelChangeCallback) => MacroStopCallback;
+import { MacroStopCallback, MacroTextConfig, PixelsChangeCallback } from "../types.js";
+export declare const startText: (config: MacroTextConfig, macroIndex: number, onPixelsChange: PixelsChangeCallback) => MacroStopCallback;

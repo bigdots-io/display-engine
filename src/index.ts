@@ -18,8 +18,8 @@ import {
   MacroTimeConfig,
   MacroTwinkleConfig,
   Pixel,
-  PixelChangeCallback,
-  UpdatePixel,
+  PixelsChangeCallback,
+  UpdatePixels,
 } from "./types.js";
 
 export { colorLuminance };
@@ -64,11 +64,11 @@ export const time = (macroConfig: Partial<MacroTimeConfig>): Macro => ({
 function startMacros({
   macros,
   dimensions,
-  updatePixel,
+  updatePixels,
 }: {
   macros: Macro[];
   dimensions: Dimensions;
-  updatePixel: UpdatePixel;
+  updatePixels: UpdatePixels;
 }) {
   const stops = macros.map(({ macroName, macroConfig }, macroIndex) => {
     if (macroName === MacroName.SolidColor) {
@@ -83,7 +83,7 @@ function startMacros({
           ...macroConfig,
         },
         macroIndex,
-        updatePixel
+        updatePixels
       );
     }
     if (macroName === MacroName.Text) {
@@ -102,7 +102,7 @@ function startMacros({
           ...macroConfig,
         },
         macroIndex,
-        updatePixel
+        updatePixels
       );
     }
     if (macroName === MacroName.Twinkle) {
@@ -116,7 +116,7 @@ function startMacros({
           ...macroConfig,
         },
         macroIndex,
-        updatePixel
+        updatePixels
       );
     }
     if (macroName === MacroName.MeteorShower) {
@@ -135,7 +135,7 @@ function startMacros({
           ...macroConfig,
         },
         macroIndex,
-        updatePixel
+        updatePixels
       );
     }
     if (macroName === MacroName.Marquee) {
@@ -151,7 +151,7 @@ function startMacros({
           ...macroConfig,
         },
         macroIndex,
-        updatePixel
+        updatePixels
       );
     }
     if (macroName === MacroName.Image) {
@@ -167,7 +167,7 @@ function startMacros({
           ...macroConfig,
         },
         macroIndex,
-        updatePixel
+        updatePixels
       );
     }
     if (macroName === MacroName.Time) {
@@ -185,7 +185,7 @@ function startMacros({
           ...macroConfig,
         },
         macroIndex,
-        updatePixel
+        updatePixels
       );
     }
     return startText(
@@ -203,7 +203,7 @@ function startMacros({
         ...macroConfig,
       },
       macroIndex,
-      updatePixel
+      updatePixels
     );
   });
 
@@ -226,10 +226,10 @@ const buildPixelMap = ({ height, width }: Dimensions) => {
 
 export function createDisplayEngine({
   dimensions = { width: 23, height: 128 },
-  onPixelChange,
+  onPixelsChange,
 }: {
   dimensions?: { height: number; width: number };
-  onPixelChange: PixelChangeCallback;
+  onPixelsChange: PixelsChangeCallback;
 }) {
   let stopMacros: () => void = () => {};
 
@@ -240,26 +240,31 @@ export function createDisplayEngine({
       stopMacros = startMacros({
         macros,
         dimensions,
-        updatePixel: (pixelToUpdate) => {
-          const { y, x } = pixelToUpdate;
-          const pixelStack = pixelMap?.[y]?.[x];
+        updatePixels: (updatePixels) => {
+          const pixelsToUpdate: Pixel[] = [];
+          updatePixels.forEach((pixelToUpdate) => {
+            const { y, x } = pixelToUpdate;
+            const pixelStack = pixelMap?.[y]?.[x];
 
-          if (!pixelStack) return;
+            if (!pixelStack) return;
 
-          pixelStack[pixelToUpdate.macroIndex] = pixelToUpdate;
+            pixelStack[pixelToUpdate.macroIndex] = pixelToUpdate;
 
-          const topPixelStackItem = pixelStack.findLast(
-            ({ hex }) => hex !== null
-          );
+            const topPixelStackItem = pixelStack.findLast(
+              ({ hex }) => hex !== null
+            );
 
-          if (!topPixelStackItem) {
-            return onPixelChange({
-              ...pixelToUpdate,
-              hex: null,
-            } as Pixel);
-          }
+            pixelsToUpdate.push(
+              topPixelStackItem
+                ? topPixelStackItem
+                : ({
+                    ...pixelToUpdate,
+                    hex: null,
+                  } as Pixel)
+            );
+          });
 
-          onPixelChange(topPixelStackItem as Pixel);
+          onPixelsChange(pixelsToUpdate);
         },
       });
 

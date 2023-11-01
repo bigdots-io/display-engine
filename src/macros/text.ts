@@ -2,13 +2,13 @@ import { Message } from "../generators/textbox/message.js";
 import {
   MacroStopCallback,
   MacroTextConfig,
-  PixelChangeCallback,
+  PixelsChangeCallback,
 } from "../types.js";
 
 export const startText = async (
   config: MacroTextConfig,
   macroIndex: number,
-  onPixelChange: PixelChangeCallback
+  onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
   const message = new Message(config.text, config.font, {
     spaceBetweenLetters: config.spaceBetweenLetters,
@@ -19,15 +19,15 @@ export const startText = async (
 
   const results = message.render();
 
-  results.dots.forEach((dot) =>
-    onPixelChange({
-      x: dot.x + config.startingColumn,
-      y: dot.y + config.startingRow,
-      hex: config.color,
-      brightness: config.brightness,
-      macroIndex,
-    })
-  );
+  const pixels = results.dots.map((dot) => ({
+    x: dot.x + config.startingColumn,
+    y: dot.y + config.startingRow,
+    hex: config.color,
+    brightness: config.brightness,
+    macroIndex,
+  }));
+
+  onPixelsChange(pixels);
 
   return () => {};
 };
