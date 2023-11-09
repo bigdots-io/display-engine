@@ -1,4 +1,4 @@
-import { Message, RenderedMessage } from "../generators/textbox/message.js";
+import { RenderedMessage, renderText } from "../generators/text.js";
 import {
   MacroStopCallback,
   MacroTimeConfig,
@@ -12,14 +12,13 @@ export const startTime = async (
 ): MacroStopCallback => {
   let previousResults: RenderedMessage;
   const interval = setInterval(() => {
-    const message = new Message(new Date().toLocaleString(), config.font, {
+    const results = renderText(new Date().toLocaleString(), config.font, {
       spaceBetweenLetters: config.spaceBetweenLetters,
+      spaceBetweenWords: 1,
       spaceBetweenLines: config.spaceBetweenLines,
       alignment: config.alignment,
       width: config.width,
     });
-
-    const results = message.render();
 
     const resetPixels = previousResults?.dots?.map((dot) => ({
       x: dot.x + config.startingColumn,

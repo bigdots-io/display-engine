@@ -10,6 +10,24 @@ export declare enum MacroName {
     Image = "image",
     Time = "time"
 }
+export interface FontDefinition {
+    height: number;
+    width: number;
+    name: string;
+    description: string;
+    author: string;
+    monospace: boolean;
+    characters: Record<string, FontCharacterDefinition>;
+}
+export interface FontCharacterDefinition {
+    width?: number;
+    height?: number;
+    coordinates: {
+        y: number;
+        x: number;
+        opacity: number;
+    }[];
+}
 export interface MacroColorConfig {
     color: string;
     startingColumn: number;
@@ -25,7 +43,7 @@ export interface MacroTextConfig {
     alignment: Alignment;
     spaceBetweenLetters: number;
     spaceBetweenLines: number;
-    width?: number;
+    width: number;
     startingColumn: number;
     startingRow: number;
     brightness: Brightness;
@@ -73,7 +91,7 @@ export interface MacroTimeConfig {
     alignment: Alignment;
     spaceBetweenLetters: number;
     spaceBetweenLines: number;
-    width?: number;
+    width: number;
     startingColumn: number;
     startingRow: number;
     brightness: Brightness;

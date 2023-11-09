@@ -1,4 +1,4 @@
-import { Message } from "../generators/textbox/message.js";
+import { renderText } from "../generators/text.js";
 import {
   MacroMarqueeConfig,
   MacroStopCallback,
@@ -11,14 +11,13 @@ export const startMarquee = async (
   onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
   const coordinates: { x: number; y: number }[] = [];
-  const message = new Message(config.text, config.font, {
+  const results = renderText(config.text, config.font, {
     spaceBetweenLetters: 1,
+    spaceBetweenWords: 1,
     spaceBetweenLines: 0,
+    width: 1000000000,
     alignment: "left",
-    // wrap: "no-wrap",
   });
-
-  var results = message.render();
 
   results.dots.forEach((dot) => {
     coordinates.push({ y: dot.y, x: dot.x });

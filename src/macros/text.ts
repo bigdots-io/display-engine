@@ -1,4 +1,4 @@
-import { Message } from "../generators/textbox/message.js";
+import { renderText } from "../generators/text.js";
 import {
   MacroStopCallback,
   MacroTextConfig,
@@ -10,14 +10,13 @@ export const startText = async (
   macroIndex: number,
   onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
-  const message = new Message(config.text, config.font, {
+  const results = renderText(config.text, config.font, {
     spaceBetweenLetters: config.spaceBetweenLetters,
+    spaceBetweenWords: 1,
     spaceBetweenLines: config.spaceBetweenLines,
     alignment: config.alignment,
     width: config.width,
   });
-
-  const results = message.render();
 
   const pixels = results.dots.map((dot) => ({
     x: dot.x + config.startingColumn,
