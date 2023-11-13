@@ -3,7 +3,7 @@ import {
   MacroImageConfig,
   MacroStopCallback,
   PixelsChangeCallback,
-} from "../types";
+} from "../types.js";
 
 export const startImage = async (
   config: MacroImageConfig,

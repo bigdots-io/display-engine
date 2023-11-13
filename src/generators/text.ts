@@ -1,5 +1,5 @@
-import { System16 } from "../fonts/system-16";
-import { System6 } from "../fonts/system-6";
+import { System16 } from "../fonts/system-16.js";
+import { System6 } from "../fonts/system-6.js";
 import {
   Alignment,
   Font,

@@ -1,4 +1,4 @@
-import { FontDefinition } from "../types";
+import { FontDefinition } from "../types.js";
 
 export const System16: FontDefinition = {
   height: 14,
