@@ -21,7 +21,7 @@ export interface RenderedMessage {
 }
 
 export interface MessageOptions {
-  width: number;
+  width: number | null;
   spaceBetweenLines: number;
   spaceBetweenLetters: number;
   spaceBetweenWords: number;
@@ -41,7 +41,7 @@ export const renderText = (
   text.split(" ").forEach((characters, i) => {
     var wordWidth = getWordWidth(characters, font, options);
 
-    if (wordWidth > options.width) {
+    if (options.width && wordWidth > options.width) {
       const [firstHalf, secondHalf] = hypenateWord(
         characters,
         options.width,
@@ -59,12 +59,12 @@ export const renderText = (
         options
       );
 
-      if (projectedWidth > options.width) {
+      if (options.width && projectedWidth > options.width) {
         lines.push(currentLine);
         currentLine = "";
       }
 
-      currentLine += characters;
+      currentLine += characters + " ";
     }
   });
 
@@ -73,14 +73,14 @@ export const renderText = (
   var dots: DotCoordinates = [];
 
   lines.forEach((line, i) => {
-    const results = renderLine(line, font, options);
+    const lineDots = renderLine(line, font, options);
     let offsetY: number = 0;
 
     if (i !== 0) {
       offsetY = i * (font.height + options.spaceBetweenLines);
     }
 
-    results.dots.map((dot: any) => {
+    lineDots.map((dot: any) => {
       dots.push({
         x: dot.x,
         y: dot.y + offsetY,
@@ -223,7 +223,7 @@ const renderLine = (
   text: string,
   font: FontDefinition,
   options: MessageOptions
-): { width: number; dots: DotCoordinates } => {
+): DotCoordinates => {
   const dots: { x: number; y: number }[] = [];
   let cursorColumn = 0;
 
@@ -257,13 +257,10 @@ const renderLine = (
     }
   }
 
-  return {
-    width: options.width,
-    dots: dots.map(function (dot) {
-      return {
-        x: dot.x + alignStartingColumn,
-        y: dot.y,
-      };
-    }),
-  };
+  return dots.map(function (dot) {
+    return {
+      x: dot.x + alignStartingColumn,
+      y: dot.y,
+    };
+  });
 };

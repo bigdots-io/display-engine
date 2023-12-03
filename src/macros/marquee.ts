@@ -13,9 +13,9 @@ export const startMarquee = async (
   const coordinates: { x: number; y: number }[] = [];
   const results = renderText(config.text, config.font, {
     spaceBetweenLetters: 1,
-    spaceBetweenWords: 1,
+    spaceBetweenWords: 2,
     spaceBetweenLines: 0,
-    width: 1000000000,
+    width: null,
     alignment: "left",
   });
 
@@ -46,9 +46,9 @@ export const startMarquee = async (
 
     onPixelsChange([...resetPixels, ...newPixels]);
 
-    var loopPoint = config.width > messageLength ? config.width : messageLength;
+    var loopPoint = config.width + messageLength;
 
-    if (offset > loopPoint + config.width) {
+    if (offset > loopPoint) {
       offset = 0;
     }
 

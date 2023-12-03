@@ -9,7 +9,7 @@ export interface RenderedMessage {
     dots: DotCoordinates;
 }
 export interface MessageOptions {
-    width: number;
+    width: number | null;
     spaceBetweenLines: number;
     spaceBetweenLetters: number;
     spaceBetweenWords: number;
