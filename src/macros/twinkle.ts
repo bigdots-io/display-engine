@@ -39,19 +39,19 @@ export const startTwinkle = async (
   onPixelsChange(intialPixels);
 
   const interval = setInterval(() => {
+    const updatedPixels: Pixel[] = [];
     for (let i = 0; i < 100; i++) {
       var y = Math.floor(Math.random() * (height - 1 - 0 + 1)) + 0;
       var x = Math.floor(Math.random() * (width - 1 - 0 + 1)) + 0;
-      onPixelsChange([
-        {
-          y,
-          x,
-          hex: randomColorShade(shades),
-          brightness: config.brightness,
-          macroIndex,
-        },
-      ]);
+      updatedPixels.push({
+        y,
+        x,
+        hex: randomColorShade(shades),
+        brightness: config.brightness,
+        macroIndex,
+      });
     }
+    onPixelsChange(updatedPixels);
   }, speed);
 
   return () => clearInterval(interval);
