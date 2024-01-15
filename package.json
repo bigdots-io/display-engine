@@ -1,6 +1,6 @@
 {
   "name": "@bigdots-io/display-engine",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "module": "./lib/esm/index.js",
   "type": "module",
   "exports": {
