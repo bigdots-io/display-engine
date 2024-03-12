@@ -2,6 +2,7 @@
   "name": "@bigdots-io/display-engine",
   "version": "0.6.7",
   "module": "./lib/esm/index.js",
+  "description": "Engine to generate Bigdots pixels to be rendered",
   "type": "module",
   "exports": {
     ".": "./lib/esm/index.js"
