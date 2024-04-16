@@ -6,6 +6,7 @@ import { startMeteorShower } from "./macros/meteor-shower.js";
 import { startText } from "./macros/text.js";
 import { startTime } from "./macros/time.js";
 import { startTwinkle } from "./macros/twinkle.js";
+import { startRipple } from "./macros/ripple.js";
 import {
   Dimensions,
   Macro,
@@ -14,6 +15,7 @@ import {
   MacroMarqueeConfig,
   MacroMeteorShowerConfig,
   MacroName,
+  MacroRippleConfig,
   MacroTextConfig,
   MacroTimeConfig,
   MacroTwinkleConfig,
@@ -58,6 +60,11 @@ export const image = (macroConfig: Partial<MacroImageConfig>): Macro => ({
 
 export const time = (macroConfig: Partial<MacroTimeConfig>): Macro => ({
   macroName: MacroName.Time,
+  macroConfig,
+});
+
+export const ripple = (macroConfig: Partial<MacroRippleConfig>): Macro => ({
+  macroName: MacroName.Ripple,
   macroConfig,
 });
 
@@ -182,6 +189,20 @@ function startMacros({
           startingRow: 0,
           width: dimensions.width,
           brightness: 10,
+          ...macroConfig,
+        },
+        macroIndex,
+        updatePixels
+      );
+    }
+    if (macroName === MacroName.Ripple) {
+      return startRipple(
+        {
+          width: dimensions.width,
+          height: dimensions.height,
+          speed: 5,
+          brightness: 5,
+          waveHeight: 5,
           ...macroConfig,
         },
         macroIndex,
