@@ -42,7 +42,7 @@ type LowercareLetters = "a" | "b";
 type UppercaseLetters = "A" | "B";
 
 export enum MacroName {
-  SolidColor = "solid-color",
+  Box = "box",
   Text = "text",
   Twinkle = "twinkle",
   MeteorShower = "meteor-shower",
@@ -68,7 +68,7 @@ export interface FontCharacterDefinition {
   coordinates: { y: number; x: number; opacity: number }[];
 }
 
-export interface MacroColorConfig {
+export interface MacroBoxConfig {
   color: string;
   startingColumn: number;
   startingRow: number;
@@ -152,7 +152,7 @@ export interface MacroTimeConfig {
 }
 
 export type MacroConfig =
-  | MacroColorConfig
+  | MacroBoxConfig
   | MacroTextConfig
   | MacroTwinkleConfig
   | MacroMeteorShowerConfig

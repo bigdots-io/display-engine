@@ -1,5 +1,5 @@
 import { colorLuminance } from "./colors.js";
-import { startColor } from "./macros/color.js";
+import { startBox } from "./macros/box.js";
 import { startImage } from "./macros/image.js";
 import { startMarquee } from "./macros/marquee.js";
 import { startMeteorShower } from "./macros/meteor-shower.js";
@@ -10,7 +10,7 @@ import { startRipple } from "./macros/ripple.js";
 import {
   Dimensions,
   Macro,
-  MacroColorConfig,
+  MacroBoxConfig,
   MacroImageConfig,
   MacroMarqueeConfig,
   MacroMeteorShowerConfig,
@@ -38,8 +38,8 @@ export const meteorShower = (
   macroConfig,
 });
 
-export const solidColor = (macroConfig: Partial<MacroColorConfig>): Macro => ({
-  macroName: MacroName.SolidColor,
+export const box = (macroConfig: Partial<MacroBoxConfig>): Macro => ({
+  macroName: MacroName.Box,
   macroConfig,
 });
 
@@ -78,8 +78,8 @@ function startMacros({
   updatePixels: UpdatePixels;
 }) {
   const stops = macros.map(({ macroName, macroConfig }, macroIndex) => {
-    if (macroName === MacroName.SolidColor) {
-      return startColor(
+    if (macroName === MacroName.Box) {
+      return startBox(
         {
           color: "#fff",
           startingColumn: 0,

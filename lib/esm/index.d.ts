@@ -1,9 +1,9 @@
 import { colorLuminance } from "./colors.js";
-import { Macro, MacroColorConfig, MacroImageConfig, MacroMarqueeConfig, MacroMeteorShowerConfig, MacroRippleConfig, MacroTextConfig, MacroTimeConfig, MacroTwinkleConfig, PixelsChangeCallback } from "./types.js";
+import { Macro, MacroBoxConfig, MacroImageConfig, MacroMarqueeConfig, MacroMeteorShowerConfig, MacroRippleConfig, MacroTextConfig, MacroTimeConfig, MacroTwinkleConfig, PixelsChangeCallback } from "./types.js";
 export { colorLuminance };
 export declare const twinkle: (macroConfig: Partial<MacroTwinkleConfig>) => Macro;
 export declare const meteorShower: (macroConfig: Partial<MacroMeteorShowerConfig>) => Macro;
-export declare const solidColor: (macroConfig: Partial<MacroColorConfig>) => Macro;
+export declare const box: (macroConfig: Partial<MacroBoxConfig>) => Macro;
 export declare const text: (macroConfig: Partial<MacroTextConfig>) => Macro;
 export declare const marquee: (macroConfig: Partial<MacroMarqueeConfig>) => Macro;
 export declare const image: (macroConfig: Partial<MacroImageConfig>) => Macro;
