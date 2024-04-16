@@ -1,12 +1,12 @@
 import {
-  MacroColorConfig,
+  MacroBoxConfig,
   MacroStopCallback,
   Pixel,
   PixelsChangeCallback,
 } from "../types.js";
 
-export const startColor = async (
-  config: MacroColorConfig,
+export const startBox = async (
+  config: MacroBoxConfig,
   macroIndex: number,
   onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
