@@ -8,7 +8,8 @@ export declare enum MacroName {
     MeteorShower = "meteor-shower",
     Marquee = "marquee",
     Image = "image",
-    Time = "time"
+    Time = "time",
+    Ripple = "ripple"
 }
 export interface FontDefinition {
     height: number;
@@ -54,6 +55,13 @@ export interface MacroTwinkleConfig {
     width: number;
     height: number;
     brightness: Brightness;
+}
+export interface MacroRippleConfig {
+    width: number;
+    height: number;
+    speed: number;
+    brightness: Brightness;
+    waveHeight: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 export interface MacroMeteorShowerConfig {
     color: string;
