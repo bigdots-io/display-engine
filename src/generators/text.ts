@@ -38,8 +38,8 @@ export const renderText = (
   const lines: string[] = [];
   let currentLine = "";
 
-  text.split(" ").forEach((characters, i) => {
-    var wordWidth = getWordWidth(characters, font, options);
+  text.split(" ").forEach((characters) => {
+    const wordWidth = getWordWidth(characters, font, options);
 
     if (options.width && wordWidth > options.width) {
       const [firstHalf, secondHalf] = hypenateWord(
@@ -52,7 +52,7 @@ export const renderText = (
       lines.push(currentLine);
       currentLine = secondHalf;
     } else {
-      var projectedWidth = getProjectedLineWidth(
+      const projectedWidth = getProjectedLineWidth(
         characters,
         currentLine,
         font,
@@ -70,7 +70,7 @@ export const renderText = (
 
   lines.push(currentLine);
 
-  var dots: DotCoordinates = [];
+  const dots: DotCoordinates = [];
 
   lines.forEach((line, i) => {
     const lineDots = renderLine(line, font, options);
@@ -80,7 +80,7 @@ export const renderText = (
       offsetY = i * (font.height + options.spaceBetweenLines);
     }
 
-    lineDots.map((dot: any) => {
+    lineDots.map((dot) => {
       dots.push({
         x: dot.x,
         y: dot.y + offsetY,
@@ -101,9 +101,9 @@ const hypenateWord = (
   font: FontDefinition,
   options: MessageOptions
 ) => {
-  var assembledCharacters = [];
+  const assembledCharacters = [];
 
-  for (let character of characters) {
+  for (const character of characters) {
     assembledCharacters.push(character);
     const wordWidth = getWordWidth(assembledCharacters, font, options);
     if (wordWidth > width) {
@@ -137,8 +137,9 @@ const getLineWidth = (
   font: FontDefinition,
   options: MessageOptions
 ): number => {
-  var width = 0,
-    words = text.split(" ");
+  const words = text.split(" ");
+
+  let width = 0;
 
   words.forEach((word) => {
     if (word.length !== 0) {
@@ -175,7 +176,7 @@ const getWordWidth = (
   font: FontDefinition,
   options: MessageOptions
 ): number => {
-  var width = 0;
+  let width = 0;
   for (let i = 0; i < word.length; i++) {
     width += getFontCharacterWidth(word[i], font);
 
@@ -201,7 +202,7 @@ const renderWord = (
 
     character.coordinates.forEach((point) => {
       if (point.x < characterWidth) {
-        var out = {
+        const out = {
           y: point.y,
           x: cursorColumn + point.x,
         };
@@ -238,7 +239,7 @@ const renderLine = (
       });
     });
 
-    var cursorAdvancement = results.width;
+    let cursorAdvancement = results.width;
 
     if (i + 1 < words.length) {
       cursorAdvancement += getFontCharacter(" ", font)?.width || 0;
@@ -247,7 +248,7 @@ const renderLine = (
     cursorColumn += cursorAdvancement;
   });
 
-  var alignStartingColumn = 0;
+  let alignStartingColumn = 0;
 
   if (options.width) {
     if (options.alignment === "right") {

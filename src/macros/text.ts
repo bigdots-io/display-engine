@@ -28,5 +28,5 @@ export const startText = async (
 
   onPixelsChange(pixels);
 
-  return () => {};
+  return Promise.resolve(() => {});
 };

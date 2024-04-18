@@ -2,50 +2,11 @@ export type Font = "system-6" | "system-16";
 export type Alignment = "left" | "center" | "right";
 type Brightness = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-type NumberCharacter =
-  | "0"
-  | "1"
-  | "2"
-  | "3"
-  | "4"
-  | "5"
-  | "6"
-  | "7"
-  | "8"
-  | "9"
-  | "10";
-type SpecialCharacters =
-  | "."
-  | "("
-  | ")"
-  | "-"
-  | "["
-  | "]"
-  | ":"
-  | ";"
-  | "."
-  | ","
-  | "?"
-  | "/"
-  | "%"
-  | "#"
-  | "$"
-  | "!"
-  | "@"
-  | "&"
-  | "*"
-  | "^"
-  | "_"
-  | "="
-  | " ";
-type LowercareLetters = "a" | "b";
-type UppercaseLetters = "A" | "B";
-
 export enum MacroName {
   Box = "box",
   Text = "text",
   Twinkle = "twinkle",
-  MeteorShower = "meteor-shower",
+  Meteors = "meteors",
   Marquee = "marquee",
   Image = "image",
   Time = "time",
@@ -75,6 +36,8 @@ export interface MacroBoxConfig {
   width: number;
   height: number;
   brightness: Brightness;
+  borderWidth: number;
+  borderColor: string;
 }
 
 export interface MacroTextConfig {
@@ -106,7 +69,7 @@ export interface MacroRippleConfig {
   waveHeight: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 
-export interface MacroMeteorShowerConfig {
+export interface MacroMeteorsConfig {
   color: string;
   meteorCount: number;
   maxTailLength: number;
@@ -155,7 +118,7 @@ export type MacroConfig =
   | MacroBoxConfig
   | MacroTextConfig
   | MacroTwinkleConfig
-  | MacroMeteorShowerConfig
+  | MacroMeteorsConfig
   | MacroMarqueeConfig
   | MacroImageConfig
   | MacroTimeConfig;

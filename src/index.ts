@@ -2,7 +2,7 @@ import { colorLuminance } from "./colors.js";
 import { startBox } from "./macros/box.js";
 import { startImage } from "./macros/image.js";
 import { startMarquee } from "./macros/marquee.js";
-import { startMeteorShower } from "./macros/meteor-shower.js";
+import { startMeteors } from "./macros/meteors.js";
 import { startText } from "./macros/text.js";
 import { startTime } from "./macros/time.js";
 import { startTwinkle } from "./macros/twinkle.js";
@@ -13,7 +13,7 @@ import {
   MacroBoxConfig,
   MacroImageConfig,
   MacroMarqueeConfig,
-  MacroMeteorShowerConfig,
+  MacroMeteorsConfig,
   MacroName,
   MacroRippleConfig,
   MacroTextConfig,
@@ -31,10 +31,8 @@ export const twinkle = (macroConfig: Partial<MacroTwinkleConfig>): Macro => ({
   macroConfig,
 });
 
-export const meteorShower = (
-  macroConfig: Partial<MacroMeteorShowerConfig>
-): Macro => ({
-  macroName: MacroName.MeteorShower,
+export const meteors = (macroConfig: Partial<MacroMeteorsConfig>): Macro => ({
+  macroName: MacroName.Meteors,
   macroConfig,
 });
 
@@ -76,7 +74,12 @@ function startMacros({
   macros: Macro[];
   dimensions: Dimensions;
   updatePixels: UpdatePixels;
-}) {
+}): () => Promise<void> {
+  const test = "hi";
+
+  if (test) {
+    console.log("yo");
+  }
   const stops = macros.map(({ macroName, macroConfig }, macroIndex) => {
     if (macroName === MacroName.Box) {
       return startBox(
@@ -87,6 +90,8 @@ function startMacros({
           width: dimensions.width,
           height: dimensions.height,
           brightness: 10,
+          borderWidth: 0,
+          borderColor: "#fff",
           ...macroConfig,
         },
         macroIndex,
@@ -126,8 +131,8 @@ function startMacros({
         updatePixels
       );
     }
-    if (macroName === MacroName.MeteorShower) {
-      return startMeteorShower(
+    if (macroName === MacroName.Meteors) {
+      return startMeteors(
         {
           color: "#FFF",
           meteorCount: 40,
@@ -235,9 +240,9 @@ function startMacros({
 
 const buildPixelMap = ({ height, width }: Dimensions) => {
   const pixelMap: Pixel[][][] = [];
-  for (var y = 0; y < height; y++) {
+  for (let y = 0; y < height; y++) {
     const row = [];
-    for (var x = 0; x < width; x++) {
+    for (let x = 0; x < width; x++) {
       row.push([]);
     }
     pixelMap.push(row);
@@ -252,11 +257,11 @@ export function createDisplayEngine({
   dimensions?: { height: number; width: number };
   onPixelsChange: PixelsChangeCallback;
 }) {
-  let stopMacros: () => void = () => {};
+  let stopMacros: () => Promise<void> = () => Promise.resolve();
 
   return {
-    render: (macros: Macro[]): (() => void) => {
-      stopMacros();
+    render: async (macros: Macro[]) => {
+      await stopMacros();
       const pixelMap = buildPixelMap(dimensions);
       stopMacros = startMacros({
         macros,

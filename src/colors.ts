@@ -4,7 +4,7 @@ export const colorLuminance = (hex: string, lum: number): string => {
     hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
   }
   lum = lum || 0;
-  var rgb = "#",
+  let rgb = "#",
     c,
     i;
   for (i = 0; i < 3; i++) {

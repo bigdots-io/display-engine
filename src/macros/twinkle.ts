@@ -24,8 +24,8 @@ export const startTwinkle = async (
 
   const intialPixels: Pixel[] = [];
 
-  for (var y = 0; y < height; y++) {
-    for (var x = 0; x < width; x++) {
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
       intialPixels.push({
         y,
         x,
@@ -41,8 +41,8 @@ export const startTwinkle = async (
   const interval = setInterval(() => {
     const updatedPixels: Pixel[] = [];
     for (let i = 0; i < 100; i++) {
-      var y = Math.floor(Math.random() * (height - 1 - 0 + 1)) + 0;
-      var x = Math.floor(Math.random() * (width - 1 - 0 + 1)) + 0;
+      const y = Math.floor(Math.random() * (height - 1 - 0 + 1)) + 0;
+      const x = Math.floor(Math.random() * (width - 1 - 0 + 1)) + 0;
       updatedPixels.push({
         y,
         x,
@@ -54,7 +54,7 @@ export const startTwinkle = async (
     onPixelsChange(updatedPixels);
   }, speed);
 
-  return () => clearInterval(interval);
+  return Promise.resolve(() => clearInterval(interval));
 };
 
 function randomColorShade(shades: string[]) {

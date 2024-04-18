@@ -25,7 +25,7 @@ export const startMarquee = async (
 
   const messageLength = results.width;
 
-  var offset = 0;
+  let offset = 0;
 
   const interval = setInterval(() => {
     const resetPixels = coordinates.map((coordinate) => ({
@@ -46,7 +46,7 @@ export const startMarquee = async (
 
     onPixelsChange([...resetPixels, ...newPixels]);
 
-    var loopPoint = config.width + messageLength;
+    const loopPoint = config.width + messageLength;
 
     if (offset > loopPoint) {
       offset = 0;
@@ -55,5 +55,5 @@ export const startMarquee = async (
     offset += 1;
   }, config.speed);
 
-  return () => clearInterval(interval);
+  return Promise.resolve(() => clearInterval(interval));
 };

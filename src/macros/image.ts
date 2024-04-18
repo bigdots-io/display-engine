@@ -41,5 +41,5 @@ export const startImage = async (
     onPixelsChange(pixels);
   }, config.speed);
 
-  return () => clearInterval(interval);
+  return Promise.resolve(() => clearInterval(interval));
 };
