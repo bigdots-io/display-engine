@@ -1,5 +1,5 @@
 import {
-  MacroMeteorShowerConfig,
+  MacroMeteorsConfig,
   MacroStopCallback,
   PixelsChangeCallback,
 } from "../types.js";
@@ -15,8 +15,8 @@ interface Meteor {
   path: { x: number; y: number }[];
 }
 
-export const startMeteorShower = async (
-  config: MacroMeteorShowerConfig,
+export const startMeteors = async (
+  config: MacroMeteorsConfig,
   macroIndex: number,
   onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
@@ -68,9 +68,9 @@ export const startMeteorShower = async (
   };
 
   const seedMeteor = () => {
-    let meteor = generateMeteor();
+    const meteor = generateMeteor();
     meteors.push(meteor);
-    var index = validStartingPoints.indexOf(meteor.path[0].x);
+    const index = validStartingPoints.indexOf(meteor.path[0].x);
     validStartingPoints.splice(index, 1);
     onPixelsChange([
       {
@@ -130,11 +130,11 @@ export const startMeteorShower = async (
     });
   }, 10);
 
-  return () => clearInterval(interval);
+  return Promise.resolve(() => clearInterval(interval));
 };
 
 function generateColorShade(seedColor: string, length: number, depth: number) {
-  var colors = [],
+  const colors = [],
     interval = 1 / (length - 1);
 
   if (depth !== 1) {

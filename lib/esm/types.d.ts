@@ -5,7 +5,7 @@ export declare enum MacroName {
     Box = "box",
     Text = "text",
     Twinkle = "twinkle",
-    MeteorShower = "meteor-shower",
+    Meteors = "meteors",
     Marquee = "marquee",
     Image = "image",
     Time = "time",
@@ -36,6 +36,8 @@ export interface MacroBoxConfig {
     width: number;
     height: number;
     brightness: Brightness;
+    borderWidth: number;
+    borderColor: string;
 }
 export interface MacroTextConfig {
     color: string;
@@ -63,7 +65,7 @@ export interface MacroRippleConfig {
     brightness: Brightness;
     waveHeight: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
-export interface MacroMeteorShowerConfig {
+export interface MacroMeteorsConfig {
     color: string;
     meteorCount: number;
     maxTailLength: number;
@@ -104,7 +106,7 @@ export interface MacroTimeConfig {
     startingRow: number;
     brightness: Brightness;
 }
-export type MacroConfig = MacroBoxConfig | MacroTextConfig | MacroTwinkleConfig | MacroMeteorShowerConfig | MacroMarqueeConfig | MacroImageConfig | MacroTimeConfig;
+export type MacroConfig = MacroBoxConfig | MacroTextConfig | MacroTwinkleConfig | MacroMeteorsConfig | MacroMarqueeConfig | MacroImageConfig | MacroTimeConfig;
 export interface Macro {
     macroName: MacroName;
     macroConfig: Partial<MacroConfig>;

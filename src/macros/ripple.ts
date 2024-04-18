@@ -20,17 +20,17 @@ export const startRipple = async (
 
     const intialPixels: Pixel[] = [];
 
-    for (var y = 0; y < height; y++) {
-      for (var x = 0; x < width; x++) {
-        let reIndexedX = -(width - x - width / 2);
-        let reIndexedY = height - y - height / 2;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const reIndexedX = -(width - x - width / 2);
+        const reIndexedY = height - y - height / 2;
 
-        let distance = Math.hypot(reIndexedX, reIndexedY);
-        let calculatedWaveHeight = Math.sin(
+        const distance = Math.hypot(reIndexedX, reIndexedY);
+        const calculatedWaveHeight = Math.sin(
           (distance - elapsedTimeUnits) / waveHeight
         );
 
-        let adjustedHeight = calculatedWaveHeight * 60 + 100 / 2;
+        const adjustedHeight = calculatedWaveHeight * 60 + 100 / 2;
 
         intialPixels.push({
           y,
@@ -44,10 +44,14 @@ export const startRipple = async (
 
     onPixelsChange(intialPixels);
 
-    window.requestAnimationFrame(drawRipple);
+    if (typeof window !== "undefined") {
+      window.requestAnimationFrame(drawRipple);
+    } else {
+      setImmediate(() => drawRipple(Date.now()));
+    }
   }
 
   drawRipple(startTime);
 
-  return () => {};
+  return Promise.resolve(() => {});
 };

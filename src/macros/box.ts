@@ -11,12 +11,18 @@ export const startBox = async (
   onPixelsChange: PixelsChangeCallback
 ): MacroStopCallback => {
   const pixels: Pixel[] = [];
-  for (var y = 0; y < config.height; y++) {
-    for (var x = 0; x < config.width; x++) {
+  for (let y = 0; y < config.height; y++) {
+    for (let x = 0; x < config.width; x++) {
+      const isBorder =
+        x < config.borderWidth ||
+        y < config.borderWidth ||
+        config.borderWidth >= config.width - x ||
+        config.borderWidth >= config.height - y;
+
       pixels.push({
         x: x + config.startingColumn,
         y: y + config.startingRow,
-        hex: config.color,
+        hex: isBorder ? config.borderColor : config.color,
         macroIndex,
         brightness: config.brightness,
       });
@@ -25,5 +31,5 @@ export const startBox = async (
 
   onPixelsChange(pixels);
 
-  return () => {};
+  return Promise.resolve(() => {});
 };

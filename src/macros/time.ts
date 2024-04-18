@@ -40,5 +40,5 @@ export const startTime = async (
     previousResults = results;
   }, 1000);
 
-  return () => clearInterval(interval);
+  return Promise.resolve(() => clearInterval(interval));
 };
