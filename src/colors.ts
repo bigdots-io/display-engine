@@ -1,16 +1,31 @@
-export const colorLuminance = (hex: string, lum: number): string => {
-  hex = String(hex).replace(/[^0-9a-f]/gi, "");
-  if (hex.length < 6) {
-    hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-  }
-  lum = lum || 0;
-  let rgb = "#",
-    c,
-    i;
-  for (i = 0; i < 3; i++) {
-    c = parseInt(hex.substr(i * 2, 2), 16);
-    c = Math.round(Math.min(Math.max(0, c + c * lum), 255)).toString(16);
-    rgb += ("00" + c).substr(c.length);
-  }
-  return rgb;
-};
+export function mixColors({
+  newColor,
+  baseColor,
+}: {
+  newColor: Uint8ClampedArray | null;
+  baseColor: Uint8ClampedArray;
+}) {
+  if (newColor === null) return baseColor;
+
+  const baseAlpha = baseColor[3] / 255;
+  const newAlpha = newColor[3] / 255;
+
+  const mix = [];
+  mix[3] = 1 - (1 - newAlpha) * (1 - baseAlpha); // alpha
+  mix[0] = Math.round(
+    (newColor[0] * newAlpha) / mix[3] +
+      (baseColor[0] * baseAlpha * (1 - newAlpha)) / mix[3]
+  ); // red
+  mix[1] = Math.round(
+    (newColor[1] * newAlpha) / mix[3] +
+      (baseColor[1] * baseAlpha * (1 - newAlpha)) / mix[3]
+  ); // green
+  mix[2] = Math.round(
+    (newColor[2] * newAlpha) / mix[3] +
+      (baseColor[2] * baseAlpha * (1 - newAlpha)) / mix[3]
+  ); // blue
+
+  mix[3] = mix[3] * 255;
+
+  return new Uint8ClampedArray(mix);
+}

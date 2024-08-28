@@ -1,32 +1,52 @@
-import { renderText } from "../generators/text.js";
-import {
-  MacroStopCallback,
-  MacroTextConfig,
-  PixelsChangeCallback,
-} from "../types.js";
+import { syncFromCanvas } from "../index.js";
+import { MacroFn } from "../types.js";
 
-export const startText = async (
-  config: MacroTextConfig,
-  macroIndex: number,
-  onPixelsChange: PixelsChangeCallback
-): MacroStopCallback => {
-  const results = renderText(config.text, config.font, {
-    spaceBetweenLetters: config.spaceBetweenLetters,
-    spaceBetweenWords: 1,
-    spaceBetweenLines: config.spaceBetweenLines,
-    alignment: config.alignment,
-    width: config.width,
-  });
+export const startText: MacroFn = async ({
+  macroConfig,
+  dimensions,
+  ctx,
+  index,
+  updatePixels,
+}) => {
+  const config = {
+    color: "#fff",
+    text: "hello WORLD!",
+    font: "Arial",
+    fontSize: 12,
+    alignment: "left",
+    spaceBetweenLetters: 1,
+    spaceBetweenLines: 1,
+    startingColumn: 0,
+    startingRow: 0,
+    width: dimensions.width,
+    brightness: 10,
+    ...macroConfig,
+  };
 
-  const pixels = results.dots.map((dot) => ({
-    x: dot.x + config.startingColumn,
-    y: dot.y + config.startingRow,
-    hex: config.color,
-    brightness: config.brightness,
-    macroIndex,
-  }));
+  ctx.textBaseline = "top";
+  ctx.font = `${config.fontSize}px ${config.font}`;
+  ctx.fillStyle = config.color;
 
-  onPixelsChange(pixels);
+  const textMetrics = ctx.measureText(config.text);
+
+  if (config.alignment === "left") {
+    ctx.fillText(config.text, config.startingColumn, config.startingRow);
+  } else if (config.alignment === "right") {
+    ctx.fillText(
+      config.text,
+      config.width - textMetrics.width,
+      config.startingRow
+    );
+  } else if (config.alignment === "center") {
+    ctx.fillText(
+      config.text,
+      config.width / 2 - textMetrics.width / 2,
+      config.startingRow
+    );
+  }
+
+  const pixels = syncFromCanvas(ctx);
+  updatePixels(pixels, index);
 
   return Promise.resolve(() => {});
 };

@@ -1,30 +1,28 @@
-import { colorLuminance } from "./colors.js";
+import { CanvasRenderingContext2D, createCanvas } from "canvas";
+import { mixColors } from "./colors.js";
 import { startBox } from "./macros/box.js";
-import { startImage } from "./macros/image.js";
 import { startMarquee } from "./macros/marquee.js";
 import { startMeteors } from "./macros/meteors.js";
-import { startText } from "./macros/text.js";
-import { startTime } from "./macros/time.js";
-import { startTwinkle } from "./macros/twinkle.js";
 import { startRipple } from "./macros/ripple.js";
+import { startText } from "./macros/text.js";
+import { startTwinkle } from "./macros/twinkle.js";
 import {
   Dimensions,
   Macro,
   MacroBoxConfig,
+  MacroFn,
   MacroImageConfig,
   MacroMarqueeConfig,
   MacroMeteorsConfig,
   MacroName,
   MacroRippleConfig,
   MacroTextConfig,
-  MacroTimeConfig,
   MacroTwinkleConfig,
   Pixel,
   PixelsChangeCallback,
   UpdatePixels,
 } from "./types.js";
-
-export { colorLuminance };
+import { startImage } from "./macros/image.js";
 
 export const twinkle = (macroConfig: Partial<MacroTwinkleConfig>): Macro => ({
   macroName: MacroName.Twinkle,
@@ -56,11 +54,6 @@ export const image = (macroConfig: Partial<MacroImageConfig>): Macro => ({
   macroConfig,
 });
 
-export const time = (macroConfig: Partial<MacroTimeConfig>): Macro => ({
-  macroName: MacroName.Time,
-  macroConfig,
-});
-
 export const ripple = (macroConfig: Partial<MacroRippleConfig>): Macro => ({
   macroName: MacroName.Ripple,
   macroConfig,
@@ -75,167 +68,53 @@ function startMacros({
   dimensions: Dimensions;
   updatePixels: UpdatePixels;
 }): () => Promise<void> {
-  const test = "hi";
+  const stops = macros.map(({ macroName, macroConfig }, index) => {
+    const canvas = createCanvas(dimensions.width, dimensions.height);
+    const ctx = canvas.getContext("2d", {
+      willReadFrequently: true,
+    });
 
-  if (test) {
-    console.log("yo");
-  }
-  const stops = macros.map(({ macroName, macroConfig }, macroIndex) => {
-    if (macroName === MacroName.Box) {
-      return startBox(
-        {
-          color: "#fff",
-          startingColumn: 0,
-          startingRow: 0,
-          width: dimensions.width,
-          height: dimensions.height,
-          brightness: 10,
-          borderWidth: 0,
-          borderColor: "#fff",
-          ...macroConfig,
-        },
-        macroIndex,
-        updatePixels
-      );
+    const MacroMap: { [k in MacroName]: MacroFn } = {
+      [MacroName.Box]: startBox,
+      [MacroName.Text]: startText,
+      [MacroName.Marquee]: startMarquee,
+      [MacroName.Twinkle]: startTwinkle,
+      [MacroName.Ripple]: startRipple,
+      [MacroName.Image]: startImage,
+      [MacroName.Meteors]: startMeteors,
+    };
+
+    const macroFn = MacroMap[macroName];
+
+    if (!macroFn) {
+      throw new Error("missing macro function");
     }
-    if (macroName === MacroName.Text) {
-      return startText(
-        {
-          color: "#fff",
-          text: "hello WORLD!",
-          font: "system-16",
-          alignment: "left",
-          spaceBetweenLetters: 1,
-          spaceBetweenLines: 1,
-          startingColumn: 0,
-          startingRow: 0,
-          width: dimensions.width,
-          brightness: 10,
-          ...macroConfig,
-        },
-        macroIndex,
-        updatePixels
-      );
-    }
-    if (macroName === MacroName.Twinkle) {
-      return startTwinkle(
-        {
-          color: "#FFF",
-          speed: 100,
-          width: dimensions.width,
-          height: dimensions.height,
-          brightness: 10,
-          ...macroConfig,
-        },
-        macroIndex,
-        updatePixels
-      );
-    }
-    if (macroName === MacroName.Meteors) {
-      return startMeteors(
-        {
-          color: "#FFF",
-          meteorCount: 40,
-          maxTailLength: 20,
-          minTailLength: 5,
-          maxDepth: 5,
-          minSpeed: 100,
-          maxSpeed: 10,
-          width: dimensions.width,
-          height: dimensions.height,
-          brightness: 10,
-          ...macroConfig,
-        },
-        macroIndex,
-        updatePixels
-      );
-    }
-    if (macroName === MacroName.Marquee) {
-      return startMarquee(
-        {
-          color: "#fff",
-          text: "Replace with marquee text!",
-          font: "system-16",
-          speed: 50,
-          width: dimensions.width,
-          height: dimensions.height,
-          brightness: 10,
-          ...macroConfig,
-        },
-        macroIndex,
-        updatePixels
-      );
-    }
-    if (macroName === MacroName.Image) {
-      return startImage(
-        {
-          url: "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7",
-          speed: 50,
-          width: dimensions.width,
-          height: dimensions.height,
-          startingColumn: 0,
-          startingRow: 0,
-          brightness: 10,
-          ...macroConfig,
-        },
-        macroIndex,
-        updatePixels
-      );
-    }
-    if (macroName === MacroName.Time) {
-      return startTime(
-        {
-          color: "#fff",
-          font: "system-6",
-          alignment: "left",
-          spaceBetweenLetters: 1,
-          spaceBetweenLines: 1,
-          startingColumn: 0,
-          startingRow: 0,
-          width: dimensions.width,
-          brightness: 10,
-          ...macroConfig,
-        },
-        macroIndex,
-        updatePixels
-      );
-    }
-    if (macroName === MacroName.Ripple) {
-      return startRipple(
-        {
-          width: dimensions.width,
-          height: dimensions.height,
-          speed: 5,
-          brightness: 5,
-          waveHeight: 5,
-          ...macroConfig,
-        },
-        macroIndex,
-        updatePixels
-      );
-    }
-    return startText(
-      {
-        color: "#fff",
-        text: "unsupported",
-        font: "system-6",
-        alignment: "left",
-        spaceBetweenLetters: 1,
-        spaceBetweenLines: 1,
-        startingColumn: 0,
-        startingRow: 0,
-        width: dimensions.width,
-        brightness: 10,
-        ...macroConfig,
-      },
-      macroIndex,
-      updatePixels
-    );
+
+    return macroFn({ macroConfig, dimensions, ctx, index, updatePixels });
   });
 
   return async () => {
     (await Promise.all(stops)).forEach((stop) => stop());
   };
+}
+
+export function syncFromCanvas(ctx: CanvasRenderingContext2D) {
+  const pixels: Pixel[] = [];
+
+  for (let y = 0; y < 16; y++) {
+    for (let x = 0; x < 64; x++) {
+      const { data } = ctx.getImageData(x, y, 1, 1);
+
+      pixels.push({
+        x: x,
+        y: y,
+        rgba: data[3] === 0 ? null : data,
+        brightness: (data[3] / 255) * 10,
+      });
+    }
+  }
+
+  return pixels;
 }
 
 const buildPixelMap = ({ height, width }: Dimensions) => {
@@ -262,11 +141,13 @@ export function createDisplayEngine({
   return {
     render: async (macros: Macro[]) => {
       await stopMacros();
+
       const pixelMap = buildPixelMap(dimensions);
+
       stopMacros = startMacros({
         macros,
         dimensions,
-        updatePixels: (updatePixels) => {
+        updatePixels: (updatePixels, index) => {
           const pixelsToUpdate: Pixel[] = [];
           updatePixels.forEach((pixelToUpdate) => {
             const { y, x } = pixelToUpdate;
@@ -274,23 +155,19 @@ export function createDisplayEngine({
 
             if (!pixelStack) return;
 
-            pixelStack[pixelToUpdate.macroIndex] = pixelToUpdate;
+            pixelStack[index] = pixelToUpdate;
 
-            const topPixelStackItem = pixelStack.findLast(
-              ({ hex }) => hex !== null
-            );
+            const rgba = pixelStack.reduce((baseColor, pixel) => {
+              return mixColors({ newColor: pixel.rgba, baseColor });
+            }, new Uint8ClampedArray([0, 0, 0, 255]));
 
-            pixelsToUpdate.push(
-              topPixelStackItem
-                ? topPixelStackItem
-                : ({
-                    ...pixelToUpdate,
-                    hex: null,
-                  } as Pixel)
-            );
+            pixelsToUpdate.push({
+              ...pixelToUpdate,
+              rgba,
+            });
           });
 
-          onPixelsChange(pixelsToUpdate);
+          onPixelsChange(pixelsToUpdate, index);
         },
       });
 

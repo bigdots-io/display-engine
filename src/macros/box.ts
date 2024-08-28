@@ -1,35 +1,46 @@
-import {
-  MacroBoxConfig,
-  MacroStopCallback,
-  Pixel,
-  PixelsChangeCallback,
-} from "../types.js";
+import { syncFromCanvas } from "../index.js";
+import { MacroFn } from "../types.js";
 
-export const startBox = async (
-  config: MacroBoxConfig,
-  macroIndex: number,
-  onPixelsChange: PixelsChangeCallback
-): MacroStopCallback => {
-  const pixels: Pixel[] = [];
-  for (let y = 0; y < config.height; y++) {
-    for (let x = 0; x < config.width; x++) {
-      const isBorder =
-        x < config.borderWidth ||
-        y < config.borderWidth ||
-        config.borderWidth >= config.width - x ||
-        config.borderWidth >= config.height - y;
+export const startBox: MacroFn = async ({
+  macroConfig,
+  dimensions,
+  ctx,
+  index,
+  updatePixels,
+}) => {
+  const config = {
+    color: "#ffffff",
+    startingColumn: 0,
+    startingRow: 0,
+    width: dimensions.width,
+    height: dimensions.height,
+    brightness: 10,
+    borderWidth: 0,
+    borderColor: "#fff",
+    ...macroConfig,
+  };
 
-      pixels.push({
-        x: x + config.startingColumn,
-        y: y + config.startingRow,
-        hex: isBorder ? config.borderColor : config.color,
-        macroIndex,
-        brightness: config.brightness,
-      });
-    }
+  ctx.fillStyle = config.color;
+  ctx.fillRect(
+    config.startingColumn,
+    config.startingRow,
+    config.width,
+    config.height
+  );
+
+  if (config.borderWidth) {
+    console.log(config.borderColor);
+    ctx.strokeStyle = config.borderColor;
+    ctx.strokeRect(
+      config.startingColumn,
+      config.startingRow,
+      config.width,
+      config.height
+    );
   }
 
-  onPixelsChange(pixels);
+  const pixels = syncFromCanvas(ctx);
+  updatePixels(pixels, index);
 
   return Promise.resolve(() => {});
 };

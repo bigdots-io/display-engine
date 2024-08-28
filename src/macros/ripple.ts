@@ -1,24 +1,39 @@
-import {
-  MacroStopCallback,
-  MacroRippleConfig,
-  Pixel,
-  PixelsChangeCallback,
-} from "../types.js";
-import { colorLuminance } from "../colors.js";
+import { MacroFn } from "../types.js";
+import { syncFromCanvas } from "../index.js";
 
-export const startRipple = async (
-  config: MacroRippleConfig,
-  macroIndex: number,
-  onPixelsChange: PixelsChangeCallback
-): MacroStopCallback => {
-  const { height, width, brightness, speed, waveHeight } = config;
+export function hexToRgb(hex: string) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result
+    ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      }
+    : null;
+}
+
+export const startRipple: MacroFn = async ({
+  macroConfig,
+  dimensions,
+  ctx,
+  index,
+  updatePixels,
+}) => {
+  const config = {
+    width: dimensions.width,
+    height: dimensions.height,
+    speed: 5,
+    brightness: 5,
+    waveHeight: 5,
+    ...macroConfig,
+  };
+
+  const { height, width, speed, waveHeight } = config;
 
   const startTime = performance.now();
 
   function drawRipple(timestamp: number) {
     const elapsedTimeUnits = (timestamp - startTime) / (240 - speed * 20);
-
-    const intialPixels: Pixel[] = [];
 
     for (let y = 0; y < height; y++) {
       for (let x = 0; x < width; x++) {
@@ -32,17 +47,20 @@ export const startRipple = async (
 
         const adjustedHeight = calculatedWaveHeight * 60 + 100 / 2;
 
-        intialPixels.push({
-          y,
-          x,
-          hex: colorLuminance("#ffffff", -(adjustedHeight / 100)),
-          brightness,
-          macroIndex,
-        });
+        const rgb = hexToRgb("#ffffff");
+
+        const id = ctx.createImageData(1, 1); // only do this once per page
+        const d = id.data; // only do this once per page
+        d[0] = rgb?.r as number;
+        d[1] = rgb?.g as number;
+        d[2] = rgb?.b as number;
+        d[3] = (adjustedHeight / 100) * 255;
+        ctx.putImageData(id, x, y);
       }
     }
 
-    onPixelsChange(intialPixels);
+    const pixels = syncFromCanvas(ctx);
+    updatePixels(pixels, index);
 
     if (typeof window !== "undefined") {
       window.requestAnimationFrame(drawRipple);

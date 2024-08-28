@@ -1,45 +1,32 @@
-import { explodeImage } from "../generators/image.js";
-import {
-  MacroImageConfig,
-  MacroStopCallback,
-  PixelsChangeCallback,
-} from "../types.js";
+import { Image, loadImage } from "canvas";
+import { syncFromCanvas } from "../index.js";
+import { MacroFn } from "../types.js";
 
-export const startImage = async (
-  config: MacroImageConfig,
-  macroIndex: number,
-  onPixelsChange: PixelsChangeCallback
-): MacroStopCallback => {
-  const result = await explodeImage(config.url);
+export const startImage: MacroFn = async ({
+  macroConfig,
+  dimensions,
+  ctx,
+  index,
+  updatePixels,
+}) => {
+  const config = {
+    url: "data:image/gif;base64,R0lGODlhEAAQAMQAAORHHOVSKudfOulrSOp3WOyDZu6QdvCchPGolfO0o/XBs/fNwfjZ0frl3/zy7////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAkAABAALAAAAAAQABAAAAVVICSOZGlCQAosJ6mu7fiyZeKqNKToQGDsM8hBADgUXoGAiqhSvp5QAnQKGIgUhwFUYLCVDFCrKUE1lBavAViFIDlTImbKC5Gm2hB0SlBCBMQiB0UjIQA7",
+    speed: 50,
+    width: dimensions.width,
+    height: dimensions.height,
+    startingColumn: 0,
+    startingRow: 0,
+    brightness: 10,
+    ...macroConfig,
+  };
 
-  if (!result.animated) {
-    const pixels = result.data.map((frame) => ({
-      ...frame[0],
-      macroIndex,
-      brightness: config.brightness,
-    }));
-    onPixelsChange(pixels);
-    return () => {};
-  }
+  const img = await loadImage(config.url);
 
-  let currentFrame = 0;
-  const interval = setInterval(() => {
-    currentFrame++;
+  ctx?.drawImage(img, 0, 0);
+  const pixels = syncFromCanvas(ctx);
+  updatePixels(pixels, index);
 
-    if (currentFrame >= result.data.length) {
-      currentFrame = 0;
-    }
+  img.src = config.url;
 
-    const pixels = result.data[currentFrame].map((dot) => ({
-      ...dot,
-      x: dot.x + config.startingColumn,
-      y: dot.y + config.startingRow,
-      macroIndex,
-      brightness: config.brightness,
-    }));
-
-    onPixelsChange(pixels);
-  }, config.speed);
-
-  return Promise.resolve(() => clearInterval(interval));
+  return Promise.resolve(() => {});
 };

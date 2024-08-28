@@ -1,25 +1,37 @@
-import {
-  MacroStopCallback,
-  MacroTwinkleConfig,
-  Pixel,
-  PixelsChangeCallback,
-} from "../types.js";
-import { colorLuminance } from "../colors.js";
+import { syncFromCanvas } from "../index.js";
+import { MacroFn, Pixel } from "../types.js";
+import { hexToRgb } from "./ripple.js";
 
-export const startTwinkle = async (
-  config: MacroTwinkleConfig,
-  macroIndex: number,
-  onPixelsChange: PixelsChangeCallback
-): MacroStopCallback => {
+export const startTwinkle: MacroFn = async ({
+  macroConfig,
+  dimensions,
+  ctx,
+  index,
+  updatePixels,
+}) => {
+  const config = {
+    color: "#FFF",
+    speed: 100,
+    width: dimensions.width,
+    height: dimensions.height,
+    brightness: 10,
+    ...macroConfig,
+  };
+
   const { color, speed, height, width } = config;
 
+  const rgb = hexToRgb(color);
+
+  // Todo: clean this up
+  if (!rgb) return Promise.resolve(() => clearInterval(interval));
+
   const shades = [
-    colorLuminance(color, 0),
-    colorLuminance(color, -0.5),
-    colorLuminance(color, -0.8),
-    colorLuminance(color, -0.8),
-    colorLuminance(color, -0.8),
-    colorLuminance(color, -1),
+    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 0]),
+    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 127]),
+    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 204]),
+    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 204]),
+    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 204]),
+    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 255]),
   ];
 
   const intialPixels: Pixel[] = [];
@@ -29,35 +41,36 @@ export const startTwinkle = async (
       intialPixels.push({
         y,
         x,
-        hex: randomColorShade(shades),
+        rgba: randomColorShade(shades),
         brightness: config.brightness,
-        macroIndex,
       });
     }
   }
 
-  onPixelsChange(intialPixels);
-
   const interval = setInterval(() => {
-    const updatedPixels: Pixel[] = [];
     for (let i = 0; i < 100; i++) {
       const y = Math.floor(Math.random() * (height - 1 - 0 + 1)) + 0;
       const x = Math.floor(Math.random() * (width - 1 - 0 + 1)) + 0;
-      updatedPixels.push({
-        y,
-        x,
-        hex: randomColorShade(shades),
-        brightness: config.brightness,
-        macroIndex,
-      });
+
+      const rgba = randomColorShade(shades);
+
+      const id = ctx.createImageData(1, 1);
+      const d = id.data;
+
+      d[0] = rgba[0];
+      d[1] = rgba[1];
+      d[2] = rgba[2];
+      d[3] = rgba[3];
+      ctx.putImageData(id, x, y);
     }
-    onPixelsChange(updatedPixels);
+    const pixels = syncFromCanvas(ctx);
+    updatePixels(pixels, index);
   }, speed);
 
   return Promise.resolve(() => clearInterval(interval));
 };
 
-function randomColorShade(shades: string[]) {
+function randomColorShade(shades: Uint8ClampedArray[]) {
   const index = Math.floor(Math.random() * (5 - 0 + 1)) + 0;
   return shades[index];
 }

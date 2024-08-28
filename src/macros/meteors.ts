@@ -1,50 +1,55 @@
-import {
-  MacroMeteorsConfig,
-  MacroStopCallback,
-  PixelsChangeCallback,
-} from "../types.js";
-import { colorLuminance } from "../colors.js";
+import { MacroFn } from "../types.js";
+import { syncFromCanvas } from "../index.js";
+import { hexToRgb } from "./ripple.js";
 
 interface Meteor {
   tailLength: number;
   speed: number;
-  colors: string[];
+  //   colors: string[];
+  //   rgb: Uint8ClampedArray;
   moveCount: number;
   complete: boolean;
   startingX: number;
   path: { x: number; y: number }[];
 }
 
-export const startMeteors = async (
-  config: MacroMeteorsConfig,
-  macroIndex: number,
-  onPixelsChange: PixelsChangeCallback
-): MacroStopCallback => {
-  const {
-    minTailLength,
-    maxTailLength,
-    maxDepth,
-    minSpeed,
-    maxSpeed,
-    color,
-    meteorCount,
-    width,
-    height,
-  } = config;
+export const startMeteors: MacroFn = async ({
+  macroConfig,
+  dimensions,
+  index,
+  ctx,
+  updatePixels,
+}) => {
+  const config = {
+    color: "#FFF",
+    meteorCount: 40,
+    maxTailLength: 20,
+    minTailLength: 5,
+    maxDepth: 5,
+    minSpeed: 100,
+    maxSpeed: 10,
+    width: dimensions.width,
+    height: dimensions.height,
+    brightness: 10,
+    ...macroConfig,
+  };
 
   const meteors: Meteor[] = [];
   const validStartingPoints: number[] = [];
 
-  for (let i = 0; i < width + height; i++) {
+  for (let i = 0; i < config.width + config.height; i++) {
     validStartingPoints.push(i);
   }
 
+  const rgb = hexToRgb(config.color);
+
   const generateMeteor = (): Meteor => {
     const tailLength =
-      Math.floor(Math.random() * (maxTailLength - minTailLength)) +
-      minTailLength;
+      Math.floor(
+        Math.random() * (config.maxTailLength - config.minTailLength)
+      ) + config.minTailLength;
 
-    const depth = Math.floor(Math.random() * (maxDepth - 1)) + 1;
+    // const depth = Math.floor(Math.random() * (config.maxDepth - 1)) + 1;
 
     const startingX =
       validStartingPoints[
@@ -53,8 +58,10 @@ export const startMeteors = async (
 
     return {
       tailLength: tailLength,
-      speed: Math.floor(Math.random() * (minSpeed - maxSpeed)) + maxSpeed,
-      colors: generateColorShade(color, tailLength, depth),
+      speed:
+        Math.floor(Math.random() * (config.minSpeed - config.maxSpeed)) +
+        config.maxSpeed,
+      //   colors: generateColorShade(config.color, tailLength, depth),
       moveCount: 0,
       complete: false,
       startingX: startingX,
@@ -72,18 +79,12 @@ export const startMeteors = async (
     meteors.push(meteor);
     const index = validStartingPoints.indexOf(meteor.path[0].x);
     validStartingPoints.splice(index, 1);
-    onPixelsChange([
-      {
-        x: meteor.path[0].y,
-        y: meteor.path[0].x,
-        hex: meteor.colors[0],
-        brightness: config.brightness,
-        macroIndex,
-      },
-    ]);
+
+    // ctx.fillStyle = meteor.colors[0];
+    // ctx.fillRect(meteor.path[0].y, meteor.path[0].x, 1, 1);
   };
 
-  for (let i = 0; i < meteorCount; i++) {
+  for (let i = 0; i < config.meteorCount; i++) {
     seedMeteor();
   }
 
@@ -92,7 +93,7 @@ export const startMeteors = async (
       return meteor.complete == false;
     });
 
-    for (let i = filteredMeteors.length; i < meteorCount; i++) {
+    for (let i = filteredMeteors.length; i < config.meteorCount; i++) {
       seedMeteor();
     }
 
@@ -102,7 +103,7 @@ export const startMeteors = async (
       if (meteors[i].moveCount > meteor.speed) {
         meteors[i].moveCount = 0;
 
-        if (height + meteor.tailLength > meteor.path[0].y) {
+        if (config.height + meteor.tailLength > meteor.path[0].y) {
           meteors[i].path.unshift({
             x: meteor.path[0].x - 1,
             y: meteor.path[0].y + 1,
@@ -116,38 +117,44 @@ export const startMeteors = async (
         }
 
         meteor.path.forEach((dot, i) => {
-          onPixelsChange([
-            {
-              y: dot.y,
-              x: dot.x,
-              hex: meteor.colors[i],
-              brightness: config.brightness,
-              macroIndex,
-            },
-          ]);
+          ctx.fillStyle = "#fff";
+          ctx.fillRect(dot.y, dot.x, 1, 1);
+
+          const rgb = hexToRgb(config.color);
+
+          const id = ctx.createImageData(1, 1);
+          const d = id.data;
+          d[0] = rgb?.r as number;
+          d[1] = rgb?.g as number;
+          d[2] = rgb?.b as number;
+          //   d[3] = (adjustedHeight / 100) * 255;
+          ctx.putImageData(id, dot.x, dot.y);
         });
       }
     });
+
+    const pixels = syncFromCanvas(ctx);
+    updatePixels(pixels, index);
   }, 10);
 
   return Promise.resolve(() => clearInterval(interval));
 };
 
-function generateColorShade(seedColor: string, length: number, depth: number) {
-  const colors = [],
-    interval = 1 / (length - 1);
+// function generateColorShade(seedColor: string, length: number, depth: number) {
+//   const colors = [],
+//     interval = 1 / (length - 1);
 
-  if (depth !== 1) {
-    seedColor = colorLuminance(seedColor, Math.round(-(1 / depth) * 10) / 10);
-  }
+//   if (depth !== 1) {
+//     seedColor = colorLuminance(seedColor, Math.round(-(1 / depth) * 10) / 10);
+//   }
 
-  for (let i = 0; i < 1; i = i + interval) {
-    colors.push(colorLuminance(seedColor, -i));
-  }
+//   for (let i = 0; i < 1; i = i + interval) {
+//     colors.push(colorLuminance(seedColor, -i));
+//   }
 
-  if (colors.length < length) {
-    colors.push("#000000");
-  }
+//   if (colors.length < length) {
+//     colors.push("#000000");
+//   }
 
-  return colors;
-}
+//   return colors;
+// }

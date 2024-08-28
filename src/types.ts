@@ -1,4 +1,5 @@
-export type Font = "system-6" | "system-16";
+import { CanvasRenderingContext2D } from "canvas";
+
 export type Alignment = "left" | "center" | "right";
 type Brightness = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
@@ -9,24 +10,8 @@ export enum MacroName {
   Meteors = "meteors",
   Marquee = "marquee",
   Image = "image",
-  Time = "time",
+  // Time = "time",
   Ripple = "ripple",
-}
-
-export interface FontDefinition {
-  height: number;
-  width: number;
-  name: string;
-  description: string;
-  author: string;
-  monospace: boolean;
-  characters: Record<string, FontCharacterDefinition>;
-}
-
-export interface FontCharacterDefinition {
-  width?: number;
-  height?: number;
-  coordinates: { y: number; x: number; opacity: number }[];
 }
 
 export interface MacroBoxConfig {
@@ -43,7 +28,8 @@ export interface MacroBoxConfig {
 export interface MacroTextConfig {
   color: string;
   text: string;
-  font: Font;
+  fontSize: number;
+  font: string;
   alignment: Alignment;
   spaceBetweenLetters: number;
   spaceBetweenLines: number;
@@ -84,12 +70,16 @@ export interface MacroMeteorsConfig {
 
 export interface MacroMarqueeConfig {
   color: string;
-  font: Font;
+  fontSize: number;
+  font: string;
   text: string;
   speed: number;
   width: number;
+  startingColumn: number;
+  startingRow: number;
   height: number;
   brightness: Brightness;
+  direction: "horizontal" | "vertical";
 }
 
 export interface MacroImageConfig {
@@ -102,26 +92,13 @@ export interface MacroImageConfig {
   brightness: Brightness;
 }
 
-export interface MacroTimeConfig {
-  color: string;
-  font: Font;
-  alignment: Alignment;
-  spaceBetweenLetters: number;
-  spaceBetweenLines: number;
-  width: number;
-  startingColumn: number;
-  startingRow: number;
-  brightness: Brightness;
-}
-
 export type MacroConfig =
   | MacroBoxConfig
   | MacroTextConfig
+  | MacroMarqueeConfig
   | MacroTwinkleConfig
   | MacroMeteorsConfig
-  | MacroMarqueeConfig
-  | MacroImageConfig
-  | MacroTimeConfig;
+  | MacroImageConfig;
 
 export interface Macro {
   macroName: MacroName;
@@ -136,11 +113,24 @@ export interface Dimensions {
 export interface Pixel {
   y: number;
   x: number;
-  hex: string | null;
-  macroIndex: number;
+  rgba: null | Uint8ClampedArray;
   brightness: number;
 }
 
-export type UpdatePixels = (pixels: Pixel[]) => void;
-export type PixelsChangeCallback = (pixels: Pixel[]) => void;
+export type UpdatePixels = (pixels: Pixel[], index: number) => void;
+export type PixelsChangeCallback = (pixels: Pixel[], index: number) => void;
 export type MacroStopCallback = Promise<() => void>;
+
+export type MacroFn = ({
+  macroConfig,
+  dimensions,
+  ctx,
+  index,
+  updatePixels,
+}: {
+  macroConfig: Partial<MacroConfig>;
+  dimensions: Dimensions;
+  ctx: CanvasRenderingContext2D;
+  index: number;
+  updatePixels: PixelsChangeCallback;
+}) => MacroStopCallback;
