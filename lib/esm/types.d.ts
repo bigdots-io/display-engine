@@ -47,6 +47,9 @@ export interface MacroRippleConfig {
     brightness: Brightness;
     waveHeight: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
+export interface MacroCustomConfig {
+    macroImplementationFun: MacroFn;
+}
 export interface MacroMeteorsConfig {
     color: string;
     meteorCount: number;
@@ -81,7 +84,7 @@ export interface MacroImageConfig {
     startingRow: number;
     brightness: Brightness;
 }
-export type MacroConfig = MacroBoxConfig | MacroTextConfig | MacroMarqueeConfig | MacroTwinkleConfig | MacroMeteorsConfig | MacroImageConfig;
+export type MacroConfig = MacroBoxConfig | MacroTextConfig | MacroMarqueeConfig | MacroTwinkleConfig | MacroImageConfig | MacroCustomConfig;
 export interface Macro {
     macroName: MacroName;
     macroConfig: Partial<MacroConfig>;

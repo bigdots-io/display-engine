@@ -1,15 +1,34 @@
 import { MacroFn } from "../types.js";
 import { syncFromCanvas } from "../index.js";
 
-export function hexToRgb(hex: string) {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? {
+export function colorToRgba(hexOrRgbString: string) {
+  if (hexOrRgbString.includes("rgb")) {
+    const result = hexOrRgbString.match(
+      /^rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)$/i
+    );
+    if (result) {
+      return {
+        r: parseInt(result[1], 10),
+        g: parseInt(result[2], 10),
+        b: parseInt(result[3], 10),
+        a: parseInt(result[4], 10) || 255,
+      };
+    }
+  } else {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+      hexOrRgbString
+    );
+    if (result) {
+      return {
         r: parseInt(result[1], 16),
         g: parseInt(result[2], 16),
         b: parseInt(result[3], 16),
-      }
-    : null;
+        a: 255,
+      };
+    }
+  }
+
+  return null;
 }
 
 export const startRipple: MacroFn = async ({
@@ -47,14 +66,14 @@ export const startRipple: MacroFn = async ({
 
         const adjustedHeight = calculatedWaveHeight * 60 + 100 / 2;
 
-        const rgb = hexToRgb("#ffffff");
+        const rgba = colorToRgba("#ffffff");
 
         const id = ctx.createImageData(1, 1); // only do this once per page
         const d = id.data; // only do this once per page
-        d[0] = rgb?.r as number;
-        d[1] = rgb?.g as number;
-        d[2] = rgb?.b as number;
-        d[3] = (adjustedHeight / 100) * 255;
+        d[0] = rgba?.r as number;
+        d[1] = rgba?.g as number;
+        d[2] = rgba?.b as number;
+        d[3] = (adjustedHeight / 100) * (rgba?.a as number);
         ctx.putImageData(id, x, y);
       }
     }

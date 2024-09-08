@@ -1,6 +1,6 @@
 import { MacroFn } from "../types.js";
 import { syncFromCanvas } from "../index.js";
-import { hexToRgb } from "./ripple.js";
+import { colorToRgba } from "./ripple.js";
 
 interface Meteor {
   tailLength: number;
@@ -33,7 +33,7 @@ export const startMeteors: MacroFn = async ({
     ...macroConfig,
   };
 
-  const rgb = hexToRgb(config.color);
+  const rgba = colorToRgba(config.color);
 
   const meteors: Meteor[] = [];
   const validStartingPoints: number[] = [];
@@ -119,10 +119,13 @@ export const startMeteors: MacroFn = async ({
             (meteor.tailLength - i) / meteor.tailLength;
           const id = ctx.createImageData(1, 1);
           const d = id.data;
-          d[0] = rgb?.r as number;
-          d[1] = rgb?.g as number;
-          d[2] = rgb?.b as number;
-          d[3] = meteorDotAlphaPercentage * meteorDepthAlphaPercentage * 255;
+          d[0] = rgba?.r as number;
+          d[1] = rgba?.g as number;
+          d[2] = rgba?.b as number;
+          d[3] =
+            meteorDotAlphaPercentage *
+            meteorDepthAlphaPercentage *
+            (rgba?.a as number);
           ctx.putImageData(id, dot.x, dot.y);
         });
       }

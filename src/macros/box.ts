@@ -29,7 +29,6 @@ export const startBox: MacroFn = async ({
   );
 
   if (config.borderWidth) {
-    console.log(config.borderColor);
     ctx.strokeStyle = config.borderColor;
     ctx.strokeRect(
       config.startingColumn,

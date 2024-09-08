@@ -1,6 +1,6 @@
 import { syncFromCanvas } from "../index.js";
 import { MacroFn, Pixel } from "../types.js";
-import { hexToRgb } from "./ripple.js";
+import { colorToRgba } from "./ripple.js";
 
 export const startTwinkle: MacroFn = async ({
   macroConfig,
@@ -20,18 +20,18 @@ export const startTwinkle: MacroFn = async ({
 
   const { color, speed, height, width } = config;
 
-  const rgb = hexToRgb(color);
+  const rgba = colorToRgba(color);
 
   // Todo: clean this up
-  if (!rgb) return Promise.resolve(() => clearInterval(interval));
+  if (!rgba) return Promise.resolve(() => clearInterval(interval));
 
   const shades = [
-    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 0]),
-    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 127]),
-    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 204]),
-    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 204]),
-    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 204]),
-    new Uint8ClampedArray([rgb?.r, rgb?.g, rgb?.b, 255]),
+    new Uint8ClampedArray([rgba?.r, rgba?.g, rgba?.b, 0]),
+    new Uint8ClampedArray([rgba?.r, rgba?.g, rgba?.b, 0.5 * rgba.a]),
+    new Uint8ClampedArray([rgba?.r, rgba?.g, rgba?.b, 0.8 * rgba.a]),
+    new Uint8ClampedArray([rgba?.r, rgba?.g, rgba?.b, 0.8 * rgba.a]),
+    new Uint8ClampedArray([rgba?.r, rgba?.g, rgba?.b, 0.8 * rgba.a]),
+    new Uint8ClampedArray([rgba?.r, rgba?.g, rgba?.b, rgba.a]),
   ];
 
   const intialPixels: Pixel[] = [];

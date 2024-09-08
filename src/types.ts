@@ -10,7 +10,6 @@ export enum MacroName {
   Meteors = "meteors",
   Marquee = "marquee",
   Image = "image",
-  // Time = "time",
   Ripple = "ripple",
 }
 
@@ -55,6 +54,10 @@ export interface MacroRippleConfig {
   waveHeight: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 
+export interface MacroCustomConfig {
+  macroImplementationFun: MacroFn;
+}
+
 export interface MacroMeteorsConfig {
   color: string;
   meteorCount: number;
@@ -97,8 +100,9 @@ export type MacroConfig =
   | MacroTextConfig
   | MacroMarqueeConfig
   | MacroTwinkleConfig
-  | MacroMeteorsConfig
-  | MacroImageConfig;
+  // | MacroMeteorsConfig
+  | MacroImageConfig
+  | MacroCustomConfig;
 
 export interface Macro {
   macroName: MacroName;
