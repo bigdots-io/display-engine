@@ -10,8 +10,15 @@ export declare enum MacroName {
     Image = "image",
     Ripple = "ripple"
 }
+export interface Gradient {
+    direction: "vertical" | "horizontal";
+    colorStops: {
+        color: string;
+        offset: number;
+    }[];
+}
 export interface MacroBoxConfig {
-    color: string;
+    backgroundColor: string | Gradient;
     startingColumn: number;
     startingRow: number;
     width: number;

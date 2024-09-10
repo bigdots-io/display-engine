@@ -1,5 +1,6 @@
+import { CanvasRenderingContext2D } from "canvas";
 import { syncFromCanvas } from "../index.js";
-import { MacroFn } from "../types.js";
+import { Dimensions, MacroBoxConfig, MacroFn } from "../types.js";
 
 export const startBox: MacroFn = async ({
   macroConfig,
@@ -9,7 +10,7 @@ export const startBox: MacroFn = async ({
   updatePixels,
 }) => {
   const config = {
-    color: "#ffffff",
+    backgroundColor: "#ffffff",
     startingColumn: 0,
     startingRow: 0,
     width: dimensions.width,
@@ -20,7 +21,8 @@ export const startBox: MacroFn = async ({
     ...macroConfig,
   };
 
-  ctx.fillStyle = config.color;
+  ctx.fillStyle = getFillStyle(config.backgroundColor, dimensions, ctx);
+
   ctx.fillRect(
     config.startingColumn,
     config.startingRow,
@@ -43,3 +45,27 @@ export const startBox: MacroFn = async ({
 
   return Promise.resolve(() => {});
 };
+
+function getFillStyle(
+  color: MacroBoxConfig["backgroundColor"],
+  dimensions: Dimensions,
+  ctx: CanvasRenderingContext2D
+) {
+  if (typeof color === "string") {
+    return color;
+  }
+
+  const { direction, colorStops } = color;
+  const gradient = ctx.createLinearGradient(
+    0,
+    0,
+    direction === "horizontal" ? dimensions.width : 0,
+    dimensions.height
+  );
+
+  for (const colorStop of colorStops) {
+    gradient.addColorStop(colorStop.offset, colorStop.color);
+  }
+
+  return gradient;
+}
