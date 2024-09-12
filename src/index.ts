@@ -10,6 +10,7 @@ import {
   Dimensions,
   Macro,
   MacroBoxConfig,
+  MacroCustomConfig,
   MacroFn,
   MacroImageConfig,
   MacroMarqueeConfig,
@@ -23,6 +24,7 @@ import {
   UpdatePixels,
 } from "./types.js";
 import { startImage } from "./macros/image.js";
+import { startCustom } from "./macros/custom.js";
 
 export const twinkle = (macroConfig: Partial<MacroTwinkleConfig>): Macro => ({
   macroName: MacroName.Twinkle,
@@ -59,6 +61,11 @@ export const ripple = (macroConfig: Partial<MacroRippleConfig>): Macro => ({
   macroConfig,
 });
 
+export const custom = (macroConfig: Partial<MacroCustomConfig>): Macro => ({
+  macroName: MacroName.Custom,
+  macroConfig,
+});
+
 function startMacros({
   macros,
   dimensions,
@@ -82,6 +89,7 @@ function startMacros({
       [MacroName.Ripple]: startRipple,
       [MacroName.Image]: startImage,
       [MacroName.Meteors]: startMeteors,
+      [MacroName.Custom]: startCustom,
     };
 
     const macroFn = MacroMap[macroName];

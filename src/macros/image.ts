@@ -1,4 +1,4 @@
-import { Image, loadImage } from "canvas";
+import { loadImage } from "canvas";
 import { syncFromCanvas } from "../index.js";
 import { MacroFn } from "../types.js";
 

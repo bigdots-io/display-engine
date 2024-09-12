@@ -8,7 +8,8 @@ export declare enum MacroName {
     Meteors = "meteors",
     Marquee = "marquee",
     Image = "image",
-    Ripple = "ripple"
+    Ripple = "ripple",
+    Custom = "custom"
 }
 export interface Gradient {
     direction: "vertical" | "horizontal";
@@ -55,7 +56,7 @@ export interface MacroRippleConfig {
     waveHeight: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 export interface MacroCustomConfig {
-    macroImplementationFun: MacroFn;
+    customFunc: (ctx: CanvasRenderingContext2D, dimensions: Dimensions) => void;
 }
 export interface MacroMeteorsConfig {
     color: string;

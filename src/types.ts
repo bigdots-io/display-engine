@@ -11,6 +11,7 @@ export enum MacroName {
   Marquee = "marquee",
   Image = "image",
   Ripple = "ripple",
+  Custom = "custom",
 }
 export interface Gradient {
   direction: "vertical" | "horizontal";
@@ -59,7 +60,7 @@ export interface MacroRippleConfig {
 }
 
 export interface MacroCustomConfig {
-  macroImplementationFun: MacroFn;
+  customFunc: (ctx: CanvasRenderingContext2D, dimensions: Dimensions) => void;
 }
 
 export interface MacroMeteorsConfig {
