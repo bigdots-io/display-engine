@@ -15,7 +15,6 @@ export const startBox: MacroFn = async ({
     startingRow: 0,
     width: dimensions.width,
     height: dimensions.height,
-    brightness: 10,
     borderWidth: 0,
     borderColor: "#fff",
     ...macroConfig,

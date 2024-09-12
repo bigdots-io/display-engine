@@ -1,6 +1,5 @@
 import { CanvasRenderingContext2D } from "canvas";
 export type Alignment = "left" | "center" | "right";
-type Brightness = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 export declare enum MacroName {
     Box = "box",
     Text = "text",
@@ -24,7 +23,6 @@ export interface MacroBoxConfig {
     startingRow: number;
     width: number;
     height: number;
-    brightness: Brightness;
     borderWidth: number;
     borderColor: string;
 }
@@ -39,20 +37,17 @@ export interface MacroTextConfig {
     width: number;
     startingColumn: number;
     startingRow: number;
-    brightness: Brightness;
 }
 export interface MacroTwinkleConfig {
     color: string;
     speed: number;
     width: number;
     height: number;
-    brightness: Brightness;
 }
 export interface MacroRippleConfig {
     width: number;
     height: number;
     speed: number;
-    brightness: Brightness;
     waveHeight: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 export interface MacroCustomConfig {
@@ -68,7 +63,6 @@ export interface MacroMeteorsConfig {
     maxSpeed: number;
     width: number;
     height: number;
-    brightness: Brightness;
 }
 export interface MacroMarqueeConfig {
     color: string;
@@ -80,7 +74,6 @@ export interface MacroMarqueeConfig {
     startingColumn: number;
     startingRow: number;
     height: number;
-    brightness: Brightness;
     direction: "horizontal" | "vertical";
 }
 export interface MacroImageConfig {
@@ -90,7 +83,6 @@ export interface MacroImageConfig {
     height: number;
     startingColumn: number;
     startingRow: number;
-    brightness: Brightness;
 }
 export type MacroConfig = MacroBoxConfig | MacroTextConfig | MacroMarqueeConfig | MacroTwinkleConfig | MacroImageConfig | MacroCustomConfig;
 export interface Macro {
@@ -105,7 +97,6 @@ export interface Pixel {
     y: number;
     x: number;
     rgba: null | Uint8ClampedArray;
-    brightness: number;
 }
 export type UpdatePixels = (pixels: Pixel[], index: number) => void;
 export type PixelsChangeCallback = (pixels: Pixel[], index: number) => void;
@@ -117,4 +108,3 @@ export type MacroFn = ({ macroConfig, dimensions, ctx, index, updatePixels, }: {
     index: number;
     updatePixels: PixelsChangeCallback;
 }) => MacroStopCallback;
-export {};

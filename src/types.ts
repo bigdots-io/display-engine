@@ -1,7 +1,6 @@
 import { CanvasRenderingContext2D } from "canvas";
 
 export type Alignment = "left" | "center" | "right";
-type Brightness = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export enum MacroName {
   Box = "box",
@@ -24,7 +23,6 @@ export interface MacroBoxConfig {
   startingRow: number;
   width: number;
   height: number;
-  brightness: Brightness;
   borderWidth: number;
   borderColor: string;
 }
@@ -40,7 +38,6 @@ export interface MacroTextConfig {
   width: number;
   startingColumn: number;
   startingRow: number;
-  brightness: Brightness;
 }
 
 export interface MacroTwinkleConfig {
@@ -48,14 +45,12 @@ export interface MacroTwinkleConfig {
   speed: number;
   width: number;
   height: number;
-  brightness: Brightness;
 }
 
 export interface MacroRippleConfig {
   width: number;
   height: number;
   speed: number;
-  brightness: Brightness;
   waveHeight: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 }
 
@@ -73,7 +68,6 @@ export interface MacroMeteorsConfig {
   maxSpeed: number;
   width: number;
   height: number;
-  brightness: Brightness;
 }
 
 export interface MacroMarqueeConfig {
@@ -86,7 +80,6 @@ export interface MacroMarqueeConfig {
   startingColumn: number;
   startingRow: number;
   height: number;
-  brightness: Brightness;
   direction: "horizontal" | "vertical";
 }
 
@@ -97,7 +90,6 @@ export interface MacroImageConfig {
   height: number;
   startingColumn: number;
   startingRow: number;
-  brightness: Brightness;
 }
 
 export type MacroConfig =
@@ -123,7 +115,6 @@ export interface Pixel {
   y: number;
   x: number;
   rgba: null | Uint8ClampedArray;
-  brightness: number;
 }
 
 export type UpdatePixels = (pixels: Pixel[], index: number) => void;

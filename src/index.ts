@@ -117,7 +117,6 @@ export function syncFromCanvas(ctx: CanvasRenderingContext2D) {
         x: x,
         y: y,
         rgba: data[3] === 0 ? null : data,
-        brightness: (data[3] / 255) * 10,
       });
     }
   }

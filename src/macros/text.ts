@@ -19,7 +19,6 @@ export const startText: MacroFn = async ({
     startingColumn: 0,
     startingRow: 0,
     width: dimensions.width,
-    brightness: 10,
     ...macroConfig,
   };
 

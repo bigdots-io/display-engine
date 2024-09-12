@@ -16,7 +16,6 @@ export const startImage: MacroFn = async ({
     height: dimensions.height,
     startingColumn: 0,
     startingRow: 0,
-    brightness: 10,
     ...macroConfig,
   };
 

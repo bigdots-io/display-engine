@@ -14,7 +14,6 @@ export const startTwinkle: MacroFn = async ({
     speed: 100,
     width: dimensions.width,
     height: dimensions.height,
-    brightness: 10,
     ...macroConfig,
   };
 
@@ -42,7 +41,6 @@ export const startTwinkle: MacroFn = async ({
         y,
         x,
         rgba: randomColorShade(shades),
-        brightness: config.brightness,
       });
     }
   }

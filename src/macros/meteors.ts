@@ -29,7 +29,6 @@ export const startMeteors: MacroFn = async ({
     maxSpeed: 10,
     width: dimensions.width,
     height: dimensions.height,
-    brightness: 10,
     ...macroConfig,
   };
 

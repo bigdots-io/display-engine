@@ -42,7 +42,6 @@ export const startRipple: MacroFn = async ({
     width: dimensions.width,
     height: dimensions.height,
     speed: 5,
-    brightness: 5,
     waveHeight: 5,
     ...macroConfig,
   };
