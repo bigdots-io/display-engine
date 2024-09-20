@@ -1,6 +1,6 @@
 import { loadImage } from "canvas";
-import { syncFromCanvas } from "../index.js";
 import { MacroFn } from "../types.js";
+import { syncFromCanvas } from "../canvas.js";
 
 export const startImage: MacroFn = async ({
   macroConfig,

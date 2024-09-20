@@ -1,6 +1,6 @@
 import { CanvasRenderingContext2D } from "canvas";
-import { syncFromCanvas } from "../index.js";
 import { Dimensions, MacroBoxConfig, MacroFn } from "../types.js";
+import { syncFromCanvas } from "../canvas.js";
 
 export const startBox: MacroFn = async ({
   macroConfig,

@@ -1,4 +1,4 @@
-import { syncFromCanvas } from "../index.js";
+import { syncFromCanvas } from "../canvas.js";
 import { MacroCustomConfig, MacroFn } from "../types.js";
 
 export const startCustom: MacroFn = async ({

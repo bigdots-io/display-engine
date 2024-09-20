@@ -1,4 +1,4 @@
-import { syncFromCanvas } from "../index.js";
+import { syncFromCanvas } from "../canvas.js";
 import { MacroFn } from "../types.js";
 
 export const startMarquee: MacroFn = async ({

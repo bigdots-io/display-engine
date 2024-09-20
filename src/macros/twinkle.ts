@@ -1,4 +1,4 @@
-import { syncFromCanvas } from "../index.js";
+import { syncFromCanvas } from "../canvas.js";
 import { MacroFn, Pixel } from "../types.js";
 import { colorToRgba } from "./ripple.js";
 

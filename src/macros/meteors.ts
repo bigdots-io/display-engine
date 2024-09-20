@@ -1,5 +1,5 @@
+import { syncFromCanvas } from "../canvas.js";
 import { MacroFn } from "../types.js";
-import { syncFromCanvas } from "../index.js";
 import { colorToRgba } from "./ripple.js";
 
 interface Meteor {

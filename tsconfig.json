@@ -11,8 +11,7 @@
     "isolatedModules": true,
     "outDir": "lib/esm",
     "declaration": true,
-    "strictPropertyInitialization": false,
-    "resolveJsonModule": true
+    "strictPropertyInitialization": false
   },
   "include": ["src/**/*"]
 }

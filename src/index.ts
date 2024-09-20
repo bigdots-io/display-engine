@@ -1,4 +1,3 @@
-import { CanvasRenderingContext2D, createCanvas } from "canvas";
 import { mixColors } from "./colors.js";
 import { startBox } from "./macros/box.js";
 import { startMarquee } from "./macros/marquee.js";
@@ -25,6 +24,9 @@ import {
 } from "./types.js";
 import { startImage } from "./macros/image.js";
 import { startCustom } from "./macros/custom.js";
+import { buildCanvas } from "./canvas.js";
+
+export type { Pixel } from "./types.js";
 
 export const twinkle = (macroConfig: Partial<MacroTwinkleConfig>): Macro => ({
   macroName: MacroName.Twinkle,
@@ -76,10 +78,7 @@ function startMacros({
   updatePixels: UpdatePixels;
 }): () => Promise<void> {
   const stops = macros.map(({ macroName, macroConfig }, index) => {
-    const canvas = createCanvas(dimensions.width, dimensions.height);
-    const ctx = canvas.getContext("2d", {
-      willReadFrequently: true,
-    });
+    const { ctx } = buildCanvas(dimensions);
 
     const MacroMap: { [k in MacroName]: MacroFn } = {
       [MacroName.Box]: startBox,
@@ -94,34 +93,12 @@ function startMacros({
 
     const macroFn = MacroMap[macroName];
 
-    if (!macroFn) {
-      throw new Error("missing macro function");
-    }
-
     return macroFn({ macroConfig, dimensions, ctx, index, updatePixels });
   });
 
   return async () => {
     (await Promise.all(stops)).forEach((stop) => stop());
   };
-}
-
-export function syncFromCanvas(ctx: CanvasRenderingContext2D) {
-  const pixels: Pixel[] = [];
-
-  for (let y = 0; y < 16; y++) {
-    for (let x = 0; x < 64; x++) {
-      const { data } = ctx.getImageData(x, y, 1, 1);
-
-      pixels.push({
-        x: x,
-        y: y,
-        rgba: data[3] === 0 ? null : data,
-      });
-    }
-  }
-
-  return pixels;
 }
 
 const buildPixelMap = ({ height, width }: Dimensions) => {
@@ -137,10 +114,10 @@ const buildPixelMap = ({ height, width }: Dimensions) => {
 };
 
 export function createDisplayEngine({
-  dimensions = { width: 23, height: 128 },
+  dimensions,
   onPixelsChange,
 }: {
-  dimensions?: { height: number; width: number };
+  dimensions: { height: number; width: number };
   onPixelsChange: PixelsChangeCallback;
 }) {
   let stopMacros: () => Promise<void> = () => Promise.resolve();
