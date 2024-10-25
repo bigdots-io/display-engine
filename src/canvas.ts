@@ -1,9 +1,13 @@
-import { CanvasRenderingContext2D, createCanvas } from "canvas";
+import { CanvasRenderingContext2D, createCanvas, registerFont } from "canvas";
 import { Dimensions, Pixel } from "./types";
 
 export function buildCanvas(dimensions: Dimensions) {
   const canvas = createCanvas(dimensions.width, dimensions.height);
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+  registerFont("../../fonts/PixelifySans-VariableFont_wght.ttf", {
+    family: "pixelify",
+  });
 
   return { canvas, ctx };
 }

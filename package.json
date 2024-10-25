@@ -9,7 +9,8 @@
   },
   "types": "lib/esm/index.d.ts",
   "files": [
-    "lib/"
+    "lib/",
+    "fonts/"
   ],
   "scripts": {
     "build": "tsc --watch",
