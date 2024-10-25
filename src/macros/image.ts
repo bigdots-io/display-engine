@@ -6,6 +6,7 @@ export const startImage: MacroFn = async ({
   macroConfig,
   dimensions,
   ctx,
+  canvas,
   index,
   updatePixels,
 }) => {
@@ -23,7 +24,7 @@ export const startImage: MacroFn = async ({
 
   ctx?.drawImage(img, 0, 0);
   const pixels = syncFromCanvas(ctx);
-  updatePixels(pixels, index);
+  updatePixels(pixels, index, canvas);
 
   img.src = config.url;
 

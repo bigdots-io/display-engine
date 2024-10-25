@@ -17,6 +17,7 @@ export const startMeteors: MacroFn = async ({
   dimensions,
   index,
   ctx,
+  canvas,
   updatePixels,
 }) => {
   const config = {
@@ -131,7 +132,7 @@ export const startMeteors: MacroFn = async ({
     });
 
     const pixels = syncFromCanvas(ctx);
-    updatePixels(pixels, index);
+    updatePixels(pixels, index, canvas);
   }, 10);
 
   return Promise.resolve(() => clearInterval(interval));

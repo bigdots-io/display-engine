@@ -78,7 +78,7 @@ function startMacros({
   updatePixels: UpdatePixels;
 }): () => Promise<void> {
   const stops = macros.map(({ macroName, macroConfig }, index) => {
-    const { ctx } = buildCanvas(dimensions);
+    const { ctx, canvas } = buildCanvas(dimensions);
 
     const MacroMap: { [k in MacroName]: MacroFn } = {
       [MacroName.Box]: startBox,
@@ -93,7 +93,14 @@ function startMacros({
 
     const macroFn = MacroMap[macroName];
 
-    return macroFn({ macroConfig, dimensions, ctx, index, updatePixels });
+    return macroFn({
+      macroConfig,
+      dimensions,
+      ctx,
+      index,
+      updatePixels,
+      canvas,
+    });
   });
 
   return async () => {
@@ -131,7 +138,7 @@ export function createDisplayEngine({
       stopMacros = startMacros({
         macros,
         dimensions,
-        updatePixels: (updatePixels, index) => {
+        updatePixels: (updatePixels, index, canvas) => {
           const pixelsToUpdate: Pixel[] = [];
           updatePixels.forEach((pixelToUpdate) => {
             const { y, x } = pixelToUpdate;
@@ -151,7 +158,7 @@ export function createDisplayEngine({
             });
           });
 
-          onPixelsChange(pixelsToUpdate, index);
+          onPixelsChange(pixelsToUpdate, index, canvas);
         },
       });
 

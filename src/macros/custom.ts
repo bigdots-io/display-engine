@@ -5,13 +5,15 @@ export const startCustom: MacroFn = async ({
   macroConfig,
   dimensions,
   ctx,
+  canvas,
+
   index,
   updatePixels,
 }) => {
   (macroConfig as MacroCustomConfig).customFunc(ctx, dimensions);
 
   const pixels = syncFromCanvas(ctx);
-  updatePixels(pixels, index);
+  updatePixels(pixels, index, canvas);
 
   return Promise.resolve(() => {});
 };

@@ -5,6 +5,7 @@ export const startMarquee: MacroFn = async ({
   macroConfig,
   dimensions,
   ctx,
+  canvas,
   index,
   updatePixels,
 }) => {
@@ -48,7 +49,7 @@ export const startMarquee: MacroFn = async ({
     );
 
     const pixels = syncFromCanvas(ctx);
-    updatePixels(pixels, index);
+    updatePixels(pixels, index, canvas);
 
     if (config.direction === "horizontal") {
       if (offset > config.width + textMetrics.width) {

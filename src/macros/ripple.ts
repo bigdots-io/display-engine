@@ -35,6 +35,7 @@ export const startRipple: MacroFn = async ({
   macroConfig,
   dimensions,
   ctx,
+  canvas,
   index,
   updatePixels,
 }) => {
@@ -78,7 +79,7 @@ export const startRipple: MacroFn = async ({
     }
 
     const pixels = syncFromCanvas(ctx);
-    updatePixels(pixels, index);
+    updatePixels(pixels, index, canvas);
 
     if (typeof window !== "undefined") {
       window.requestAnimationFrame(drawRipple);

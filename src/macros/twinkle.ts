@@ -6,6 +6,7 @@ export const startTwinkle: MacroFn = async ({
   macroConfig,
   dimensions,
   ctx,
+  canvas,
   index,
   updatePixels,
 }) => {
@@ -62,7 +63,7 @@ export const startTwinkle: MacroFn = async ({
       ctx.putImageData(id, x, y);
     }
     const pixels = syncFromCanvas(ctx);
-    updatePixels(pixels, index);
+    updatePixels(pixels, index, canvas);
   }, speed);
 
   return Promise.resolve(() => clearInterval(interval));

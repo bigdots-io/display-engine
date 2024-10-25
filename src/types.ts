@@ -1,4 +1,4 @@
-import { CanvasRenderingContext2D } from "canvas";
+import { Canvas, CanvasRenderingContext2D } from "canvas";
 
 export type Alignment = "left" | "center" | "right";
 
@@ -117,20 +117,30 @@ export interface Pixel {
   rgba: null | Uint8ClampedArray;
 }
 
-export type UpdatePixels = (pixels: Pixel[], index: number) => void;
-export type PixelsChangeCallback = (pixels: Pixel[], index: number) => void;
+export type UpdatePixels = (
+  pixels: Pixel[],
+  index: number,
+  canvas: Canvas
+) => void;
+export type PixelsChangeCallback = (
+  pixels: Pixel[],
+  index: number,
+  canvas: Canvas
+) => void;
 export type MacroStopCallback = Promise<() => void>;
 
 export type MacroFn = ({
   macroConfig,
   dimensions,
   ctx,
+  canvas,
   index,
   updatePixels,
 }: {
   macroConfig: Partial<MacroConfig>;
   dimensions: Dimensions;
   ctx: CanvasRenderingContext2D;
+  canvas: Canvas;
   index: number;
   updatePixels: PixelsChangeCallback;
 }) => MacroStopCallback;

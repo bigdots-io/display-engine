@@ -5,6 +5,7 @@ export const startText: MacroFn = async ({
   macroConfig,
   dimensions,
   ctx,
+  canvas,
   index,
   updatePixels,
 }) => {
@@ -45,7 +46,7 @@ export const startText: MacroFn = async ({
   }
 
   const pixels = syncFromCanvas(ctx);
-  updatePixels(pixels, index);
+  updatePixels(pixels, index, canvas);
 
   return Promise.resolve(() => {});
 };
