@@ -1,6 +1,6 @@
 {
   "name": "@bigdots-io/display-engine",
-  "version": "0.10.4",
+  "version": "0.11.0",
   "module": "./lib/esm/index.js",
   "description": "Engine to generate Bigdots pixels to be rendered",
   "type": "module",
