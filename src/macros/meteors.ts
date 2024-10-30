@@ -131,7 +131,7 @@ export const startMeteors: MacroFn = async ({
       }
     });
 
-    const pixels = syncFromCanvas(ctx);
+    const pixels = syncFromCanvas(ctx, dimensions);
     updatePixels(pixels, index, canvas);
   }, 10);
 

@@ -40,7 +40,7 @@ export const startBox: MacroFn = async ({
     );
   }
 
-  const pixels = syncFromCanvas(ctx);
+  const pixels = syncFromCanvas(ctx, dimensions);
   updatePixels(pixels, index, canvas);
 
   return Promise.resolve(() => {});

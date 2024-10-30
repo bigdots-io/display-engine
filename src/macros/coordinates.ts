@@ -4,6 +4,7 @@ import { syncFromCanvas } from "../canvas.js";
 export const startCoordinates: MacroFn = async ({
   macroConfig,
   ctx,
+  dimensions,
   canvas,
   index,
   updatePixels,
@@ -21,7 +22,7 @@ export const startCoordinates: MacroFn = async ({
     ctx.fillRect(parseInt(x, 10), parseInt(y, 10), 1, 1);
   }
 
-  const pixels = syncFromCanvas(ctx);
+  const pixels = syncFromCanvas(ctx, dimensions);
   updatePixels(pixels, index, canvas);
 
   return Promise.resolve(() => {});

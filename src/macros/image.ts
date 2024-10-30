@@ -23,7 +23,7 @@ export const startImage: MacroFn = async ({
   const img = await loadImage(config.url);
 
   ctx?.drawImage(img, 0, 0);
-  const pixels = syncFromCanvas(ctx);
+  const pixels = syncFromCanvas(ctx, dimensions);
   updatePixels(pixels, index, canvas);
 
   img.src = config.url;

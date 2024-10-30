@@ -48,7 +48,7 @@ export const startMarquee: MacroFn = async ({
         : config.startingRow
     );
 
-    const pixels = syncFromCanvas(ctx);
+    const pixels = syncFromCanvas(ctx, dimensions);
     updatePixels(pixels, index, canvas);
 
     if (config.direction === "horizontal") {

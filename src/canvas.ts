@@ -8,11 +8,14 @@ export function buildCanvas(dimensions: Dimensions) {
   return { canvas, ctx };
 }
 
-export function syncFromCanvas(ctx: CanvasRenderingContext2D) {
+export function syncFromCanvas(
+  ctx: CanvasRenderingContext2D,
+  dimensions: Dimensions
+) {
   const pixels: Pixel[] = [];
 
-  for (let y = 0; y < 16; y++) {
-    for (let x = 0; x < 64; x++) {
+  for (let y = 0; y < dimensions.height; y++) {
+    for (let x = 0; x < dimensions.width; x++) {
       const { data } = ctx.getImageData(x, y, 1, 1);
 
       pixels.push({

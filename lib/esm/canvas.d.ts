@@ -4,4 +4,4 @@ export declare function buildCanvas(dimensions: Dimensions): {
     canvas: import("canvas").Canvas;
     ctx: CanvasRenderingContext2D;
 };
-export declare function syncFromCanvas(ctx: CanvasRenderingContext2D): Pixel[];
+export declare function syncFromCanvas(ctx: CanvasRenderingContext2D, dimensions: Dimensions): Pixel[];

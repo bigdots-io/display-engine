@@ -62,7 +62,7 @@ export const startTwinkle: MacroFn = async ({
       d[3] = rgba[3];
       ctx.putImageData(id, x, y);
     }
-    const pixels = syncFromCanvas(ctx);
+    const pixels = syncFromCanvas(ctx, dimensions);
     updatePixels(pixels, index, canvas);
   }, speed);
 
