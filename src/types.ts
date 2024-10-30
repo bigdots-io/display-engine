@@ -11,6 +11,7 @@ export enum MacroName {
   Image = "image",
   Ripple = "ripple",
   Custom = "custom",
+  Coordinates = "coordinates",
 }
 export interface Gradient {
   direction: "vertical" | "horizontal";
@@ -92,6 +93,12 @@ export interface MacroImageConfig {
   startingRow: number;
 }
 
+export interface MacroCoordinatesConfig {
+  coordinates: {
+    [key: string]: string;
+  };
+}
+
 export type MacroConfig =
   | MacroBoxConfig
   | MacroTextConfig
@@ -99,7 +106,8 @@ export type MacroConfig =
   | MacroTwinkleConfig
   // | MacroMeteorsConfig
   | MacroImageConfig
-  | MacroCustomConfig;
+  | MacroCustomConfig
+  | MacroCoordinatesConfig;
 
 export interface Macro {
   macroName: MacroName;

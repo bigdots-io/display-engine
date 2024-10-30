@@ -9,6 +9,7 @@ import {
   Dimensions,
   Macro,
   MacroBoxConfig,
+  MacroCoordinatesConfig,
   MacroCustomConfig,
   MacroFn,
   MacroImageConfig,
@@ -25,6 +26,7 @@ import {
 import { startImage } from "./macros/image.js";
 import { startCustom } from "./macros/custom.js";
 import { buildCanvas } from "./canvas.js";
+import { startCoordinates } from "./macros/coordinates.js";
 
 export type { Pixel } from "./types.js";
 
@@ -68,6 +70,13 @@ export const custom = (macroConfig: Partial<MacroCustomConfig>): Macro => ({
   macroConfig,
 });
 
+export const coordinates = (
+  macroConfig: Partial<MacroCoordinatesConfig>
+): Macro => ({
+  macroName: MacroName.Coordinates,
+  macroConfig,
+});
+
 function startMacros({
   macros,
   dimensions,
@@ -89,6 +98,7 @@ function startMacros({
       [MacroName.Image]: startImage,
       [MacroName.Meteors]: startMeteors,
       [MacroName.Custom]: startCustom,
+      [MacroName.Coordinates]: startCoordinates,
     };
 
     const macroFn = MacroMap[macroName];

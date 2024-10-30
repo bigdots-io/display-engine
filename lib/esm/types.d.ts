@@ -8,7 +8,8 @@ export declare enum MacroName {
     Marquee = "marquee",
     Image = "image",
     Ripple = "ripple",
-    Custom = "custom"
+    Custom = "custom",
+    Coordinates = "coordinates"
 }
 export interface Gradient {
     direction: "vertical" | "horizontal";
@@ -84,7 +85,12 @@ export interface MacroImageConfig {
     startingColumn: number;
     startingRow: number;
 }
-export type MacroConfig = MacroBoxConfig | MacroTextConfig | MacroMarqueeConfig | MacroTwinkleConfig | MacroImageConfig | MacroCustomConfig;
+export interface MacroCoordinatesConfig {
+    coordinates: {
+        [key: string]: string;
+    };
+}
+export type MacroConfig = MacroBoxConfig | MacroTextConfig | MacroMarqueeConfig | MacroTwinkleConfig | MacroImageConfig | MacroCustomConfig | MacroCoordinatesConfig;
 export interface Macro {
     macroName: MacroName;
     macroConfig: Partial<MacroConfig>;
