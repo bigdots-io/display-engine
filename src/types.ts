@@ -12,6 +12,7 @@ export enum MacroName {
   Ripple = "ripple",
   Custom = "custom",
   Coordinates = "coordinates",
+  Scene = "scene",
 }
 export interface Gradient {
   direction: "vertical" | "horizontal";
@@ -99,6 +100,12 @@ export interface MacroCoordinatesConfig {
   };
 }
 
+export type SceneName = "moon";
+
+export interface MacroSceneConfig {
+  sceneName: SceneName;
+}
+
 export type MacroConfig =
   | MacroBoxConfig
   | MacroTextConfig
@@ -107,7 +114,8 @@ export type MacroConfig =
   // | MacroMeteorsConfig
   | MacroImageConfig
   | MacroCustomConfig
-  | MacroCoordinatesConfig;
+  | MacroCoordinatesConfig
+  | MacroSceneConfig;
 
 export interface Macro {
   macroName: MacroName;
