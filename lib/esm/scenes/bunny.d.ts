@@ -466,4 +466,8 @@ export declare const bunny: {
     "20:6": string;
     "13:15": string;
     "13:16": string;
+    "19:15": string;
+    "20:15": string;
+    "19:16": string;
+    "20:16": string;
 };
