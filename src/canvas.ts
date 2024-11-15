@@ -4,7 +4,6 @@ import { Dimensions, Pixel } from "./types";
 export function buildCanvas(dimensions: Dimensions) {
   const canvas = createCanvas(dimensions.width, dimensions.height);
   const ctx = canvas.getContext("2d", { willReadFrequently: true });
-
   return { canvas, ctx };
 }
 

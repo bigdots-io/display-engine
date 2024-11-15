@@ -100,7 +100,7 @@ export interface MacroCoordinatesConfig {
   };
 }
 
-export type SceneName = "moon";
+export type SceneName = "moon" | "bunny";
 
 export interface MacroSceneConfig {
   sceneName: SceneName;
