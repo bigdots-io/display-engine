@@ -467,3 +467,12 @@ export const bunny = {
   "15:13": "#af6c0d",
   "16:13": "#af6c0d",
 };
+
+
+const new = {};
+
+for(const i in bunny) {
+    const [y, x] = i.split(":")
+    new[`${x}:${y}`] = bunny[i]
+
+}
