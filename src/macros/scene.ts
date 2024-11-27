@@ -1,5 +1,6 @@
 import { bunny } from "../scenes/bunny.js";
 import { moon } from "../scenes/moon.js";
+import { nothing } from "../scenes/nothing.js";
 import {
   MacroCoordinatesConfig,
   MacroFn,
@@ -40,6 +41,8 @@ function getSceneCoordinates(scene: SceneName) {
     return moon;
   } else if (scene === "bunny") {
     return bunny;
+  } else if (scene === "nothing") {
+    return nothing;
   }
   return {};
 }
