@@ -1,5 +1,5 @@
 import { Macro, MacroBoxConfig, MacroCoordinatesConfig, MacroCustomConfig, MacroImageConfig, MacroMarqueeConfig, MacroMeteorsConfig, MacroRippleConfig, MacroSceneConfig, MacroTextConfig, MacroTwinkleConfig, PixelsChangeCallback } from "./types.js";
-export type { Pixel, Macro, SceneName } from "./types.js";
+export type { Pixel, Macro, SceneName, MacroConfig, MacroName, Dimensions, } from "./types.js";
 export declare const twinkle: (macroConfig: Partial<MacroTwinkleConfig>) => Macro;
 export declare const meteors: (macroConfig: Partial<MacroMeteorsConfig>) => Macro;
 export declare const box: (macroConfig: Partial<MacroBoxConfig>) => Macro;

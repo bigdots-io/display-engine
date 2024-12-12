@@ -30,7 +30,14 @@ import { buildCanvas } from "./canvas.js";
 import { startCoordinates } from "./macros/coordinates.js";
 import { startScene } from "./macros/scene.js";
 
-export type { Pixel, Macro, SceneName } from "./types.js";
+export type {
+  Pixel,
+  Macro,
+  SceneName,
+  MacroConfig,
+  MacroName,
+  Dimensions,
+} from "./types.js";
 
 export const twinkle = (macroConfig: Partial<MacroTwinkleConfig>): Macro => ({
   macroName: MacroName.Twinkle,
